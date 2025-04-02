@@ -1,26 +1,16 @@
 package com.uade.tpo.marketplace.repository;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import com.uade.tpo.marketplace.entity.Categories;
+import java.util.List;
 
-public class CategoryRepository {//creamos una base de datos en memoria
-    public ArrayList<Categories> categories = new ArrayList<Categories>(
-        Arrays.asList(Categories.builder().description("electronica").id(1).build(),
-                      Categories.builder().description("cocina").id(2).build(),
-                      Categories.builder().description("limpieza").id(3).build()
-        ));
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-        public ArrayList<Categories> getCategories(){
-            return this.categories;
-        }
-     
-        public Categories getCategoryById(int categoryId){
-            return null;
-        }
-       
-        public String createCategory(String entity){
-            return null;
-        }
+import com.uade.tpo.marketplace.entity.Category;
+
+@Repository
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+
+    @Query(value = "select c from Category c where c.description = ?1")
+    List<Category> findByDescription(String description);
 }
-

@@ -1,25 +1,18 @@
 package com.uade.tpo.marketplace.service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
-import com.uade.tpo.marketplace.entity.Categories;
-import com.uade.tpo.marketplace.repository.CategoryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
-public class CategoryService {
-   
-    public ArrayList<Categories> getCategories() {
-        CategoryRepository categoryRepository = new CategoryRepository();
-        return categoryRepository.getCategories();
-    }
- 
-    public Categories getCategoryById(int categoryId) {
-        CategoryRepository categoryRepository = new CategoryRepository();
-        return categoryRepository.getCategoryById(categoryId);
-    }
-   
-    public String createCategory(String entity) {
-        CategoryRepository categoryRepository = new CategoryRepository();
-        return categoryRepository.createCategory(entity);
-        
-    }
+import com.uade.tpo.marketplace.entity.Category;
+import com.uade.tpo.marketplace.exceptions.CategoryDuplicateException;
+
+public interface CategoryService {
+    public Page<Category> getCategories(PageRequest pageRequest);
+
+    public Optional<Category> getCategoryById(Long categoryId);
+
+    public Category createCategory(String description) throws CategoryDuplicateException;
 }
