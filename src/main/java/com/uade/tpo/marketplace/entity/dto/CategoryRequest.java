@@ -6,4 +6,5 @@ import lombok.Data;
 public class CategoryRequest {
    private Long id;
    private String categoryName;
+    //private Product product;
 }

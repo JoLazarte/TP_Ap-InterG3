@@ -1,5 +1,7 @@
 package com.uade.tpo.marketplace.entity.dto;
+import lombok.Data;
 
-public class BuyerRequest{
-
+@Data
+public class BuyerRequest extends UserRequest{
+    //private Cart cart;
 }
