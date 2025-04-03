@@ -1,15 +1,14 @@
 package com.uade.tpo.marketplace.entity;
-//import lombok.Builder;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+//import jakarta.persistence.OneToOne;
 import lombok.Data;
 
-@Data //tengo todos los getters y setters
-//@Builder //nos permite crear obj, extiende esta clase 
+@Data 
 @Entity
 public class Category {
     public Category() {
