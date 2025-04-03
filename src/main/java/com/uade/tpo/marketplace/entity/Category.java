@@ -14,8 +14,8 @@ public class Category {
     public Category() {
     }
 
-    public Category(String description) {
-        this.description = description;
+    public Category(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     @Id
@@ -23,7 +23,7 @@ public class Category {
     private Long id;
 
     @Column
-    private String description;
+    private String categoryName;
 
     //@OneToOne(mappedBy = "category")
     //private Product product;
