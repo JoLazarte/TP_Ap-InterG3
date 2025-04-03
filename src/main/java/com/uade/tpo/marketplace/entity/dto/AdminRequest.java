@@ -1,5 +1,8 @@
 package com.uade.tpo.marketplace.entity.dto;
 
-public class AdminRequest {
-    
+import lombok.Data;
+
+@Data
+public class AdminRequest extends UserRequest{
+    //private Product product;
 }
