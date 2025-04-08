@@ -9,9 +9,12 @@ import com.uade.tpo.marketplace.entity.Category;
 import com.uade.tpo.marketplace.exceptions.CategoryDuplicateException;
 
 public interface CategoryService {
+    
     public Page<Category> getCategories(PageRequest pageRequest);
 
     public Optional<Category> getCategoryById(Long categoryId);
 
     public Category createCategory(String categoryName) throws CategoryDuplicateException;
+    
+    
 }
