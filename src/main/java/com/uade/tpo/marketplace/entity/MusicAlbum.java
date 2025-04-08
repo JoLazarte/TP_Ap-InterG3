@@ -31,7 +31,7 @@ public class MusicAlbum extends Product{
     this.price = price;
     this.stock = stock;
     this.urlImage = urlImage;
-    //this.administrator = administrator;
+    this.administrator = administrator;
 }
 
     @Column

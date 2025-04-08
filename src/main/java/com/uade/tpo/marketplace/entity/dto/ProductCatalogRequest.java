@@ -1,20 +1,14 @@
 package com.uade.tpo.marketplace.entity.dto;
 
+import lombok.Data;
 import java.util.List;
 
-import com.uade.tpo.marketplace.entity.Category;
-
-import lombok.Data;
-
 @Data
-public class BookRequest {
-    private Long id; //no hace falta que este
+public class ProductCatalogRequest {
+    private Long id; // No hace falta?
     private String title;
     private String author;
-    private String editorial;
     private String description;
-    private String isbn;
-    private List<Category> categories;
     private float price;
     private int stock;
     private List<String> urlImage;
