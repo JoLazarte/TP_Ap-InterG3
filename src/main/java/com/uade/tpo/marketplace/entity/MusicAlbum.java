@@ -8,7 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data 
@@ -20,7 +20,7 @@ public class MusicAlbum extends Product{
     
     public MusicAlbum(String title, String author, String recordLabel, int year, String description, String isrc,
                   List<Genre> genres, float price, int stock, List<String> urlImage,
-                  Administrator administrator) {
+                  User administrator) {
     this.title = title;
     this.author = author;
     this.recordLabel = recordLabel;
@@ -46,9 +46,9 @@ public class MusicAlbum extends Product{
     @Column    
     private List<Genre> genres;
 
-        // @ManyToOne
-        // @JoinColumn(name = "administrador_id", nullable = false)
-        // @Column
-        // private Administrator administrator; 
+    @ManyToOne
+    @JoinColumn(name = "administrador_id", nullable = false)
+    @Column
+    private User administrator; 
     
 }
