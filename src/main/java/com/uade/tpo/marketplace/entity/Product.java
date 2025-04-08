@@ -6,6 +6,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 
@@ -35,9 +37,9 @@ public abstract class Product {
     @Column
     protected List<String> urlImage;
 
-        // @ManyToOne
-        // @JoinColumn(name = "administrador_id", nullable = false)
-        // @Column
-        // private Administrator administrator; 
+    @ManyToOne
+    @JoinColumn(name = "administrador_id", nullable = false)
+    @Column
+    private User administrator; 
     
 }

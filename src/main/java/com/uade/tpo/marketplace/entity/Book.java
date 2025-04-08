@@ -22,7 +22,7 @@ public class Book extends Product{
     
     public Book(String title, String author, String editorial, String description, String isbn,
                 List<Category> categories, float price, int stock, List<String> urlImage,
-                Administrator administrator) {
+                User administrator) {
         this.title = title;
         this.author = author;
         this.editorial = editorial;
@@ -32,7 +32,7 @@ public class Book extends Product{
         this.price = price;
         this.stock = stock;
         this.urlImage = urlImage;
-        //this.administrator = administrator;
+        this.administrator = administrator;
     }
 
 
@@ -63,9 +63,9 @@ public class Book extends Product{
     @Column
     private List<Category> categories;
 
-        // @ManyToOne
-        // @JoinColumn(name = "administrador_id", nullable = false)
-        // @Column
-        // private Administrator administrator; 
+    @ManyToOne
+    @JoinColumn(name = "administrador_id", nullable = false)
+    @Column
+    private User administrator; 
     
 }
