@@ -1,42 +1,80 @@
 package com.uade.tpo.marketplace.entity;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 //import jakarta.persistence.OneToMany;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class User {
-    public User(){
-    }
-    public User(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
-    }
+public class User implements UserDetails{
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
-    private String userName;
+    //@Column
+    //private String userName;
     @Column
     private String password;
     @Column
-    private String name;
-    @Column
-    private String surname;
+    private String firstName;
+    @Column(nullable = false, unique = true)
+    private String lastName;
     @Column
     private String email;
     //@OneToMany(mappedBy = "user")
     //private PurchaseFile purchaseFile; //(Aca se estableceria la relación con "documento de compra")
+    
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    public void registerUser(){
-
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
-    public void loginUser(){
-        
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
+
+

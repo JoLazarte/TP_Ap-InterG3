@@ -1,4 +1,4 @@
-package com.uade.tpo.marketplace.controllers;
+package com.uade.tpo.marketplace.controllers.users;
 
 import java.net.URI;
 import java.util.Optional;
@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.tpo.marketplace.entity.User;
-import com.uade.tpo.marketplace.entity.dto.UserRequest;
-import com.uade.tpo.marketplace.exceptions.UserDuplicateException;
 import com.uade.tpo.marketplace.service.UserService;
 
 @RestController
@@ -44,11 +42,6 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping
-    public ResponseEntity<Object> createUser(@RequestBody UserRequest userRequest)
-            throws UserDuplicateException {
-        User result = userService.createUser(userRequest.getUserName(), userRequest.getPassword());
-        return ResponseEntity.created(URI.create("/users/" + result.getId())).body(result);
-    }
+    
     
 }

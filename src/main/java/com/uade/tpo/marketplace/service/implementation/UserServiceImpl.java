@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.marketplace.entity.User;
-import com.uade.tpo.marketplace.exceptions.UserDuplicateException;
 import com.uade.tpo.marketplace.repository.UserRepository;
 import com.uade.tpo.marketplace.service.UserService;
 
@@ -25,13 +24,5 @@ public class UserServiceImpl implements UserService{
 
     public Optional<User> getUserById(Long userId) {
         return userRepository.findById(userId);
-    }
-
-    public User createUser(String userName, String password) throws UserDuplicateException {
-        List<User> users = userRepository.findByUserName(userName);
-        if (users.isEmpty())
-            return userRepository.save(new User(userName,password));
-        throw new UserDuplicateException();
-    }
-    
+    } 
 }
