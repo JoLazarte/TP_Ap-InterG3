@@ -19,9 +19,10 @@ import jakarta.persistence.OneToMany;
 
 import lombok.Data;
 
-@Entity
-@Data
 
+
+@Data
+@Entity
 public class PurchaseDocument {
     public PurchaseDocument() {
     }

@@ -30,7 +30,6 @@ public class PurchaseDocumentServiceImpl implements PurchaseDocumentService {
     }
     @Override
     public Optional<PurchaseDocument> getPurchaseDocumentById(Long purchaseDocumentId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPurchaseDocumentById'");
+        return purchaseDocumentRepository.findById(purchaseDocumentId); 
     }
 }
