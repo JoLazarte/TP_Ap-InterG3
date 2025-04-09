@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,7 +39,10 @@ public class Buy {
   @OneToMany(mappedBy = "buy", cascade = CascadeType.ALL)
   @JsonManagedReference
   private List<CartItem> items;
-
+  @OneToOne(cascade = CascadeType.ALL) 
+  @JoinColumn(name = "purchasedDocument_id")
+  @JsonBackReference
+  private PurchaseDocument purchaseDocument;
   @ManyToOne
   @JoinColumn(nullable = false, name = "user_id")
   @JsonBackReference

@@ -19,8 +19,8 @@ public class MusicAlbum extends Product{
     }
     
     public MusicAlbum(String title, String author, String recordLabel, int year, String description, String isrc,
-                  List<Genre> genres, float price, int stock, List<String> urlImage,
-                  User administrator) {
+                  List<Genre> genres, float price, int stock, List<String> urlImage
+                  ) {
     this.title = title;
     this.author = author;
     this.recordLabel = recordLabel;
@@ -31,7 +31,6 @@ public class MusicAlbum extends Product{
     this.price = price;
     this.stock = stock;
     this.urlImage = urlImage;
-    this.administrator = administrator;
 }
 
     @Column
@@ -45,10 +44,5 @@ public class MusicAlbum extends Product{
 
     @Column    
     private List<Genre> genres;
-
-    @ManyToOne
-    @JoinColumn(name = "administrador_id", nullable = false)
-    @Column
-    private User administrator; 
     
 }

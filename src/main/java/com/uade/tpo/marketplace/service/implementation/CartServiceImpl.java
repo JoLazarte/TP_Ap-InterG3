@@ -2,9 +2,9 @@ package com.uade.tpo.marketplace.service.implementation;
 
 import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.entity.CartItem;
-import com.uade.tpo.marketplace.entity.ProductCatalog;
+import com.uade.tpo.marketplace.entity.Product;
 import com.uade.tpo.marketplace.repository.CartRepository;
-import com.uade.tpo.marketplace.repository.ProductCatalogRepository;
+import com.uade.tpo.marketplace.repository.ProductRepository;
 import com.uade.tpo.marketplace.service.CartItemService;
 import com.uade.tpo.marketplace.service.CartService;
 
@@ -21,7 +21,7 @@ public class CartServiceImpl implements CartService {
     private CartRepository cartRepository;
 
     @Autowired
-    private ProductCatalogRepository productCatalogRepository;
+    private ProductRepository productRepository;
 
     @Autowired
     private CartItemService cartItemService;
@@ -54,7 +54,7 @@ public class CartServiceImpl implements CartService {
         }
 
         Cart cart = optionalCart.get();
-        ProductCatalog product = cartItem.getProduct();
+        Product product = cartItem.getProduct();
 
         // Verificar stock suficiente
         if (product.getStock() < cartItem.getQuantity()) {
@@ -69,7 +69,7 @@ public class CartServiceImpl implements CartService {
 
         // Actualizar stock
         product.setStock(product.getStock() - cartItem.getQuantity());
-        productCatalogRepository.save(product);
+        productRepository.save(product);
 
         // Agregar item al carrito
         cart.getItems().add(cartItem);

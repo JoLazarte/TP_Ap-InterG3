@@ -48,8 +48,8 @@ public class BookServiceImpl implements BookService {
                     Collections.emptyList(),
                     price,
                     0,
-                    urlImages,
-                    null)); // falta agregar administrator
+                    urlImages
+                )); 
         throw new BookDuplicateException();
     };
 }

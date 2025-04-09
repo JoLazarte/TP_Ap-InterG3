@@ -18,8 +18,7 @@ public class Book extends Product{
     }
     
     public Book(String title, String author, String editorial, String description, String isbn,
-                List<GenreBook> genreBooks, float price, int stock, List<String> urlImage,
-                User administrator) {
+                List<GenreBook> genreBooks, float price, int stock, List<String> urlImage) {
         this.title = title;
         this.author = author;
         this.editorial = editorial;
@@ -29,7 +28,6 @@ public class Book extends Product{
         this.price = price;
         this.stock = stock;
         this.urlImage = urlImage;
-        this.administrator = administrator;
     }
 
     @Column
@@ -39,18 +37,13 @@ public class Book extends Product{
     private String isbn;
 
     @ManyToMany
-
     @JoinTable(
     name = "book_category",
     joinColumns = @JoinColumn(name = "book_id"),
     inverseJoinColumns = @JoinColumn(name = "category_id")
-)
+    )
     @Column
     private List<GenreBook> genreBooks;
 
-    @ManyToOne
-    @JoinColumn(name = "administrador_id", nullable = false)
-    @Column
-    private User administrator; 
     
 }

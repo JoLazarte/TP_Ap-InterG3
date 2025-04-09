@@ -1,5 +1,6 @@
 package com.uade.tpo.marketplace.service;
 
+import com.uade.tpo.marketplace.entity.Product;
 import com.uade.tpo.marketplace.entity.ProductCatalog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,9 +14,6 @@ public interface ProductCatalogService {
 
     Optional<ProductCatalog> getProductById(Long id);
 
-    @Transactional
-    void updateStock(Long id, int newStock);
-
-    ProductCatalog createProduct(ProductCatalog product);
-    List<ProductCatalog> filterProducts(String title);
+    ProductCatalog createProduct(Product product);
+    List<Product> filterProducts(ProductCatalog productCatalog, String title);
 }

@@ -28,7 +28,7 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
 
     public Optional<MusicAlbum> getMusicAlbumById(Long MusicAlbumId) {
         return MusicAlbumRepository.findById(MusicAlbumId);
-    };
+    }
 
     public Page<MusicAlbum> getMusicAlbumByAuthor(String author, PageRequest pageable) {
         return MusicAlbumRepository.findByAuthor(author, pageable);
@@ -40,7 +40,7 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
 
 
 
-        public MusicAlbum createMusicAlbum(String title, String author, String recordLabel,int year, String description, String isrc, Float price,
+    public MusicAlbum createMusicAlbum(String title, String author, String recordLabel,int year, String description, String isrc, Float price,
         List<String> urlImages, List<Genre> genres) throws MusicAlbumDuplicateException {
         List<MusicAlbum> musicAlbums = MusicAlbumRepository.findByIsrc(isrc);
         if (musicAlbums.isEmpty())
@@ -54,8 +54,8 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
                     genres,
                     price,
                     0,
-                    urlImages,
-                    null)); // falta agregar administrator
+                    urlImages
+                    )); // falta agregar administrator
         throw new MusicAlbumDuplicateException();
     }
 

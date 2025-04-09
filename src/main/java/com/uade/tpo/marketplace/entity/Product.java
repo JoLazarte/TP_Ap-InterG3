@@ -36,10 +36,5 @@ public abstract class Product {
 
     @Column
     protected List<String> urlImage;
-
-    @ManyToOne
-    @JoinColumn(name = "administrador_id", nullable = false)
-    @Column
-    private User administrator; 
     
 }

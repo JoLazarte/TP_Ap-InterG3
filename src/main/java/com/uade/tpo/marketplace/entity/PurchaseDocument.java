@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -14,6 +17,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapKeyJoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -35,29 +39,21 @@ public class PurchaseDocument {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Identificador único de la compra
-    @Column(name = "purchase_id", nullable = false, unique = true)
-    private String purchaseId;
+    // Identificador único de la compra, que debe estar asociada a una "compra", asi se obtiene la lista de productos/el carrito comprado con toda la info necesaria
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "buy_id")
+    @JsonManagedReference
+    private Buy buy;
 
     // Fecha en la que se realizó la compra
     @Column(name = "purchase_date", nullable = false)
     private LocalDate purchaseDate;
 
-    // Nombre del comprador
-    @Column(name = "buyer_name", nullable = false)
-    private String buyerName;
-
-    // Lista de productos asociados a la compra
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "purchase_id")
-    private List<Product> productList;
-
-    // Mapa que asocia productos con sus cantidades compradas
-    @ElementCollection
-    @CollectionTable(name = "product_quantities", joinColumns = @JoinColumn(name = "purchase_id"))
-    @MapKeyJoinColumn(name = "product_id")
-    @Column(name = "quantity")
-    private Map<Product, Integer> productQuantities;
+    // Nombre del comprador que tiene que estar asociado a un usuario
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "user_id")
+    @JsonBackReference
+    private User buyer;
 
     // Precio total de la compra
     @Column(name = "total_price", nullable = false)
@@ -65,15 +61,10 @@ public class PurchaseDocument {
 
     // Método de pago utilizado en la compra
     @Column(name = "payment_method", nullable = false)
-    private String paymentMethod;
+    private String paymentMethod; //podriamos convertirlo en un enum
 
     // Descripción adicional de la compra
     @Column
     private String description;
 
-    // Monto total calculado (puede ser redundante si se usa totalPrice)
-    private double totalAmount;
-
-    @OneToOne(mappedBy = "category")
-    private Product product;
 }
