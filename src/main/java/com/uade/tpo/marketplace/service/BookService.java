@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.uade.tpo.marketplace.entity.Book;
+import com.uade.tpo.marketplace.entity.GenreBook;
 import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
 
 public interface BookService {
@@ -20,5 +21,5 @@ public interface BookService {
 
     public Page<Book> getBooksByAuthor(String author, PageRequest pageable);
 
-    public Book createBook(String title, String author, String editorial, String description, String isbn, Float price, List<String> urlImages) throws BookDuplicateException;
+    public Book createBook(String title, String author, String editorial, String description, String isbn, GenreBook genreBooks, Float price, int stock, List<String> urlImages) throws BookDuplicateException;
 }

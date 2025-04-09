@@ -22,6 +22,6 @@ public interface MusicAlbumService {
 
     public Page<MusicAlbum> getMusicAlbumByAuthor(String author, PageRequest pageable);
 
-    public MusicAlbum createMusicAlbum(String title, String author, String recordLabel,int year, String description, String isrc, Float price,
-        List<String> urlImages, List<Genre> genres) throws MusicAlbumDuplicateException;
+    public MusicAlbum createMusicAlbum(String title, String author, String recordLabel,int year, String description, String isrc, Genre genres, Float price,
+        List<String> urlImages) throws MusicAlbumDuplicateException;
 }

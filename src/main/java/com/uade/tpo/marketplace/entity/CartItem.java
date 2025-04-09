@@ -1,5 +1,7 @@
 package com.uade.tpo.marketplace.entity;
 
+import org.antlr.v4.runtime.misc.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;
@@ -23,13 +25,22 @@ public class CartItem {
     private Cart cart;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(nullable = false, name = "book_id")
+    private Book book;
+
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "musicAlbum_id")
+    private MusicAlbum musicAlbum;
 
     @Column
     private int quantity;
 
-    public float calculateTotal() {
-        return product.getPrice() * quantity;
+    public float calculateTotalBook() {
+        return book.getPrice() * quantity;
     }
+    public float calculateTotalMusicAlbum() {
+        return musicAlbum.getPrice() * quantity;
+    }
+
+   
 }

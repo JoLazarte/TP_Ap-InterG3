@@ -5,21 +5,25 @@ import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data 
 @Entity
+@Table(name="PRODUCT")
 public class MusicAlbum extends Product{
 
     public MusicAlbum() {
     }
     
     public MusicAlbum(String title, String author, String recordLabel, int year, String description, String isrc,
-                  List<Genre> genres, float price, int stock, List<String> urlImage
+                  Genre genres, float price, int stock, List<String> urlImage
                   ) {
     this.title = title;
     this.author = author;
@@ -42,7 +46,7 @@ public class MusicAlbum extends Product{
     @Column
     private String isrc;
 
-    @Column    
-    private List<Genre> genres;
+    @Enumerated(EnumType.STRING)  
+    private Genre genres;
     
 }

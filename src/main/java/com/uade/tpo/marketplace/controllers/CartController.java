@@ -36,13 +36,21 @@ public class CartController {
         cartService.deleteCart(cartId);
         return ResponseEntity.noContent().build();
     }
-
-    @PostMapping("/{cartId}/items")
-    public ResponseEntity<Cart> addItemToCart(
+ 
+    @PostMapping("/{cartId}/books")
+    public ResponseEntity<Cart> addItemBookToCart(
             @PathVariable Long cartId,
             @RequestBody CartItem cartItem) {
 
-        Cart updatedCart = cartService.addItem(cartId, cartItem);
+        Cart updatedCart = cartService.addItemBook(cartId, cartItem);
+        return ResponseEntity.ok(updatedCart);
+    }
+    @PostMapping("/{cartId}/musicAlbums")
+    public ResponseEntity<Cart> addItemMusicAlbumToCart(
+            @PathVariable Long cartId,
+            @RequestBody CartItem cartItem) {
+
+        Cart updatedCart = cartService.addItemMusicAlbum(cartId, cartItem);
         return ResponseEntity.ok(updatedCart);
     }
 
@@ -51,4 +59,5 @@ public class CartController {
         float total = cartService.calculateTotal(cartId);
         return ResponseEntity.ok(total);
     }
+    
 }

@@ -72,9 +72,9 @@ public class MusicAlbumController {
                 musicAlbumRequest.getYear(),
                 musicAlbumRequest.getDescription(),
                 musicAlbumRequest.getIsrc(),
+                musicAlbumRequest.getGenres(),
                 musicAlbumRequest.getPrice(),
-                musicAlbumRequest.getUrlImage(),
-                musicAlbumRequest.getGenres());
+                musicAlbumRequest.getUrlImage());
                 
         return ResponseEntity.created(URI.create("/musicAlbums/" + result.getId())).body(result);
     }

@@ -2,23 +2,28 @@ package com.uade.tpo.marketplace.entity;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 @MappedSuperclass
 public abstract class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
@@ -41,7 +46,4 @@ public abstract class Product {
     @Column
     protected List<String> urlImage;
     
-    @ManyToOne
-    @JoinColumn(name = "productCatalog_id")
-    private ProductCatalog productCatalog;
 }

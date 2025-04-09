@@ -40,8 +40,8 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
 
 
 
-    public MusicAlbum createMusicAlbum(String title, String author, String recordLabel,int year, String description, String isrc, Float price,
-        List<String> urlImages, List<Genre> genres) throws MusicAlbumDuplicateException {
+    public MusicAlbum createMusicAlbum(String title, String author, String recordLabel,int year, String description, String isrc, Genre genres, Float price,
+        List<String> urlImages) throws MusicAlbumDuplicateException {
         List<MusicAlbum> musicAlbums = MusicAlbumRepository.findByIsrc(isrc);
         if (musicAlbums.isEmpty())
             return MusicAlbumRepository.save(new MusicAlbum(

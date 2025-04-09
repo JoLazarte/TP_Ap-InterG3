@@ -36,9 +36,10 @@ public class Buy {
   @Column(nullable = false)
   private LocalDateTime buyDate;
  
-  @OneToMany(mappedBy = "buy", cascade = CascadeType.ALL)
-  @JsonManagedReference
-  private List<CartItem> items;
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "cart_id")
+  @JsonBackReference
+  private Cart cart;
   @OneToOne(cascade = CascadeType.ALL) 
   @JoinColumn(name = "purchasedDocument_id")
   @JsonBackReference
@@ -47,15 +48,6 @@ public class Buy {
   @JoinColumn(nullable = false, name = "user_id")
   @JsonBackReference
   private User user;
-
-  public double getTotalPrice() {
-    double totalPrice = 0;
-    for (CartItem item : items) {
-      totalPrice += item.calculateTotal();
-    }
-    return totalPrice;
-
-  }
 
   
 

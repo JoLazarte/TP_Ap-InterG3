@@ -14,8 +14,5 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     
-    @Modifying
-    @Transactional
-    @Query("update Product p set p.stock = ?2 where p.id = ?1")
-    void updateStock(Long id, int stock);
+    
 }

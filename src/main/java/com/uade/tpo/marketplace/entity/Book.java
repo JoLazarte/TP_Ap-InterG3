@@ -4,21 +4,25 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data 
 @Entity
+@Table(name="PRODUCT")
 public class Book extends Product{
 
     public Book() {
     }
     
     public Book(String title, String author, String editorial, String description, String isbn,
-                List<GenreBook> genreBooks, float price, int stock, List<String> urlImage) {
+                GenreBook genreBooks, float price, int stock, List<String> urlImage) {
         this.title = title;
         this.author = author;
         this.editorial = editorial;
@@ -36,14 +40,8 @@ public class Book extends Product{
     @Column
     private String isbn;
 
-    @ManyToMany
-    @JoinTable(
-    name = "book_category",
-    joinColumns = @JoinColumn(name = "book_id"),
-    inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    @Column
-    private List<GenreBook> genreBooks;
+    @Enumerated(EnumType.STRING)
+    private GenreBook genreBooks;
 
     
 }

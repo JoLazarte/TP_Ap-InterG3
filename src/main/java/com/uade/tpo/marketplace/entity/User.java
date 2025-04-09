@@ -45,14 +45,11 @@ public class User {
     @JoinColumn(name = "cart_id")
     @JsonManagedReference
     private Cart cart;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "productCatalog_id")
-    @JsonManagedReference
-    private ProductCatalog productCatalog;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Buy> orders;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "purchaseDocument_id")
     @JsonManagedReference
     private PurchaseDocument purchaseDocument; //(Aca se estableceria la relación con "documento de compra")
 

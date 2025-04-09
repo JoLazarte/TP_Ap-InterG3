@@ -15,9 +15,14 @@ public interface CartService {
 
     @Transactional
     void deleteCart(Long cartId);
+ 
+    @Transactional
+    Cart addItemBook(Long cartId, CartItem cartItem);
 
     @Transactional
-    Cart addItem(Long cartId, CartItem cartItem);
+    Cart addItemMusicAlbum(Long cartId, CartItem cartItem);
 
     float calculateTotal(Long cartId);
+
+    
 }

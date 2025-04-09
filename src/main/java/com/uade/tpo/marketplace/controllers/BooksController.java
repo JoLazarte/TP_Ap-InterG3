@@ -71,7 +71,9 @@ public class BooksController {
                 bookRequest.getEditorial(),
                 bookRequest.getDescription(),
                 bookRequest.getIsbn(),
+                bookRequest.getGenreBooks(),
                 bookRequest.getPrice(),
+                bookRequest.getStock(),
                 bookRequest.getUrlImage());
         return ResponseEntity.created(URI.create("/books/" + result.getId())).body(result);
     }

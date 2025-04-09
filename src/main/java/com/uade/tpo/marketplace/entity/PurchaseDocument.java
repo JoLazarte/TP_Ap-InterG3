@@ -50,8 +50,8 @@ public class PurchaseDocument {
     private LocalDate purchaseDate;
 
     // Nombre del comprador que tiene que estar asociado a un usuario
-    @ManyToOne
-    @JoinColumn(nullable = false, name = "user_id")
+    @OneToOne(cascade = CascadeType.ALL) //Cada usuario-comprador tiene un solo carrito. Puede tener varias compras, pero un solo carrito a la vez
+    @JoinColumn(name = "user_id")
     @JsonBackReference
     private User buyer;
 

@@ -24,6 +24,11 @@ public class Cart {
     @JsonManagedReference
     private List<CartItem> items;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "buy_id")
+    @JsonManagedReference
+    private Buy buy;
+
     @Column
     private float total;
 }

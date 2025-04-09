@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.marketplace.entity.Book;
+import com.uade.tpo.marketplace.entity.GenreBook;
 import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
 import com.uade.tpo.marketplace.repository.BookRepository;
 import com.uade.tpo.marketplace.service.BookService;
@@ -36,7 +37,7 @@ public class BookServiceImpl implements BookService {
         bookRepository.updateStock(bookId, newStock);
     }
 
-    public Book createBook(String title, String author, String editorial, String description, String isbn, Float price,
+    public Book createBook(String title, String author, String editorial, String description, String isbn, GenreBook genreBooks, Float price, int stock,
         List<String> urlImages) throws BookDuplicateException {
         List<Book> books = bookRepository.findByIsbn(isbn);
         if (books.isEmpty())
@@ -45,7 +46,7 @@ public class BookServiceImpl implements BookService {
                     author,
                     editorial, description,
                     isbn,
-                    Collections.emptyList(),
+                    genreBooks,
                     price,
                     0,
                     urlImages
