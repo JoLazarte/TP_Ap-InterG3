@@ -1,4 +1,4 @@
-package com.uade.tpo.marketplace.controllers;
+package com.uade.tpo.marketplace.controllers.cartitems;
 
 import com.uade.tpo.marketplace.entity.CartItem;
 import com.uade.tpo.marketplace.service.CartItemService;

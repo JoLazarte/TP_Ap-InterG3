@@ -1,4 +1,4 @@
-package com.uade.tpo.marketplace.controllers;
+package com.uade.tpo.marketplace.controllers.purchasedocuments;
 
 import java.net.URI;
 import java.util.Optional;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.tpo.marketplace.entity.PurchaseDocument;
-import com.uade.tpo.marketplace.entity.dto.PurchaseDocumentRequest;
 import com.uade.tpo.marketplace.exceptions.PurchaseDocumentDuplicateException;
 import com.uade.tpo.marketplace.service.PurchaseDocumentService;
 

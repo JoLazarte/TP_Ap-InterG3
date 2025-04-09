@@ -1,5 +1,6 @@
-package com.uade.tpo.marketplace.entity.dto;
+package com.uade.tpo.marketplace.controllers.users;
 
+import com.uade.tpo.marketplace.controllers.purchasedocuments.PurchaseDocumentRequest;
 import com.uade.tpo.marketplace.entity.Role;
 
 import lombok.Data;

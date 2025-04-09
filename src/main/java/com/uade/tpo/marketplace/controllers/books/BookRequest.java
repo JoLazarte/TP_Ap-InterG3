@@ -1,4 +1,4 @@
-package com.uade.tpo.marketplace.entity.dto;
+package com.uade.tpo.marketplace.controllers.books;
 
 import java.util.List;
 import com.uade.tpo.marketplace.entity.GenreBook;

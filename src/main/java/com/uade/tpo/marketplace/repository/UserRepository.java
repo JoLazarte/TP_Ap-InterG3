@@ -13,10 +13,3 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "select u from User u where u.email = ?1")
     Optional<User> findByEmail(String mail);
 }
-/*
-@Repository
-public interface UserRepository extends JpaRepository<User, Long>{
-    @Query(value = "select u from User u where u.email = ?1")
-    List<User> findByEmail(String email);
-}
-*/

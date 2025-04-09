@@ -1,4 +1,6 @@
-package com.uade.tpo.marketplace.entity.dto;
+package com.uade.tpo.marketplace.controllers.carts;
+
+import com.uade.tpo.marketplace.controllers.users.UserRequest;
 
 import lombok.Data;
 

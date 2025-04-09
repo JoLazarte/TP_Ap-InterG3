@@ -1,4 +1,4 @@
-package com.uade.tpo.marketplace.entity.dto;
+package com.uade.tpo.marketplace.controllers.purchasedocuments;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;

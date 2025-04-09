@@ -1,4 +1,4 @@
-package com.uade.tpo.marketplace.controllers;
+package com.uade.tpo.marketplace.controllers.buys;
 
 import java.net.URI;
 import java.util.Optional;
