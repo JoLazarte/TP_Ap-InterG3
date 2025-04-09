@@ -2,6 +2,9 @@ package com.uade.tpo.marketplace.entity;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +34,7 @@ public class PurchaseDocument {
     // Identificador único de la compra, que debe estar asociada a una "compra", asi se obtiene la lista de productos/el carrito comprado con toda la info necesaria
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "buy_id")
+    @JsonManagedReference
     private Buy buy;
 
     // Fecha en la que se realizó la compra
@@ -40,6 +44,7 @@ public class PurchaseDocument {
     // Nombre del comprador que tiene que estar asociado a un usuario
     @OneToOne(cascade = CascadeType.ALL) //Cada usuario-comprador tiene un solo carrito. Puede tener varias compras, pero un solo carrito a la vez
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User buyer;
 
     // Precio total de la compra

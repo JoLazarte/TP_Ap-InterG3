@@ -2,6 +2,8 @@ package com.uade.tpo.marketplace.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,18 +29,20 @@ public class Buy {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-
   @Column(nullable = false)
   private LocalDateTime buyDate;
  
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "cart_id")
+  @JsonBackReference
   private Cart cart;
   @OneToOne(cascade = CascadeType.ALL) 
   @JoinColumn(name = "purchasedDocument_id")
+  @JsonBackReference
   private PurchaseDocument purchaseDocument;
   @ManyToOne
   @JoinColumn(nullable = false, name = "user_id")
+  @JsonBackReference
   private User user;
 
   

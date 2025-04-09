@@ -35,9 +35,7 @@ public class SecurityConfig {
 						                        // Product
 						                        .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
 						                        .requestMatchers("/product/**").hasAuthority(Role.ADMIN.name())
-						                        //Category
-						                        .requestMatchers("/category/**").permitAll()
-
+						                    
 						                        // El resto de rutas aca
 						                        // Cart
 						                        .requestMatchers("/cart/**").authenticated()
