@@ -9,9 +9,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @MappedSuperclass
 public abstract class Product {
 
@@ -37,4 +41,7 @@ public abstract class Product {
     @Column
     protected List<String> urlImage;
     
+    @ManyToOne
+    @JoinColumn(name = "productCatalog_id")
+    private ProductCatalog productCatalog;
 }

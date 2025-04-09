@@ -28,5 +28,11 @@ public class ProductServiceImpl implements ProductService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'updateStock'");
     }
+
+    @Override
+    public Product createProduct(Product product) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'creProduct'");
+    }
     
 }

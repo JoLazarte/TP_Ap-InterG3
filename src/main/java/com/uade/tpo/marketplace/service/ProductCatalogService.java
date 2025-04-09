@@ -10,10 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductCatalogService {
-    Page<ProductCatalog> getProducts(PageRequest pageRequest);
+    Page<ProductCatalog> getCatalogs(PageRequest pageRequest);
 
-    Optional<ProductCatalog> getProductById(Long id);
-
-    ProductCatalog createProduct(Product product);
-    List<Product> filterProducts(ProductCatalog productCatalog, String title);
+    ProductCatalog addProduct(Long productCatalogId, Product product);
+    
 }

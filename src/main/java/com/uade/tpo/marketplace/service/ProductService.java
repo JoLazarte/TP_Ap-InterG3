@@ -15,4 +15,6 @@ public interface ProductService {
     @Transactional
     void updateStock(Long id, int newStock);
 
+    Product createProduct(Product product);
+
 }
