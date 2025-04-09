@@ -35,10 +35,18 @@ public class SecurityConfig {
 						                        // Product
 						                        .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
 						                        .requestMatchers("/product/**").hasAuthority(Role.ADMIN.name())
-						                    
+                                                //Book
+                                                .requestMatchers(HttpMethod.GET, "/book/**").permitAll()
+                                                .requestMatchers("/book/**").hasAuthority(Role.ADMIN.name())
+						                        //MusicAlbum
+                                                .requestMatchers(HttpMethod.GET, "/musicAlbum/**").permitAll()
+                                                .requestMatchers("/musicAlbum/**").hasAuthority(Role.ADMIN.name())
+
 						                        // El resto de rutas aca
 						                        // Cart
 						                        .requestMatchers("/cart/**").authenticated()
+                                                //CartItem
+                                                .requestMatchers("/cartItem/**").authenticated()
 						                        // Default
                                                 .anyRequest().authenticated())
                                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
