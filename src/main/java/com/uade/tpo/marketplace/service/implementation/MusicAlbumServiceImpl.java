@@ -1,6 +1,5 @@
 package com.uade.tpo.marketplace.service.implementation;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,31 +19,31 @@ import com.uade.tpo.marketplace.service.MusicAlbumService;
 public class MusicAlbumServiceImpl implements MusicAlbumService {
 
     @Autowired
-    private MusicAlbumRepository MusicAlbumRepository;
+    private MusicAlbumRepository musicAlbumRepository;
 
     public Page<MusicAlbum> getMusicAlbums(PageRequest pageable) {
-        return MusicAlbumRepository.findAll(pageable);
+        return musicAlbumRepository.findAll(pageable);
     }
 
-    public Optional<MusicAlbum> getMusicAlbumById(Long MusicAlbumId) {
-        return MusicAlbumRepository.findById(MusicAlbumId);
+    public Optional<MusicAlbum> getMusicAlbumById(Long musicAlbumId) {
+        return musicAlbumRepository.findById(musicAlbumId);
     }
 
     public Page<MusicAlbum> getMusicAlbumByAuthor(String author, PageRequest pageable) {
-        return MusicAlbumRepository.findByAuthor(author, pageable);
+        return musicAlbumRepository.findByAuthor(author, pageable);
     }
 
-    public void updateStock(Long MusicAlbumId, int newStock) {
-        MusicAlbumRepository.updateStock(MusicAlbumId, newStock);
+    public void updateStock(Long musicAlbumId, int newStock) {
+        musicAlbumRepository.updateStock(musicAlbumId, newStock);
     }
 
 
 
     public MusicAlbum createMusicAlbum(String title, String author, String recordLabel,int year, String description, String isrc, Genre genres, Float price,
         List<String> urlImages) throws MusicAlbumDuplicateException {
-        List<MusicAlbum> musicAlbums = MusicAlbumRepository.findByIsrc(isrc);
+        List<MusicAlbum> musicAlbums = musicAlbumRepository.findByIsrc(isrc);
         if (musicAlbums.isEmpty())
-            return MusicAlbumRepository.save(new MusicAlbum(
+            return musicAlbumRepository.save(new MusicAlbum(
                     title,
                     author,
                     recordLabel, 
@@ -57,6 +56,10 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
                     urlImages
                     )); // falta agregar administrator
         throw new MusicAlbumDuplicateException();
+    }
+
+    public List<MusicAlbum> filterBooks(String title) {
+        return musicAlbumRepository.findByTitleContainingIgnoreCase(title);
     }
 
 }

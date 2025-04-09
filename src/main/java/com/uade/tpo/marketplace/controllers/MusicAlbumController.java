@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.tpo.marketplace.entity.MusicAlbum;
 import com.uade.tpo.marketplace.entity.dto.MusicAlbumRequest;
-import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
 import com.uade.tpo.marketplace.exceptions.MusicAlbumDuplicateException;
 import com.uade.tpo.marketplace.service.MusicAlbumService;
 
@@ -77,5 +76,14 @@ public class MusicAlbumController {
                 musicAlbumRequest.getUrlImage());
                 
         return ResponseEntity.created(URI.create("/musicAlbums/" + result.getId())).body(result);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<MusicAlbum>> filterProductsByTitle(@RequestParam String title) {
+        List<MusicAlbum> result = musicAlbumService.filterBooks(title);
+        if (result.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(result);
     }
 }

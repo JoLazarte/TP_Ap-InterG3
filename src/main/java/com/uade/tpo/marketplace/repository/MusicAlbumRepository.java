@@ -16,7 +16,7 @@ import com.uade.tpo.marketplace.entity.MusicAlbum;
 public interface MusicAlbumRepository extends JpaRepository<MusicAlbum, Long> {
 
     @Query(value = "select b from MusicAlbum b where b.id = ?1")
-    Optional<MusicAlbum> findById(Long MusicAlbumId);
+    Optional<MusicAlbum> findMusicAlbumById(Long MusicAlbumId);
 
     @Query(value = "select b from MusicAlbum b where b.isrc = ?1")
     List<MusicAlbum> findByIsrc(String isrc);
@@ -27,4 +27,6 @@ public interface MusicAlbumRepository extends JpaRepository<MusicAlbum, Long> {
     @Modifying
     @Query(value = "update MusicAlbum b set b.stock = ?2 where b.id = ?1")
     void updateStock(Long id, int newStock);
+
+    List<MusicAlbum> findByTitleContainingIgnoreCase(String title);
 }

@@ -1,18 +1,14 @@
 package com.uade.tpo.marketplace.controllers;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
-
 import com.uade.tpo.marketplace.entity.Product;
-import com.uade.tpo.marketplace.entity.dto.ProductRequest;
 import com.uade.tpo.marketplace.service.ProductService;
 
-import java.net.URI;
 import java.util.Optional;
 
 @RestController
@@ -39,12 +35,6 @@ public class ProductController {
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
     }
 
-    @PutMapping("/{productId}")
-    public ResponseEntity<Product> updateProductStock(
-            @PathVariable Long productId,
-            @RequestBody ProductRequest request) {
-        productService.updateStock(productId, request.getStock());
-        return getProductById(productId);
-    }
+    
    
 }

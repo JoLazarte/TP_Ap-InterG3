@@ -1,6 +1,5 @@
 package com.uade.tpo.marketplace.service.implementation;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,4 +52,8 @@ public class BookServiceImpl implements BookService {
                 )); 
         throw new BookDuplicateException();
     };
+
+    public List<Book> filterBooks(String title) {
+        return bookRepository.findByTitleContainingIgnoreCase(title);
+    }
 }

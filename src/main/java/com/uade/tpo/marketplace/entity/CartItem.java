@@ -1,7 +1,5 @@
 package com.uade.tpo.marketplace.entity;
 
-import org.antlr.v4.runtime.misc.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;
