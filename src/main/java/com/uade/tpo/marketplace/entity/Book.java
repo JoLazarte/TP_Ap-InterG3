@@ -18,14 +18,14 @@ public class Book extends Product{
     }
     
     public Book(String title, String author, String editorial, String description, String isbn,
-                List<Category> categories, float price, int stock, List<String> urlImage,
+                List<GenreBook> genreBooks, float price, int stock, List<String> urlImage,
                 User administrator) {
         this.title = title;
         this.author = author;
         this.editorial = editorial;
         this.description = description;
         this.isbn = isbn;
-        this.categories = categories;
+        this.genreBooks = genreBooks;
         this.price = price;
         this.stock = stock;
         this.urlImage = urlImage;
@@ -46,7 +46,7 @@ public class Book extends Product{
     inverseJoinColumns = @JoinColumn(name = "category_id")
 )
     @Column
-    private List<Category> categories;
+    private List<GenreBook> genreBooks;
 
     @ManyToOne
     @JoinColumn(name = "administrador_id", nullable = false)

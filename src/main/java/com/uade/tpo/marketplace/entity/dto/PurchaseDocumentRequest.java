@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.uade.tpo.marketplace.entity.Product;
+import com.uade.tpo.marketplace.entity.User;
 
 import lombok.Data;  
 
@@ -20,4 +21,5 @@ public class PurchaseDocumentRequest {
     private String paymentMethod;
     private String description;
     private double totalAmount;
+    private User user;
 }
