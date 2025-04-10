@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService{
 
 				Cart cart = cartService.createCart();
 
-				User user = new User(request.getUsername(), request.getFirstName(), request.getLastName(),
+				User user = new User(null,request.getUsername(), request.getFirstName(), request.getLastName(),
 								request.getEmail(),
 								passwordEncoder.encode(request.getPassword()),
 								Role.BUYER, cart, new ArrayList<>());

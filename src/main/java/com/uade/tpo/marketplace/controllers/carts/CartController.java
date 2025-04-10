@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("carts")
+@RequestMapping("/carts")
 public class CartController {
 
     @Autowired
@@ -41,9 +41,7 @@ public class CartController {
     public ResponseEntity<ResponseData<?>> getUserCart(@AuthenticationPrincipal UserDetails userDetails) {
     try {
         User authUser = userService.getUserByUsername(userDetails.getUsername());
-
         Cart cart = authUser.getCart();
-
         return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(cart));
 
         } catch (UserException error) {

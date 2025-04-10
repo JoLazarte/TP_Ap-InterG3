@@ -63,7 +63,8 @@ public class User implements UserDetails{
     @JsonManagedReference
     private PurchaseDocument purchaseDocument; //(Aca se estableceria la relación con "documento de compra")
    
-    public User(String username, String firstName, String lastName, String email, String password, Role role, Cart cart, List<Buy> orders){
+    public User(Long id, String username, String firstName, String lastName, String email, String password, Role role, Cart cart, List<Buy> orders){
+        this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;

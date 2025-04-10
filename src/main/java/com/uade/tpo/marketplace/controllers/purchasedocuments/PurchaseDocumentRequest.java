@@ -2,7 +2,6 @@ package com.uade.tpo.marketplace.controllers.purchasedocuments;
 import java.time.LocalDate;
 
 import com.uade.tpo.marketplace.entity.Buy;
-import com.uade.tpo.marketplace.entity.User;
 
 import lombok.Data;  
 

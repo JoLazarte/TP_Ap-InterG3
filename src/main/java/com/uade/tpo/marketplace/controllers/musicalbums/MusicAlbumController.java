@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("musicAlbums")
+@RequestMapping("/musicAlbums")
 public class MusicAlbumController {
 
     @Autowired

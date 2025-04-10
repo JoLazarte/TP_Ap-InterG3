@@ -8,7 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.uade.tpo.marketplace.entity.Buy;
-import com.uade.tpo.marketplace.entity.User;
+import com.uade.tpo.marketplace.entity.Cart;
+
 
 
 public interface BuyService {
@@ -21,7 +22,9 @@ public interface BuyService {
     @Transactional
     void deleteBuy(Long buyId);
 
-    List<Buy> getUserBuys(User user) throws Exception;
+    List<Buy> getUserBuys(Long userId) throws Exception;
+
+    public Buy createBuy(Cart cart) throws Exception;
         
 
 }

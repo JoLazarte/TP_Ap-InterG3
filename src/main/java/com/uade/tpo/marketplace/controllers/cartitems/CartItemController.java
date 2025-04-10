@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@RequestMapping("cartItems")
+@RequestMapping("/cartItems")
 public class CartItemController {
 
     @Autowired

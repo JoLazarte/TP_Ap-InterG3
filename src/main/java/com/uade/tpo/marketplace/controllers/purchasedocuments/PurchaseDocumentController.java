@@ -19,7 +19,7 @@ import com.uade.tpo.marketplace.exceptions.PurchaseDocumentDuplicateException;
 import com.uade.tpo.marketplace.service.PurchaseDocumentService;
 
 @RestController
-@RequestMapping("purchaseDocuments")
+@RequestMapping("/purchaseDocuments")
 public class PurchaseDocumentController {
     @Autowired
     private PurchaseDocumentService purchaseDocumentService;

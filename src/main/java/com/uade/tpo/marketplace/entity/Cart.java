@@ -2,6 +2,7 @@ package com.uade.tpo.marketplace.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -30,4 +31,9 @@ public class Cart {
 
     @Column
     private float total;
+
+    
+
+
+        
 }

@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.uade.tpo.marketplace.entity.Buy;
-import com.uade.tpo.marketplace.entity.User;
 
 @Repository
 public interface BuyRepository extends JpaRepository<Buy, Long>  {
@@ -17,6 +16,6 @@ public interface BuyRepository extends JpaRepository<Buy, Long>  {
     Optional<Buy> findByDate(LocalDateTime buyDate);
 
     @Query(value = "select b from Buy b where b.user = ?1")
-    List<Buy> findByUser(User user);
+    List<Buy> findByUserId(Long userId);
 
 }

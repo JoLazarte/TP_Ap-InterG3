@@ -1,6 +1,7 @@
 package com.uade.tpo.marketplace.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -45,6 +46,9 @@ public class Buy {
   @JsonBackReference
   private User user;
 
-  
+  public List<CartItem> setCart(Cart cart) {
+    
+      return cart.getItems();
+  }
 
 }

@@ -44,6 +44,9 @@ public class CartItem {
         return this.cart.getId();
     }
 
+    
+    
+
     public float calculateTotalBook() {
         return book.getPrice() * quantity;
     }

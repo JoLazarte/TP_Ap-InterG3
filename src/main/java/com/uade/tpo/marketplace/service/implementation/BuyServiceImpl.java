@@ -1,5 +1,6 @@
 package com.uade.tpo.marketplace.service.implementation;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.marketplace.entity.Buy;
-import com.uade.tpo.marketplace.entity.User;
+import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.repository.BuyRepository;
 import com.uade.tpo.marketplace.service.BuyService;
 
@@ -45,14 +46,28 @@ public class BuyServiceImpl implements BuyService{
 
     @Override
     @Transactional
-    public List<Buy> getUserBuys(User user) throws Exception {
+    public List<Buy> getUserBuys(Long userId) throws Exception {
         try{
-            return buyRepository.findByUser(user);
+            return buyRepository.findByUserId(userId);
           }catch(Exception error) {
             throw new Exception("[BuyService.getUserBuys] -> " + error.getMessage());
           }
     }
 
+    public Buy createBuy(Cart cart) throws Exception {
+    try{
+      Buy buy = Buy.builder()
+        .buyDate(LocalDateTime.now())
+        .user(cart.getUser())
+        .build();
+
+      buy.setCart(cart);
+
+      return buyRepository.save(buy);
+    } catch(Exception error){
+      throw new Exception("[BuyService.createBuy] -> " + error.getMessage());
+    }
+  }
 
     
 }

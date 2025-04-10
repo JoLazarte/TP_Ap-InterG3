@@ -16,7 +16,7 @@ import com.uade.tpo.marketplace.entity.User;
 import com.uade.tpo.marketplace.service.UserService;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
