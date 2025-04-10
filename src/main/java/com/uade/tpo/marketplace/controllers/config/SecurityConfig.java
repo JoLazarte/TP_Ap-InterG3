@@ -38,15 +38,15 @@ public class SecurityConfig {
                                                 //Book
                                                 .requestMatchers(HttpMethod.GET, "/book/**").permitAll()
                                                 .requestMatchers("/book/**").hasAuthority(Role.ADMIN.name())
-						                        //MusicAlbum
-                                                .requestMatchers(HttpMethod.GET, "/musicAlbum/**").permitAll()
-                                                .requestMatchers("/musicAlbum/**").hasAuthority(Role.ADMIN.name())
+						//MusicAlbum
+                                                .requestMatchers(HttpMethod.GET, "/musicalbum/**").permitAll()
+                                                .requestMatchers("/musicalbum/**").hasAuthority(Role.ADMIN.name())
 
 						// El resto de rutas aca
 						// Cart
 						.requestMatchers("/cart/**").authenticated()
                                                 //CartItem
-                                                .requestMatchers("/cartItem/**").authenticated()
+                                                .requestMatchers("/cartitem/**").authenticated()
                                                 
 						// Default
                                                 .anyRequest().authenticated())

@@ -49,20 +49,20 @@ public class BooksController {
     }
 
     @PostMapping("/batch")
-public ResponseEntity<List<Book>> createBooks(@RequestBody List<BookRequest> bookRequests) {
-    List<Book> createdBooks = new ArrayList<>();
+    public ResponseEntity<List<Book>> createBooks(@RequestBody List<BookRequest> bookRequests) throws BookDuplicateException {
+        List<Book> createdBooks = new ArrayList<>();
 
-    for (BookRequest request : bookRequests) {
-        Book book = bookService.createBook(
-            request.getTitle(),
-            request.getAuthor(),
-            request.getEditorial(),
-            request.getDescription(),
-            request.getIsbn(),
-            request.getGenreBooks(),
-            request.getPrice(),
-            request.getStock(),
-            request.getUrlImage()
+        for (BookRequest request : bookRequests) {
+            Book book = bookService.createBook(
+                request.getTitle(),
+                request.getAuthor(),
+                request.getEditorial(),
+                request.getDescription(),
+                request.getIsbn(),
+                request.getGenreBooks(),
+                request.getPrice(),
+                request.getStock(),
+                request.getUrlImage()
         );
         createdBooks.add(book);
     }

@@ -40,10 +40,18 @@ public class PurchaseDocumentController {
         return ResponseEntity.noContent().build();
     }
     @PostMapping
-    public ResponseEntity<Object> createPurchaseDocument(@RequestBody PurchaseDocumentRequest purchaseDocumentRequest)
-            throws PurchaseDocumentDuplicateException {
-        PurchaseDocument result = purchaseDocumentService.createPurchaseDocument(purchaseDocumentRequest.getDescription());
-        return ResponseEntity.created(URI.create("/purchasedocuments/" + result.getId())).body(result);
+   public ResponseEntity<Object> createPurchaseDocument(@RequestBody PurchaseDocumentRequest purchaseDocumentRequest)
+           throws PurchaseDocumentDuplicateException {
+       PurchaseDocument result = purchaseDocumentService.createPurchaseDocument(
+                                   purchaseDocumentRequest.getBuy(),
+                                   purchaseDocumentRequest.getPurchaseDate(),
+                                   purchaseDocumentRequest.getTotalPrice(),
+                                   purchaseDocumentRequest.getPaymentMethod(),
+                                   purchaseDocumentRequest.getDescription()
+                                   );
+       return ResponseEntity.created(URI.create("/purchasedocuments/" + result.getId())).body(result);
 
-    }
+
+   }
+
 }
