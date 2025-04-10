@@ -13,7 +13,7 @@ public class BookRequest {
     private String editorial;
     private String description;
     private String isbn;
-    private GenreBook genreBooks;
+    private List<GenreBook> genreBooks;
     private float price;
     private int stock;
     private List<String> urlImage;

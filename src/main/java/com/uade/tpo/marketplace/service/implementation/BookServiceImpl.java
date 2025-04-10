@@ -44,7 +44,7 @@ public class BookServiceImpl implements BookService {
         bookRepository.updateStock(bookId, newStock);
     }
 
-    public Book createBook(String title, String author, String editorial, String description, String isbn, GenreBook genreBooks, Float price, int stock,
+    public Book createBook(String title, String author, String editorial, String description, String isbn, List<GenreBook> genreBooks, Float price, int stock,
         List<String> urlImages) throws BookDuplicateException {
         List<Book> books = bookRepository.findByIsbn(isbn);
         if (books.isEmpty())

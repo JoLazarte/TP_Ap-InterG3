@@ -16,7 +16,7 @@ public class Book extends Product{
     }
     
     public Book(String title, String author, String editorial, String description, String isbn,
-                GenreBook genreBooks, float price, int stock, List<String> urlImage) {
+                List<GenreBook> genreBooks, float price, int stock, List<String> urlImage) {
         this.title = title;
         this.author = author;
         this.editorial = editorial;
@@ -35,7 +35,7 @@ public class Book extends Product{
     private String isbn;
 
     @Enumerated(EnumType.STRING)
-    private GenreBook genreBooks;
+    private List<GenreBook> genreBooks;
 
     
 }
