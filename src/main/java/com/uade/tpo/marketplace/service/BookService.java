@@ -24,5 +24,5 @@ public interface BookService {
 
     public Book createBook(String title, String author, String editorial, String description, String isbn, List<GenreBook> genreBooks, Float price, int stock, List<String> urlImages) throws BookDuplicateException;
 
-    public List<Book> filterBooks(String title);
+   // public List<Book> filterBooks(String title);
 }

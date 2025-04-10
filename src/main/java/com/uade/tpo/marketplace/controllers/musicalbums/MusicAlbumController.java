@@ -4,16 +4,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.uade.tpo.marketplace.controllers.books.BookRequest;
+import com.uade.tpo.marketplace.entity.Book;
 import com.uade.tpo.marketplace.entity.MusicAlbum;
+import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
 import com.uade.tpo.marketplace.exceptions.MusicAlbumDuplicateException;
 import com.uade.tpo.marketplace.service.MusicAlbumService;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +44,6 @@ public class MusicAlbumController {
                 return ResponseEntity.ok(musicAlbumService.getMusicAlbumByAuthor(author, PageRequest.of(0, Integer.MAX_VALUE)));
             return ResponseEntity.ok(musicAlbumService.getMusicAlbumByAuthor(author, PageRequest.of(page, size)));
         }
-
         if (page == null || size == null)
             return ResponseEntity.ok(musicAlbumService.getMusicAlbums(PageRequest.of(0, Integer.MAX_VALUE)));
         return ResponseEntity.ok(musicAlbumService.getMusicAlbums(PageRequest.of(page, size)));
@@ -77,12 +81,23 @@ public class MusicAlbumController {
         return ResponseEntity.created(URI.create("/musicAlbums/" + result.getId())).body(result);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<MusicAlbum>> filterProductsByTitle(@RequestParam String title) {
-        List<MusicAlbum> result = musicAlbumService.filterBooks(title);
-        if (result.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(result);
+    @PostMapping("/batch")
+    public ResponseEntity<List<MusicAlbum>> createmusicAlbum(@RequestBody List<MusicAlbumRequest> musicAlbumsRequest) throws MusicAlbumDuplicateException {
+        List<MusicAlbum> createdMusicAlbums = new ArrayList<>();
+
+        for (MusicAlbumRequest musicAlbumRequest : musicAlbumsRequest) {
+            MusicAlbum musicAlbum = musicAlbumService.createMusicAlbum(
+                musicAlbumRequest.getTitle(),
+                musicAlbumRequest.getAuthor(),
+                musicAlbumRequest.getRecordLabel(),
+                musicAlbumRequest.getYear(),
+                musicAlbumRequest.getDescription(),
+                musicAlbumRequest.getIsrc(),
+                musicAlbumRequest.getGenres(),
+                musicAlbumRequest.getPrice(),
+                musicAlbumRequest.getUrlImage());
+            createdMusicAlbums.add(musicAlbum);
     }
+    return ResponseEntity.status(HttpStatus.CREATED).body(createdMusicAlbums);
+}
 }
