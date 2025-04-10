@@ -15,7 +15,7 @@ public class MusicAlbumRequest {
     private String description;
     private String isrc; 
     private float price;
-    private Genre genres;
+    private List<Genre> genres;
     private int stock;
     private List<String> urlImage;
 }

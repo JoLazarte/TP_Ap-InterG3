@@ -29,7 +29,6 @@ public class BuyController {
         return result.map(ResponseEntity::ok)
                      .orElseGet(() -> ResponseEntity.noContent().build());
     }
-
     @PostMapping
     public ResponseEntity<Object> createBuy(@RequestBody Buy buy) {
         Buy result = buyService.createBuy(buy);

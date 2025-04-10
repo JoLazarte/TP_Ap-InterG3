@@ -6,7 +6,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data 
@@ -17,7 +16,7 @@ public class MusicAlbum extends Product{
     }
     
     public MusicAlbum(String title, String author, String recordLabel, int year, String description, String isrc,
-                  Genre genres, float price, int stock, List<String> urlImage
+    List<Genre> genres, float price, int stock, List<String> urlImage
                   ) {
     this.title = title;
     this.author = author;
@@ -41,6 +40,6 @@ public class MusicAlbum extends Product{
     private String isrc;
 
     @Enumerated(EnumType.STRING)  
-    private Genre genres;
+    private List<Genre> genres;
     
 }

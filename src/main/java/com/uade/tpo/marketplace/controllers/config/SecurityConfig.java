@@ -38,7 +38,7 @@ public class SecurityConfig {
                                                 //Book
                                                 .requestMatchers(HttpMethod.GET, "/book/**").permitAll()
                                                 .requestMatchers("/book/**").hasAuthority(Role.ADMIN.name())
-						//MusicAlbum
+						                        //MusicAlbum
                                                 .requestMatchers(HttpMethod.GET, "/musicAlbum/**").permitAll()
                                                 .requestMatchers("/musicAlbum/**").hasAuthority(Role.ADMIN.name())
 
