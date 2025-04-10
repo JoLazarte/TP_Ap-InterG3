@@ -101,12 +101,5 @@ public class BooksController {
         return ResponseEntity.created(URI.create("/books/" + result.getId())).body(result);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Book>> filterProductsByTitle(@RequestParam String title) {
-        List<Book> result = bookService.filterBooks(title);
-        if (result.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(result);
-    }
+   
 }
