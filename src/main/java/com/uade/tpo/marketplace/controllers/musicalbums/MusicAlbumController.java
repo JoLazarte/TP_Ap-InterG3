@@ -100,15 +100,4 @@ public class MusicAlbumController {
     }
     return ResponseEntity.status(HttpStatus.CREATED).body(createdMusicAlbums);
 }
-    
-
-    // esto es mejor hacerlo en el GET principal, no hacer un endpoint separado
-    @GetMapping("/search")
-    public ResponseEntity<List<MusicAlbum>> filterProductsByTitle(@RequestParam String title) {
-        List<MusicAlbum> result = musicAlbumService.getMusicAlbumByTitle(title);
-        if (result.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(result);
-    }
 }

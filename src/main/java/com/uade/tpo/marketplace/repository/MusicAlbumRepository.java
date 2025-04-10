@@ -27,6 +27,5 @@ public interface MusicAlbumRepository extends JpaRepository<MusicAlbum, Long> {
     @Modifying
     @Query(value = "update MusicAlbum b set b.stock = ?2 where b.id = ?1")
     void updateStock(Long id, int newStock);
-
-    List<MusicAlbum> findByTitleContainingIgnoreCase(String title);
+    
 }

@@ -58,8 +58,7 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
         throw new MusicAlbumDuplicateException();
     }
 
-    public List<MusicAlbum> getMusicAlbumByTitle(String title) {
-        return musicAlbumRepository.findByTitleContainingIgnoreCase(title);
-    }
+    //public List<MusicAlbum> getMusicAlbumByTitle(String title) {
+    //}
 
 }
