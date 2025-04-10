@@ -9,12 +9,14 @@ import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
 import com.uade.tpo.marketplace.service.BookService;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +47,28 @@ public class BooksController {
             return ResponseEntity.ok(bookService.getBooks(PageRequest.of(0, Integer.MAX_VALUE)));
         return ResponseEntity.ok(bookService.getBooks(PageRequest.of(page, size)));
     }
+
+    @PostMapping("/batch")
+public ResponseEntity<List<Book>> createBooks(@RequestBody List<BookRequest> bookRequests) {
+    List<Book> createdBooks = new ArrayList<>();
+
+    for (BookRequest request : bookRequests) {
+        Book book = bookService.createBook(
+            request.getTitle(),
+            request.getAuthor(),
+            request.getEditorial(),
+            request.getDescription(),
+            request.getIsbn(),
+            request.getGenreBooks(),
+            request.getPrice(),
+            request.getStock(),
+            request.getUrlImage()
+        );
+        createdBooks.add(book);
+    }
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(createdBooks);
+}
 
     @GetMapping("/{bookId}")
     public ResponseEntity<Book> getBookById(@PathVariable Long bookId) {
