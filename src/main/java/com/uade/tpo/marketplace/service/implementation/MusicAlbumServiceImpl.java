@@ -54,7 +54,7 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
                     price,
                     0,
                     urlImages
-                    )); // falta agregar administrator
+                    )); 
         throw new MusicAlbumDuplicateException();
     }
 

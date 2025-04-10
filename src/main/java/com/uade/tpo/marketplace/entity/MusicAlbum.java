@@ -11,7 +11,6 @@ import lombok.Data;
 
 @Data 
 @Entity
-@Table(name="PRODUCT")
 public class MusicAlbum extends Product{
 
     public MusicAlbum() {

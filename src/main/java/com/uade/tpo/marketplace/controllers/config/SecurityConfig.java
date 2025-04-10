@@ -31,23 +31,24 @@ public class SecurityConfig {
                                                 //Auth
                                                 .requestMatchers("/auth/**").permitAll()
                                                 // User
-						                        .requestMatchers("/user/**").authenticated()
-						                        // Product
-						                        .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
-						                        .requestMatchers("/product/**").hasAuthority(Role.ADMIN.name())
+						.requestMatchers("/user/**").authenticated()
+						// Product
+						.requestMatchers(HttpMethod.GET, "/product/**").permitAll()
+						.requestMatchers("/product/**").hasAuthority(Role.ADMIN.name())
                                                 //Book
                                                 .requestMatchers(HttpMethod.GET, "/book/**").permitAll()
                                                 .requestMatchers("/book/**").hasAuthority(Role.ADMIN.name())
-						                        //MusicAlbum
+						//MusicAlbum
                                                 .requestMatchers(HttpMethod.GET, "/musicAlbum/**").permitAll()
                                                 .requestMatchers("/musicAlbum/**").hasAuthority(Role.ADMIN.name())
 
-						                        // El resto de rutas aca
-						                        // Cart
-						                        .requestMatchers("/cart/**").authenticated()
+						// El resto de rutas aca
+						// Cart
+						.requestMatchers("/cart/**").authenticated()
                                                 //CartItem
                                                 .requestMatchers("/cartItem/**").authenticated()
-						                        // Default
+                                                
+						// Default
                                                 .anyRequest().authenticated())
                                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                                 .authenticationProvider(authenticationProvider)
