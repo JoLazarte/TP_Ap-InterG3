@@ -4,12 +4,14 @@ import com.uade.tpo.marketplace.entity.Book;
 import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.entity.CartItem;
 import com.uade.tpo.marketplace.entity.MusicAlbum;
+import com.uade.tpo.marketplace.exceptions.CartException;
+import com.uade.tpo.marketplace.exceptions.ProductException;
 import com.uade.tpo.marketplace.repository.CartRepository;
-import com.uade.tpo.marketplace.repository.ProductRepository;
-import com.uade.tpo.marketplace.service.CartItemService;
+import com.uade.tpo.marketplace.service.BookService;
 import com.uade.tpo.marketplace.service.CartService;
-
+import com.uade.tpo.marketplace.service.MusicAlbumService;
 import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +19,13 @@ import java.util.Optional;
 
 @Service
 public class CartServiceImpl implements CartService {
-
     @Autowired
     private CartRepository cartRepository;
-
+    
     @Autowired
-    private ProductRepository productRepository;
-
+    private BookService bookService;
     @Autowired
-    private CartItemService cartItemService;
+    private MusicAlbumService musicAlbumService;
 
     @Override
     public Optional<Cart> getCartById(Long cartId) {
@@ -33,91 +33,108 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart createCart(Cart cart) {
-        // Asegurar que la lista de items no sea null
-        if (cart.getItems() == null) {
-            cart.setItems(new java.util.ArrayList<>());
+    public Cart createCart() throws Exception {
+        try {
+          Cart cart = new Cart();
+          return cart;
+        } catch (Exception error) {
+          throw new Exception("[CartService.createCart] -> " + error.getMessage());
         }
-        return cartRepository.save(cart);
-    }
+      }
 
     @Override
     public void deleteCart(Long cartId) {
         cartRepository.deleteById(cartId);
     }
- 
+
     @Override
     @Transactional
-    public Cart addItemBook(Long cartId, CartItem cartItem) {
-        Optional<Cart> optionalCart = cartRepository.findById(cartId);
-        if (optionalCart.isEmpty()) {
-            throw new RuntimeException("Cart not found");
+    public CartItem addItemBook(Cart cart, Long bookId) throws Exception {
+        try {
+
+            Book book = bookService.getBookById(bookId);
+            if (book.getStock() == 0) {
+                throw new ProductException("Se acabo el stock del producto seleccionado");
+            }
+            CartItem cartItem = cart.getItems().stream()
+                .filter(item -> item.getBookId().equals(book.getId()))
+                .findFirst()
+                .orElse(null);
+
+            if (cartItem != null) {
+            // Si ya existe, actualizamos la cantidad
+            if (book.getStock() < cartItem.getQuantity() + 1) {
+                throw new ProductException("No hay stock suficiente del producto elegido");
+            } else {
+                cartItem.setQuantity(cartItem.getQuantity() + 1);
+            }
+
+            } else {
+            // Si no existe, creamos un nuevo ítem
+                cartItem = new CartItem();
+                cartItem.setBook(book);
+                cartItem.setQuantity(1);
+                cartItem.setCart(cart);
+
+            // Agregamos el nuevo ítem al carrito
+            cart.getItems().add(cartItem);
+            }
+
+            // Guardar el carrito actualizado
+            cartRepository.save(cart);
+            return cartItem;
+        } catch (CartException error) {
+            throw new CartException(error.getMessage());
+        } catch (ProductException error) {
+            throw new ProductException(error.getMessage());
+        } catch (Exception error) {
+            throw new Exception("[CartService.addItemToCart] -> " + error.getMessage());
         }
-
-        Cart cart = optionalCart.get();
-        Book book = cartItem.getBook();
-
-
-
-        // Verificar stock suficiente
-        if (book.getStock() < cartItem.getQuantity()) {
-            throw new RuntimeException("Stock insuficiente para el producto: " + book.getTitle());
-        }
-
-        // Asignar el cart al cartItem
-        cartItem.setCart(cart);
-
-        // Guardar CartItem
-        cartItemService.createCartItem(cartItem);
-
-        // Actualizar stock
-        book.setStock(book.getStock() - cartItem.getQuantity());
-        productRepository.save(book);
-
-        // Agregar item al carrito
-        cart.getItems().add(cartItem);
-
-        // Recalcular total
-        cart.setTotal(calculateCartTotal(cart));
-
-        return cartRepository.save(cart);
     }
-
+    
+   
     @Override
     @Transactional
-    public Cart addItemMusicAlbum(Long cartId, CartItem cartItem) {
-        Optional<Cart> optionalCart = cartRepository.findById(cartId);
-        if (optionalCart.isEmpty()) {
-            throw new RuntimeException("Cart not found");
+    public CartItem addItemMusicAlbum(Cart cart, Long musicAlbumId) throws Exception {
+        try {
+            MusicAlbum musicAlbum = musicAlbumService.getMusicAlbumById(musicAlbumId);
+            if (musicAlbum.getStock() == 0) {
+                throw new ProductException("Se acabo el stock del producto seleccionado");
+            }
+            CartItem cartItem = cart.getItems().stream()
+                .filter(item -> item.getBookId().equals(musicAlbum.getId()))
+                .findFirst()
+                .orElse(null);
+
+            if (cartItem != null) {
+            // Si ya existe, actualizamos la cantidad
+            if (musicAlbum.getStock() < cartItem.getQuantity() + 1) {
+                throw new ProductException("No hay stock suficiente del producto elegido");
+                } else {
+                cartItem.setQuantity(cartItem.getQuantity() + 1);
+                }
+
+            } else {
+                // Si no existe, creamos un nuevo ítem
+                cartItem = new CartItem();
+                cartItem.setMusicAlbum(musicAlbum);
+                cartItem.setQuantity(1);
+                cartItem.setCart(cart);
+
+            // Agregamos el nuevo ítem al carrito
+            cart.getItems().add(cartItem);
         }
 
-        Cart cart = optionalCart.get();
-        MusicAlbum musicAlbum = cartItem.getMusicAlbum();
-
-
-
-        // Verificar stock suficiente
-        if (musicAlbum.getStock() < cartItem.getQuantity()) {
-            throw new RuntimeException("Stock insuficiente para el producto: " + musicAlbum.getTitle());
+            // Guardar el carrito actualizado
+            cartRepository.save(cart);
+            return cartItem;
+        } catch (CartException error) {
+            throw new CartException(error.getMessage());
+        } catch (ProductException error) {
+            throw new ProductException(error.getMessage());
+        } catch (Exception error) {
+                throw new Exception("[CartService.addItemToCart] -> " + error.getMessage());
         }
-
-        // Asignar el cart al cartItem
-        cartItem.setCart(cart);
-
-        // Guardar CartItem
-        cartItemService.createCartItem(cartItem);
-
-        // Actualizar stock
-        musicAlbum.setStock(musicAlbum.getStock() - cartItem.getQuantity());
-        productRepository.save(musicAlbum);
-
-        // Agregar item al carrito
-        cart.getItems().add(cartItem);
-
-        // Recalcular total
-        cart.setTotal(calculateCartTotal(cart));
-
-        return cartRepository.save(cart);
     }
 
     @Override

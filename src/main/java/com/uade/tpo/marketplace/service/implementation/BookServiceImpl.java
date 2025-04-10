@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.uade.tpo.marketplace.entity.Book;
 import com.uade.tpo.marketplace.entity.GenreBook;
 import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
+import com.uade.tpo.marketplace.exceptions.ProductException;
 import com.uade.tpo.marketplace.repository.BookRepository;
 import com.uade.tpo.marketplace.service.BookService;
 
@@ -23,9 +24,16 @@ public class BookServiceImpl implements BookService {
     public Page<Book> getBooks(PageRequest pageable) {
         return bookRepository.findAll(pageable);
     }
-
-    public Optional<Book> getBookById(Long bookId) {
+    public Optional<Book> getById(Long bookId) {
         return bookRepository.findById(bookId);
+    };
+    public Book getBookById(Long bookId) throws Exception {
+        try {
+            Book book = bookRepository.findById(bookId).orElseThrow(() -> new ProductException("producto no encontrado"));
+            return book;
+          } catch (Exception error) {
+            throw new Exception("[ProductService.getProductById] -> " + error.getMessage());
+          }
     };
 
     public Page<Book> getBooksByAuthor(String author, PageRequest pageable) {

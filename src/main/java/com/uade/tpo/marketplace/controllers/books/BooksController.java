@@ -72,7 +72,7 @@ public class BooksController {
 
     @GetMapping("/{bookId}")
     public ResponseEntity<Book> getBookById(@PathVariable Long bookId) {
-        Optional<Book> result = bookService.getBookById(bookId);
+        Optional<Book> result = bookService.getById(bookId);
         if (result.isPresent())
             return ResponseEntity.ok(result.get());
 

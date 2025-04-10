@@ -1,7 +1,5 @@
 package com.uade.tpo.marketplace.controllers.cartitems;
 
-import com.uade.tpo.marketplace.controllers.carts.CartRequest;
-import com.uade.tpo.marketplace.controllers.products.ProductRequest;
 import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.entity.Product;
 

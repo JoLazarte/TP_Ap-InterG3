@@ -21,52 +21,64 @@ public class JwtService {
     @Value("${application.security.jwt.expiration}")
     private long jwtExpiration;
 
-    public String generateToken(
-            UserDetails userDetails) {
-        return buildToken(userDetails, jwtExpiration);
-    }
-
-    private String buildToken(
-            UserDetails userDetails,
-            long expiration) {
-        return Jwts
-                .builder()
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSecretKey())
-                .compact();
-    }
-
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractClaim(token, Claims::getSubject);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
-    }
-
-    private boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
-    }
-
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts
-                .parser()
-                .verifyWith(getSecretKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-    }
-
-    private SecretKey getSecretKey() {
-        SecretKey secretKeySpec = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-        return secretKeySpec;
+    public String generateToken(UserDetails userDetails) throws Exception {
+        try {
+          return Jwts
+            .builder()
+            .subject(userDetails.getUsername())
+            .issuedAt(new Date(System.currentTimeMillis()))
+            .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
+            .signWith(getSecretKey())
+            .compact();
+        } catch (Exception error) {
+          throw new Exception("[JwtService.generateToken] -> " + error.getMessage());
+        }
+      }
+  
+    public boolean isTokenValid(String token, UserDetails userDetails) throws Exception{
+        try {
+          final String username = extractClaim(token, Claims::getSubject);
+          return (username.equals(userDetails.getUsername()));
+        } catch (Exception error) {
+          throw new Exception("[JwtService.isTokenValid] -> " + error.getMessage());
+        }
+      }
+  
+    public boolean isTokenExpired(String token) throws Exception{
+        try {
+          return extractClaim(token, Claims::getExpiration).before(new Date());
+        } catch (Exception error) {
+          throw new Exception("[JwtService.isTokenValid] -> " + error.getMessage());
+        }
+      }
+  
+    public String extractUsername(String token) throws Exception{
+        try {
+          return extractClaim(token, (n) -> n.getSubject());
+        } catch (Exception error) {
+          throw new Exception("[JwtService.extractUsername] -> " + error.getMessage());
+        }
+      }
+  
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) throws Exception{
+        try {
+          final Claims claims = Jwts
+                  .parser()
+                  .verifyWith(getSecretKey())
+                  .build()
+                  .parseSignedClaims(token)
+                  .getPayload();
+          return claimsResolver.apply(claims);
+        } catch (Exception error) {
+          throw new Exception("[JwtService.extractClaim] -> " + error.getMessage());
+        }
+      }
+  
+    private SecretKey getSecretKey() throws Exception{
+        try {
+          return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        } catch (Exception error) {
+          throw new Exception("[JwtService.getSecretKey] -> " + error.getMessage());
+        }
     }
 }

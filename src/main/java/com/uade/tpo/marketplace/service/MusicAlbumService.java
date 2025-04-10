@@ -14,8 +14,9 @@ import com.uade.tpo.marketplace.exceptions.MusicAlbumDuplicateException;
 public interface MusicAlbumService {
     
     public Page<MusicAlbum> getMusicAlbums(PageRequest pageRequest);
+    public Optional<MusicAlbum> getById(Long musicAlbumId);
 
-    public Optional<MusicAlbum> getMusicAlbumById(Long MusicAlbumId);
+    public MusicAlbum getMusicAlbumById(Long MusicAlbumId) throws Exception;
 
     @Transactional
     public void updateStock(Long MusicAlbumId, int newStock);

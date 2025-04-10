@@ -13,8 +13,9 @@ import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
 
 public interface BookService {
     public Page<Book> getBooks(PageRequest pageRequest);
+    public Optional<Book> getById(Long bookId);
 
-    public Optional<Book> getBookById(Long bookId);
+    public Book getBookById(Long bookId) throws Exception;
 
     @Transactional
     public void updateStock(Long bookId, int newStock);

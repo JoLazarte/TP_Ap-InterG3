@@ -2,14 +2,24 @@ package com.uade.tpo.marketplace.controllers.carts;
 
 import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.entity.CartItem;
+import com.uade.tpo.marketplace.entity.ResponseData;
+import com.uade.tpo.marketplace.entity.User;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
+import com.uade.tpo.marketplace.exceptions.CartException;
+import com.uade.tpo.marketplace.exceptions.ProductException;
+import com.uade.tpo.marketplace.exceptions.UserException;
 import com.uade.tpo.marketplace.service.CartService;
+import com.uade.tpo.marketplace.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping("carts")
@@ -17,6 +27,8 @@ public class CartController {
 
     @Autowired
     private CartService cartService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/{cartId}")
     public ResponseEntity<Cart> getCartById(@PathVariable Long cartId) {
@@ -25,10 +37,23 @@ public class CartController {
                      .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
-    @PostMapping
-    public ResponseEntity<Object> createCart(@RequestBody Cart cart) {
-        Cart result = cartService.createCart(cart);
-        return ResponseEntity.created(URI.create("/carts/" + result.getId())).body(result);
+    @GetMapping("")
+    public ResponseEntity<ResponseData<?>> getUserCart(@AuthenticationPrincipal UserDetails userDetails) {
+    try {
+        User authUser = userService.getUserByUsername(userDetails.getUsername());
+
+        Cart cart = authUser.getCart();
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(cart));
+
+        } catch (UserException error) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ResponseData.error(error.getMessage()));
+
+        } catch (Exception error) {
+            System.out.printf("[CartController.getUserCart] -> %s", error.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ResponseData.error("No se pudo recuperar el carro."));
+        }
     }
 
     @DeleteMapping("/{cartId}")
@@ -36,22 +61,49 @@ public class CartController {
         cartService.deleteCart(cartId);
         return ResponseEntity.noContent().build();
     }
- 
-    @PostMapping("/{cartId}/books")
-    public ResponseEntity<Cart> addItemBookToCart(
-            @PathVariable Long cartId,
-            @RequestBody CartItem cartItem) {
 
-        Cart updatedCart = cartService.addItemBook(cartId, cartItem);
-        return ResponseEntity.ok(updatedCart);
+    @PutMapping("/book/{bookId}")
+    public ResponseEntity<ResponseData<?>> addBookToCart(@AuthenticationPrincipal UserDetails userDetails,
+      @PathVariable Long bookId) {
+        try {
+
+            User authUser = userService.getUserByUsername(userDetails.getUsername());
+            Cart cart = authUser.getCart();
+
+            CartItem addedItem = cartService.addItemBook(cart, bookId);
+
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedItem));
+
+        } catch (UserException | CartException | ProductException error) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
+
+        } catch (Exception error) {
+        System.out.printf("[CartController.addItemToCart] -> %s", error.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(ResponseData.error("No se pudo agregar el item al carro"));
+        }
     }
-    @PostMapping("/{cartId}/musicAlbums")
-    public ResponseEntity<Cart> addItemMusicAlbumToCart(
-            @PathVariable Long cartId,
-            @RequestBody CartItem cartItem) {
+   
+    @PutMapping("/musicAlbum/{musicAlbumId}")
+    public ResponseEntity<ResponseData<?>> addMusicAlbumToCart(@AuthenticationPrincipal UserDetails userDetails,
+      @PathVariable Long musicAlbumId) {
+        try {
 
-        Cart updatedCart = cartService.addItemMusicAlbum(cartId, cartItem);
-        return ResponseEntity.ok(updatedCart);
+            User authUser = userService.getUserByUsername(userDetails.getUsername());
+            Cart cart = authUser.getCart();
+
+            CartItem addedItem = cartService.addItemMusicAlbum(cart, musicAlbumId);
+
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedItem));
+
+        } catch (UserException | CartException | ProductException error) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
+
+        } catch (Exception error) {
+        System.out.printf("[CartController.addItemToCart] -> %s", error.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(ResponseData.error("No se pudo agregar el item al carro"));
+        }
     }
 
     @GetMapping("/{cartId}/total")

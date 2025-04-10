@@ -1,7 +1,6 @@
 package com.uade.tpo.marketplace.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +16,7 @@ import com.uade.tpo.marketplace.entity.Book;
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query(value = "select b from Buy b where b.buyDate = ?1")
-    Optional<Book> findBookById(Long bookId);
+    Book findBookById(Long bookId);
 
     @Query(value = "select b from Book b where b.isbn = ?1")
     List<Book> findByIsbn(String isbn);

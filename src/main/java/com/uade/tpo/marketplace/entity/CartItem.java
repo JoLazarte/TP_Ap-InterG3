@@ -33,6 +33,17 @@ public class CartItem {
     @Column
     private int quantity;
 
+    public Long getBookId() {
+        return this.book.getId();
+    }
+
+    public Long getMusicAlbumId() {
+        return this.musicAlbum.getId();
+    }
+    public Long getCartId() {
+        return this.cart.getId();
+    }
+
     public float calculateTotalBook() {
         return book.getPrice() * quantity;
     }

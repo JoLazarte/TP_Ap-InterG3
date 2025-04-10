@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.uade.tpo.marketplace.entity.Genre;
 import com.uade.tpo.marketplace.entity.MusicAlbum;
 import com.uade.tpo.marketplace.exceptions.MusicAlbumDuplicateException;
+import com.uade.tpo.marketplace.exceptions.ProductException;
 import com.uade.tpo.marketplace.repository.MusicAlbumRepository;
 
 import com.uade.tpo.marketplace.service.MusicAlbumService;
@@ -24,10 +25,17 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
     public Page<MusicAlbum> getMusicAlbums(PageRequest pageable) {
         return musicAlbumRepository.findAll(pageable);
     }
-
-    public Optional<MusicAlbum> getMusicAlbumById(Long musicAlbumId) {
+    public Optional<MusicAlbum> getById(Long musicAlbumId) {
         return musicAlbumRepository.findById(musicAlbumId);
     }
+    public MusicAlbum getMusicAlbumById(Long musicAlbumId) throws Exception {
+        try {
+            MusicAlbum musicAlbum = musicAlbumRepository.findById(musicAlbumId).orElseThrow(() -> new ProductException("producto no encontrado"));
+            return musicAlbum;
+          } catch (Exception error) {
+            throw new Exception("[ProductService.getProductById] -> " + error.getMessage());
+          }
+    };
 
     public Page<MusicAlbum> getMusicAlbumByAuthor(String author, PageRequest pageable) {
         return musicAlbumRepository.findByAuthor(author, pageable);

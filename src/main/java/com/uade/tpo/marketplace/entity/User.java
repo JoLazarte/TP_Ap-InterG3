@@ -35,7 +35,8 @@ public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+    @Column
+    private String username;
     @Column
     private String password;
     @Column
@@ -62,6 +63,21 @@ public class User implements UserDetails{
     @JsonManagedReference
     private PurchaseDocument purchaseDocument; //(Aca se estableceria la relación con "documento de compra")
    
+    public User(String username, String firstName, String lastName, String email, String password, Role role, Cart cart, List<Buy> orders){
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.cart = cart;
+        this.orders = orders;
+    }
+
+    public void assignCart(Cart cart) {
+        this.cart.setUser(this);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -69,7 +85,7 @@ public class User implements UserDetails{
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override

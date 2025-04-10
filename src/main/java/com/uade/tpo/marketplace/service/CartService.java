@@ -11,16 +11,16 @@ public interface CartService {
     Optional<Cart> getCartById(Long cartId);
 
     @Transactional
-    Cart createCart(Cart cart);
+    Cart createCart() throws Exception;
 
     @Transactional
     void deleteCart(Long cartId);
  
     @Transactional
-    Cart addItemBook(Long cartId, CartItem cartItem);
+    CartItem addItemBook(Cart cart,Long bookId) throws Exception;
 
     @Transactional
-    Cart addItemMusicAlbum(Long cartId, CartItem cartItem);
+    CartItem addItemMusicAlbum(Cart cart, Long musicAlbumId) throws Exception;
 
     float calculateTotal(Long cartId);
 

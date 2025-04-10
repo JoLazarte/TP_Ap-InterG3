@@ -47,7 +47,7 @@ public class MusicAlbumController {
 
     @GetMapping("/{musicAlbumId}")
     public ResponseEntity<MusicAlbum> getmusicAlbumById(@PathVariable Long musicAlbumId) {
-        Optional<MusicAlbum> result = musicAlbumService.getMusicAlbumById(musicAlbumId);
+        Optional<MusicAlbum> result = musicAlbumService.getById(musicAlbumId);
         if (result.isPresent())
             return ResponseEntity.ok(result.get());
 
