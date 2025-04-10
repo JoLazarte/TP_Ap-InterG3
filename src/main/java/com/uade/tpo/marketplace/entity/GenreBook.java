@@ -46,6 +46,5 @@ public enum GenreBook {
     BIBLIOGRAPHY,
     COOKBOOK,
     JOURNALISTIC,
-    ART
-    
+    ART 
 }

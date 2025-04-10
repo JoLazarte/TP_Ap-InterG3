@@ -1,6 +1,8 @@
 package com.uade.tpo.marketplace.entity;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
