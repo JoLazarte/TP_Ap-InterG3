@@ -31,23 +31,25 @@ public class SecurityConfig {
                                                 //Auth
                                                 .requestMatchers("/auth/**").permitAll()
                                                 // User
-						.requestMatchers("/user/**").authenticated()
+						.requestMatchers("/users/**").authenticated()
 						// Product
-						.requestMatchers(HttpMethod.GET, "/product/**").permitAll()
-						.requestMatchers("/product/**").hasAuthority(Role.ADMIN.name())
+						.requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+						.requestMatchers("/products/**").hasAuthority(Role.ADMIN.name())
                                                 //Book
-                                                .requestMatchers(HttpMethod.GET, "/book/**").permitAll()
-                                                .requestMatchers("/book/**").hasAuthority(Role.ADMIN.name())
+                                                .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
+                                                .requestMatchers("/books/**").hasAuthority(Role.ADMIN.name())
 						//MusicAlbum
-                                                .requestMatchers(HttpMethod.GET, "/musicalbum/**").permitAll()
-                                                .requestMatchers("/musicalbum/**").hasAuthority(Role.ADMIN.name())
-
-						// El resto de rutas aca
+                                                .requestMatchers(HttpMethod.GET, "/musicAlbums/**").permitAll()
+                                                .requestMatchers("/musicAlbums/**").hasAuthority(Role.ADMIN.name())
+                                                //Buy
+                                                .requestMatchers(HttpMethod.GET, "/buys/**").permitAll()
+						.requestMatchers("/buys/**").hasAuthority(Role.BUYER.name())
 						// Cart
-						.requestMatchers("/cart/**").authenticated()
+						.requestMatchers("/carts/**").authenticated()
                                                 //CartItem
-                                                .requestMatchers("/cartitem/**").authenticated()
-                                                
+                                                .requestMatchers("/cartItems/**").authenticated()
+                                                //Purchasedocument
+                                                .requestMatchers("/purchaseDocuments/**").authenticated()
 						// Default
                                                 .anyRequest().authenticated())
                                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

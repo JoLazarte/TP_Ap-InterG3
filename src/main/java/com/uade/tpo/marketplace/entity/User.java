@@ -40,9 +40,9 @@ public class User implements UserDetails{
     private String password;
     @Column
     private String firstName;
-    @Column(nullable = false, unique = true)
-    private String lastName;
     @Column
+    private String lastName;
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Enumerated(EnumType.STRING)

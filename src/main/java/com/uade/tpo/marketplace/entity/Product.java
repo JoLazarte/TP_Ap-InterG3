@@ -3,6 +3,7 @@ package com.uade.tpo.marketplace.entity;
 import java.util.List;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,7 +37,8 @@ public abstract class Product {
 
     @Column
     protected int stock;
-
+    
+    @ElementCollection
     @Column
     protected List<String> urlImage;
     
