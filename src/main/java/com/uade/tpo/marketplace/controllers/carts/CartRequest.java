@@ -9,4 +9,5 @@ public class CartRequest {
     private Long id; // No hace falta
     private UserRequest buyer; 
     private float totalPrice;
+    
 }

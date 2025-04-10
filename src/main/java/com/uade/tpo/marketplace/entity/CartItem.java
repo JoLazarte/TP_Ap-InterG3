@@ -1,7 +1,5 @@
 package com.uade.tpo.marketplace.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,26 +17,24 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "cart_id")
-    @JsonBackReference
     private Cart cart;
 
     @ManyToOne
-    @JoinColumn(nullable = false, name = "book_id")
+    @JoinColumn(name = "book_id")
     private Book book;
 
     @ManyToOne
-    @JoinColumn(nullable = false, name = "musicAlbum_id")
+    @JoinColumn(name = "music_album_id")
     private MusicAlbum musicAlbum;
 
-    @Column
     private int quantity;
 
-    public float calculateTotalBook() {
-        return book.getPrice() * quantity;
+    public float calculateTotal() {
+        if (book != null) {
+            return book.getPrice() * quantity;
+        } else if (musicAlbum != null) {
+            return musicAlbum.getPrice() * quantity;
+        }
+        return 0f;
     }
-    public float calculateTotalMusicAlbum() {
-        return musicAlbum.getPrice() * quantity;
-    }
-
-   
 }

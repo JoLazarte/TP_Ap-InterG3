@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -40,26 +40,27 @@ public class User implements UserDetails{
     private String password;
     @Column
     private String firstName;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String lastName;
-    @Column
+    @Column(nullable = false,unique = true)
     private String email;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
-    @JsonManagedReference
+  
     private Cart cart;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonManagedReference
+
     private List<Buy> orders;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "purchaseDocument_id")
-    @JsonManagedReference
+
     private PurchaseDocument purchaseDocument; //(Aca se estableceria la relación con "documento de compra")
    
     @Override

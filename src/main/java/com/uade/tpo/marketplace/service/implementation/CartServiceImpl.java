@@ -135,10 +135,12 @@ public class CartServiceImpl implements CartService {
         float total = 0f;
         if (cart.getItems() != null) {
             for (CartItem item : cart.getItems()) {
-                total += item.calculateTotalBook() + item.calculateTotalMusicAlbum();
+                total += item.calculateTotal();
             }
         }
         return total;
     }
+
+    
     
 }

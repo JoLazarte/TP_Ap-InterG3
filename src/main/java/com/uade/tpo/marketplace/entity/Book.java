@@ -37,6 +37,9 @@ public class Book extends Product{
 
     @Enumerated(EnumType.STRING)
     private GenreBook genreBooks;
+    public float getPrice() {
+    return this.price;
+}
 
     
 }

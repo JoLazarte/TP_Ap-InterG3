@@ -49,26 +49,31 @@ public class BooksController {
     }
 
     @PostMapping("/batch")
-public ResponseEntity<List<Book>> createBooks(@RequestBody List<BookRequest> bookRequests) {
-    List<Book> createdBooks = new ArrayList<>();
-
-    for (BookRequest request : bookRequests) {
-        Book book = bookService.createBook(
-            request.getTitle(),
-            request.getAuthor(),
-            request.getEditorial(),
-            request.getDescription(),
-            request.getIsbn(),
-            request.getGenreBooks(),
-            request.getPrice(),
-            request.getStock(),
-            request.getUrlImage()
-        );
-        createdBooks.add(book);
+    public ResponseEntity<List<Book>> createBooks(@RequestBody List<BookRequest> bookRequests) {
+        List<Book> createdBooks = new ArrayList<>();
+    
+        for (BookRequest request : bookRequests) {
+            try {
+                Book book = bookService.createBook(
+                    request.getTitle(),
+                    request.getAuthor(),
+                    request.getEditorial(),
+                    request.getDescription(),
+                    request.getIsbn(),
+                    request.getGenreBooks(),
+                    request.getPrice(),
+                    request.getStock(),
+                    request.getUrlImage()
+                );
+                createdBooks.add(book);
+            } catch (BookDuplicateException e) {
+                // Podés hacer logging o ignorarlo y seguir con el resto
+                System.out.println("Libro duplicado: " + request.getTitle());
+            }
+        }
+    
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdBooks);
     }
-
-    return ResponseEntity.status(HttpStatus.CREATED).body(createdBooks);
-}
 
     @GetMapping("/{bookId}")
     public ResponseEntity<Book> getBookById(@PathVariable Long bookId) {

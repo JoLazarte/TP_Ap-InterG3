@@ -1,10 +1,13 @@
 package com.uade.tpo.marketplace.service;
 
+import com.uade.tpo.marketplace.controllers.cartitems.CartItemRequest;
+import com.uade.tpo.marketplace.controllers.carts.CartRequest;
 import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.entity.CartItem;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CartService {
@@ -23,6 +26,8 @@ public interface CartService {
     Cart addItemMusicAlbum(Long cartId, CartItem cartItem);
 
     float calculateTotal(Long cartId);
+    
+
 
     
 }

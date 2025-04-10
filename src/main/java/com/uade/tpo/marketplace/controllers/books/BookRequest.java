@@ -3,6 +3,7 @@ package com.uade.tpo.marketplace.controllers.books;
 import java.util.List;
 import com.uade.tpo.marketplace.entity.GenreBook;
 
+import jakarta.persistence.ElementCollection;
 import lombok.Data;
 
 @Data
@@ -16,5 +17,6 @@ public class BookRequest {
     private GenreBook genreBooks;
     private float price;
     private int stock;
+    @ElementCollection
     private List<String> urlImage;
 }
