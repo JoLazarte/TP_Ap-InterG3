@@ -60,8 +60,4 @@ public class BookServiceImpl implements BookService {
                 )); 
         throw new BookDuplicateException();
     };
-
-    public List<Book> filterBooks(String title) {
-        return bookRepository.findByTitleContainingIgnoreCase(title);
-    }
 }
