@@ -60,7 +60,7 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
                     isrc,
                     genres,
                     price,
-                    0,
+                    10,
                     urlImages
                     )); 
         throw new MusicAlbumDuplicateException();

@@ -19,6 +19,6 @@ public class CartItemController {
     @PostMapping
     public ResponseEntity<Object> createCartItem(@RequestBody CartItem cartItem) {
         CartItem result = cartItemService.createCartItem(cartItem);
-        return ResponseEntity.created(URI.create("/cart-items/" + result.getId())).body(result);
+        return ResponseEntity.created(URI.create("/cartItems/" + result.getId())).body(result);
     }
 }
