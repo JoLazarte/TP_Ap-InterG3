@@ -15,6 +15,7 @@ import com.uade.tpo.marketplace.exceptions.ProductException;
 import com.uade.tpo.marketplace.repository.BookRepository;
 import com.uade.tpo.marketplace.service.BookService;
 
+
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -26,7 +27,7 @@ public class BookServiceImpl implements BookService {
     }
     public Optional<Book> getById(Long bookId) {
         return bookRepository.findById(bookId);
-    };
+    }
     public Book getBookById(Long bookId) throws Exception {
         try {
             Book book = bookRepository.findById(bookId).orElseThrow(() -> new ProductException("producto no encontrado"));
@@ -34,7 +35,7 @@ public class BookServiceImpl implements BookService {
           } catch (Exception error) {
             throw new Exception("[ProductService.getProductById] -> " + error.getMessage());
           }
-    };
+    }
 
     public Page<Book> getBooksByAuthor(String author, PageRequest pageable) {
         return bookRepository.findByAuthor(author, pageable);
@@ -44,7 +45,7 @@ public class BookServiceImpl implements BookService {
         bookRepository.updateStock(bookId, newStock);
     }
 
-    public Book createBook(String title, String author, String editorial, String description, String isbn, List<GenreBook> genreBooks, Float price, int stock,
+    public Book createBook(String title, String author, String editorial, String description, String isbn, List<GenreBook> genreBooks, double price, int stock,
         List<String> urlImages) throws BookDuplicateException {
         List<Book> books = bookRepository.findByIsbn(isbn);
         if (books.isEmpty())
@@ -59,5 +60,9 @@ public class BookServiceImpl implements BookService {
                     urlImages
                 )); 
         throw new BookDuplicateException();
-    };
+    }
+   
+    
+
+   
 }

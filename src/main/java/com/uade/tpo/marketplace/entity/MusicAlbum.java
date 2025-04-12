@@ -20,7 +20,7 @@ public class MusicAlbum extends Product{
 
     
     public MusicAlbum(String title, String author, String recordLabel, int year, String description, String isrc,
-    List<Genre> genres, float price, int stock, List<String> urlImage
+    List<Genre> genres, double price, int stock, List<String> urlImage
                   ) {
     this.title = title;
     this.author = author;

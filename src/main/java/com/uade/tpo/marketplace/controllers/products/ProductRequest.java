@@ -10,7 +10,7 @@ public class ProductRequest {
     protected String title;
     protected String author;
     protected String description;
-    protected float price;
+    protected double price;
     protected int stock;
     protected List<String> urlImage;
    

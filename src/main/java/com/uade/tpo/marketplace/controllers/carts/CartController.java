@@ -1,5 +1,6 @@
 package com.uade.tpo.marketplace.controllers.carts;
 
+import com.uade.tpo.marketplace.controllers.cartitems.CartItemDTO;
 import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.entity.CartItem;
 import com.uade.tpo.marketplace.entity.ResponseData;
@@ -19,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/carts")
@@ -30,19 +30,15 @@ public class CartController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/{cartId}")
-    public ResponseEntity<Cart> getCartById(@PathVariable Long cartId) {
-        Optional<Cart> result = cartService.getCartById(cartId);
-        return result.map(ResponseEntity::ok)
-                     .orElseGet(() -> ResponseEntity.noContent().build());
-    }
 
     @GetMapping("")
     public ResponseEntity<ResponseData<?>> getUserCart(@AuthenticationPrincipal UserDetails userDetails) {
     try {
         User authUser = userService.getUserByUsername(userDetails.getUsername());
         Cart cart = authUser.getCart();
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(cart));
+        
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(cart.toDTO()));
+        //return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(cart));
 
         } catch (UserException error) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ResponseData.error(error.getMessage()));
@@ -54,11 +50,6 @@ public class CartController {
         }
     }
 
-    @DeleteMapping("/{cartId}")
-    public ResponseEntity<Void> deleteCart(@PathVariable Long cartId) {
-        cartService.deleteCart(cartId);
-        return ResponseEntity.noContent().build();
-    }
 
     @PutMapping("/book/{bookId}")
     public ResponseEntity<ResponseData<?>> addBookToCart(@AuthenticationPrincipal UserDetails userDetails,
@@ -68,9 +59,13 @@ public class CartController {
             User authUser = userService.getUserByUsername(userDetails.getUsername());
             Cart cart = authUser.getCart();
 
-            CartItem addedItem = cartService.addItemBook(cart, bookId);
+            CartItem addedBook = cartService.addItemBook(cart, bookId);
 
-            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedItem));
+            CartItemDTO addedItemRequest = addedBook.toDTOForBook();
+
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedItemRequest));
+
+            //return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedItem));
 
         } catch (UserException | CartException | ProductException error) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
@@ -90,9 +85,13 @@ public class CartController {
             User authUser = userService.getUserByUsername(userDetails.getUsername());
             Cart cart = authUser.getCart();
 
-            CartItem addedItem = cartService.addItemMusicAlbum(cart, musicAlbumId);
+            CartItem addedMalbum = cartService.addItemMusicAlbum(cart, musicAlbumId);
+            
+            CartItemDTO addedItemRequest = addedMalbum.toDTOForMalbum();
 
-            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedItem));
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedItemRequest));
+
+            //return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedItem));
 
         } catch (UserException | CartException | ProductException error) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
@@ -104,10 +103,5 @@ public class CartController {
         }
     }
 
-    @GetMapping("/{cartId}/total")
-    public ResponseEntity<Float> getCartTotal(@PathVariable Long cartId) {
-        float total = cartService.calculateTotal(cartId);
-        return ResponseEntity.ok(total);
-    }
     
 }

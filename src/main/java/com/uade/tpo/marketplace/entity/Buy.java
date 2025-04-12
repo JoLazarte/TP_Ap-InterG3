@@ -32,11 +32,12 @@ public class Buy {
 
   @Column(nullable = false)
   private LocalDateTime buyDate;
- 
+ /* 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "cart_id")
   @JsonBackReference
   private Cart cart;
+  */
   @OneToOne(cascade = CascadeType.ALL) 
   @JoinColumn(name = "purchasedDocument_id")
   @JsonBackReference

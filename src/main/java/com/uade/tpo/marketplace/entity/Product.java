@@ -33,7 +33,7 @@ public abstract class Product {
     protected String description;
 
     @Column
-    protected float price;
+    protected double price;
 
     @Column
     protected int stock;

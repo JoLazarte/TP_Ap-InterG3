@@ -20,7 +20,7 @@ public class Book extends Product{
 
     
     public Book(String title, String author, String editorial, String description, String isbn,
-                List<GenreBook> genreBooks, float price, int stock, List<String> urlImage) {
+                List<GenreBook> genreBooks, double price, int stock, List<String> urlImage) {
         this.title = title;
         this.author = author;
         this.editorial = editorial;
@@ -40,6 +40,11 @@ public class Book extends Product{
 
     @Enumerated(EnumType.STRING)
     private List<GenreBook> genreBooks;
+
+    public Book orElseThrow(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
+    }
 
     
 }

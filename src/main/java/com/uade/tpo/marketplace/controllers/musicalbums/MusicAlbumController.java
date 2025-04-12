@@ -4,10 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.uade.tpo.marketplace.controllers.books.BookRequest;
-import com.uade.tpo.marketplace.entity.Book;
 import com.uade.tpo.marketplace.entity.MusicAlbum;
-import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
+import com.uade.tpo.marketplace.entity.ResponseData;
 import com.uade.tpo.marketplace.exceptions.MusicAlbumDuplicateException;
 import com.uade.tpo.marketplace.service.MusicAlbumService;
 
@@ -59,45 +57,55 @@ public class MusicAlbumController {
     }
 
     @PutMapping("/{musicAlbumId}")
-    public ResponseEntity<MusicAlbum> updatemusicAlbumStock(@PathVariable Long musicAlbumId, @RequestBody MusicAlbumRequest musicAlbumRequest) {
-        musicAlbumService.updateStock(musicAlbumId, musicAlbumRequest.getStock());
+    public ResponseEntity<MusicAlbum> updatemusicAlbumStock(@PathVariable Long musicAlbumId, @RequestBody MusicAlbumDTO musicAlbumDTO) {
+        musicAlbumService.updateStock(musicAlbumId, musicAlbumDTO.getStock());
         return getmusicAlbumById(musicAlbumId);
     }
 
     @PostMapping
-    public ResponseEntity<Object> createmusicAlbum(@RequestBody MusicAlbumRequest musicAlbumRequest)
-            throws MusicAlbumDuplicateException {
-        MusicAlbum result = musicAlbumService.createMusicAlbum(
-                musicAlbumRequest.getTitle(),
-                musicAlbumRequest.getAuthor(),
-                musicAlbumRequest.getRecordLabel(),
-                musicAlbumRequest.getYear(),
-                musicAlbumRequest.getDescription(),
-                musicAlbumRequest.getIsrc(),
-                musicAlbumRequest.getGenres(),
-                musicAlbumRequest.getPrice(),
-                musicAlbumRequest.getUrlImage());
+    public ResponseEntity<Object> createmusicAlbum(@RequestBody MusicAlbumDTO musicAlbumDTO){
+        try{
+            MusicAlbum result = musicAlbumService.createMusicAlbum(
+                musicAlbumDTO.getTitle(),
+                musicAlbumDTO.getAuthor(),
+                musicAlbumDTO.getRecordLabel(),
+                musicAlbumDTO.getYear(),
+                musicAlbumDTO.getDescription(),
+                musicAlbumDTO.getIsrc(),
+                musicAlbumDTO.getGenres(),
+                musicAlbumDTO.getPrice(),
+                musicAlbumDTO.getUrlImage());
                 
-        return ResponseEntity.created(URI.create("/musicAlbums/" + result.getId())).body(result);
+            return ResponseEntity.created(URI.create("/musicAlbums/" + result.getId())).body(result);
+        } catch (Exception error) {
+            System.out.printf("[MusicAbumController.createMusicAlbum] -> %s", error.getMessage() );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo crear el disco"));
+        }
+
     }
 
     @PostMapping("/batch")
-    public ResponseEntity<List<MusicAlbum>> createmusicAlbum(@RequestBody List<MusicAlbumRequest> musicAlbumsRequest) throws MusicAlbumDuplicateException {
+    public ResponseEntity<ResponseData<?>> createMusicAlbums(@RequestBody List<MusicAlbumDTO> musicAlbumDTOs){
+        try{
         List<MusicAlbum> createdMusicAlbums = new ArrayList<>();
 
-        for (MusicAlbumRequest musicAlbumRequest : musicAlbumsRequest) {
+        for (MusicAlbumDTO musicAlbumDTO : musicAlbumDTOs) {
             MusicAlbum musicAlbum = musicAlbumService.createMusicAlbum(
-                musicAlbumRequest.getTitle(),
-                musicAlbumRequest.getAuthor(),
-                musicAlbumRequest.getRecordLabel(),
-                musicAlbumRequest.getYear(),
-                musicAlbumRequest.getDescription(),
-                musicAlbumRequest.getIsrc(),
-                musicAlbumRequest.getGenres(),
-                musicAlbumRequest.getPrice(),
-                musicAlbumRequest.getUrlImage());
+                musicAlbumDTO.getTitle(),
+                musicAlbumDTO.getAuthor(),
+                musicAlbumDTO.getRecordLabel(),
+                musicAlbumDTO.getYear(),
+                musicAlbumDTO.getDescription(),
+                musicAlbumDTO.getIsrc(),
+                musicAlbumDTO.getGenres(),
+                musicAlbumDTO.getPrice(),
+                musicAlbumDTO.getUrlImage());
             createdMusicAlbums.add(musicAlbum);
     }
-    return ResponseEntity.status(HttpStatus.CREATED).body(createdMusicAlbums);
-}
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseData.success(createdMusicAlbums));
+    } catch (Exception error) {
+        System.out.printf("[MusicAlbumController.createMusicAlbums] -> %s", error.getMessage() );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo crear la lista de discos."));
+      }
+    }
 }

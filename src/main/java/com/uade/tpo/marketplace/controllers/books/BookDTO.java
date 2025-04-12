@@ -6,7 +6,7 @@ import com.uade.tpo.marketplace.entity.GenreBook;
 import lombok.Data;
 
 @Data
-public class BookRequest {
+public class BookDTO {
     private Long id; //no hace falta que este
     private String title;
     private String author;
@@ -14,7 +14,7 @@ public class BookRequest {
     private String description;
     private String isbn;
     private List<GenreBook> genreBooks;
-    private float price;
+    private double price;
     private int stock;
     private List<String> urlImage;
 }

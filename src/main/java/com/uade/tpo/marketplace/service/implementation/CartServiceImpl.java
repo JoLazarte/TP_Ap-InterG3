@@ -32,7 +32,6 @@ public class CartServiceImpl implements CartService {
         return cartRepository.findById(cartId);
     }
 
-    @Override
     public Cart createCart() throws Exception {
         try {
           Cart cart = new Cart();
@@ -42,12 +41,10 @@ public class CartServiceImpl implements CartService {
         }
       }
 
-    @Override
     public void deleteCart(Long cartId) {
         cartRepository.deleteById(cartId);
     }
 
-    @Override
     @Transactional
     public CartItem addItemBook(Cart cart, Long bookId) throws Exception {
         try {
@@ -63,17 +60,17 @@ public class CartServiceImpl implements CartService {
 
             if (cartItem != null) {
             // Si ya existe, actualizamos la cantidad
-            if (book.getStock() < cartItem.getQuantity() + 1) {
+            if (book.getStock() < cartItem.getQuantityBook() + 1) {
                 throw new ProductException("No hay stock suficiente del producto elegido");
             } else {
-                cartItem.setQuantity(cartItem.getQuantity() + 1);
+                cartItem.setQuantityBook(cartItem.getQuantityBook() + 1);
             }
 
             } else {
             // Si no existe, creamos un nuevo ítem
                 cartItem = new CartItem();
                 cartItem.setBook(book);
-                cartItem.setQuantity(1);
+                cartItem.setQuantityBook(1);
                 cartItem.setCart(cart);
 
             // Agregamos el nuevo ítem al carrito
@@ -108,17 +105,17 @@ public class CartServiceImpl implements CartService {
 
             if (cartItem != null) {
             // Si ya existe, actualizamos la cantidad
-            if (musicAlbum.getStock() < cartItem.getQuantity() + 1) {
+            if (musicAlbum.getStock() < cartItem.getQuantityMalbum() + 1) {
                 throw new ProductException("No hay stock suficiente del producto elegido");
                 } else {
-                cartItem.setQuantity(cartItem.getQuantity() + 1);
+                cartItem.setQuantityMalbum(cartItem.getQuantityMalbum() + 1);
                 }
 
             } else {
                 // Si no existe, creamos un nuevo ítem
                 cartItem = new CartItem();
                 cartItem.setMusicAlbum(musicAlbum);
-                cartItem.setQuantity(1);
+                cartItem.setQuantityMalbum(1);
                 cartItem.setCart(cart);
 
             // Agregamos el nuevo ítem al carrito
@@ -139,7 +136,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public float calculateTotal(Long cartId) {
+    public double calculateTotal(Long cartId) {
         Optional<Cart> optionalCart = cartRepository.findById(cartId);
         if (optionalCart.isPresent()) {
             Cart cart = optionalCart.get();
@@ -148,8 +145,8 @@ public class CartServiceImpl implements CartService {
         return 0f;
     }
 
-    private float calculateCartTotal(Cart cart) {
-        float total = 0f;
+    private double calculateCartTotal(Cart cart) {
+        double total = 0f;
         if (cart.getItems() != null) {
             for (CartItem item : cart.getItems()) {
                 total += item.calculateTotalBook() + item.calculateTotalMusicAlbum();

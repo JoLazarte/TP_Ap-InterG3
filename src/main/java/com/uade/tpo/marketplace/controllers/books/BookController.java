@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.tpo.marketplace.entity.Book;
-import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
+import com.uade.tpo.marketplace.entity.ResponseData;
 import com.uade.tpo.marketplace.service.BookService;
 
 import java.net.URI;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/books")
-public class BooksController {
+public class BookController {
 
     @Autowired
     private BookService bookService;
@@ -49,25 +49,30 @@ public class BooksController {
     }
 
     @PostMapping("/batch")
-    public ResponseEntity<List<Book>> createBooks(@RequestBody List<BookRequest> bookRequests) throws BookDuplicateException {
+    public ResponseEntity<ResponseData<?>> createBooks(@RequestBody List<BookDTO> bookDTOs) {
+        try{
         List<Book> createdBooks = new ArrayList<>();
 
-        for (BookRequest request : bookRequests) {
+        for (BookDTO bookDTO : bookDTOs) {
             Book book = bookService.createBook(
-                request.getTitle(),
-                request.getAuthor(),
-                request.getEditorial(),
-                request.getDescription(),
-                request.getIsbn(),
-                request.getGenreBooks(),
-                request.getPrice(),
-                request.getStock(),
-                request.getUrlImage()
+                bookDTO.getTitle(),
+                bookDTO.getAuthor(),
+                bookDTO.getEditorial(),
+                bookDTO.getDescription(),
+                bookDTO.getIsbn(),
+                bookDTO.getGenreBooks(),
+                bookDTO.getPrice(),
+                bookDTO.getStock(),
+                bookDTO.getUrlImage()
         );
         createdBooks.add(book);
     }
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(createdBooks);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseData.success(createdBooks));
+    } catch (Exception error) {
+        System.out.printf("[BookController.createBooks] -> %s", error.getMessage() );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo crear la lista de libros"));
+    }
 }
 
     @GetMapping("/{bookId}")
@@ -80,26 +85,29 @@ public class BooksController {
     }
 
     @PutMapping("/{bookId}")
-    public ResponseEntity<Book> updateBookStock(@PathVariable Long bookId, @RequestBody BookRequest bookRequest) {
-        bookService.updateStock(bookId, bookRequest.getStock());
+    public ResponseEntity<Book> updateBookStock(@PathVariable Long bookId, @RequestBody BookDTO bookDTO) {
+        bookService.updateStock(bookId,bookDTO.getStock());
         return getBookById(bookId);
     }
 
     @PostMapping
-    public ResponseEntity<Object> createBook(@RequestBody BookRequest bookRequest)
-            throws BookDuplicateException {
-        Book result = bookService.createBook(
-                bookRequest.getTitle(),
-                bookRequest.getAuthor(),
-                bookRequest.getEditorial(),
-                bookRequest.getDescription(),
-                bookRequest.getIsbn(),
-                bookRequest.getGenreBooks(),
-                bookRequest.getPrice(),
-                bookRequest.getStock(),
-                bookRequest.getUrlImage());
-        return ResponseEntity.created(URI.create("/books/" + result.getId())).body(result);
-    }
-
+    public ResponseEntity<Object> createBook(@RequestBody BookDTO bookDTO){
+        try {
+            Book book = bookService.createBook(
+                    bookDTO.getTitle(),
+                    bookDTO.getAuthor(),
+                    bookDTO.getEditorial(),
+                    bookDTO.getDescription(),
+                    bookDTO.getIsbn(),
+                    bookDTO.getGenreBooks(),
+                    bookDTO.getPrice(),
+                    bookDTO.getStock(),
+                    bookDTO.getUrlImage());
+        return ResponseEntity.created(URI.create("/books/" + book.getId())).body(book);
+        } catch (Exception error) {
+            System.out.printf("[BookController.createBook] -> %s", error.getMessage() );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo crear el libro"));
+        }
    
+    }
 }

@@ -14,7 +14,6 @@ import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
 public interface BookService {
     public Page<Book> getBooks(PageRequest pageRequest);
     public Optional<Book> getById(Long bookId);
-
     public Book getBookById(Long bookId) throws Exception;
 
     @Transactional
@@ -22,7 +21,7 @@ public interface BookService {
 
     public Page<Book> getBooksByAuthor(String author, PageRequest pageable);
 
-    public Book createBook(String title, String author, String editorial, String description, String isbn, List<GenreBook> genreBooks, Float price, int stock, List<String> urlImages) throws BookDuplicateException;
+    public Book createBook(String title, String author, String editorial, String description, String isbn, List<GenreBook> genreBooks, double price, int stock, List<String> urlImages) throws BookDuplicateException;
 
-   // public List<Book> filterBooks(String title);
+    //public List<Book> filterBooks(String title);
 }

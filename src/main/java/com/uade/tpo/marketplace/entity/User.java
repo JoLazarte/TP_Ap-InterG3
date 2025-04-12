@@ -24,6 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+//import jakarta.validation.constraints.NotNull;//hay que agregar algo en dependencies
 
 @Data
 @Builder
@@ -35,7 +36,7 @@ public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+    @Column(unique = true)
     private String username;
     @Column
     private String password;
@@ -43,7 +44,7 @@ public class User implements UserDetails{
     private String firstName;
     @Column
     private String lastName;
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String email;
 
     @Enumerated(EnumType.STRING)
@@ -53,7 +54,8 @@ public class User implements UserDetails{
     @JoinColumn(name = "cart_id")
     @JsonManagedReference
     private Cart cart;
-
+    
+    //@NotNull
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Buy> orders;
@@ -63,17 +65,7 @@ public class User implements UserDetails{
     @JsonManagedReference
     private PurchaseDocument purchaseDocument; //(Aca se estableceria la relación con "documento de compra")
    
-    public User(Long id, String username, String firstName, String lastName, String email, String password, Role role, Cart cart, List<Buy> orders){
-        this.id = id;
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.cart = cart;
-        this.orders = orders;
-    }
+   
 
     public void assignCart(Cart cart) {
         this.cart.setUser(this);

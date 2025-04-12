@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.uade.tpo.marketplace.controllers.auth.RegisterRequest;
 import com.uade.tpo.marketplace.entity.Cart;
+import com.uade.tpo.marketplace.entity.PurchaseDocument;
 import com.uade.tpo.marketplace.entity.Role;
 import com.uade.tpo.marketplace.entity.User;
 import com.uade.tpo.marketplace.exceptions.UserException;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService{
 				User user = new User(null,request.getUsername(), request.getFirstName(), request.getLastName(),
 								request.getEmail(),
 								passwordEncoder.encode(request.getPassword()),
-								Role.BUYER, cart, new ArrayList<>());
+								Role.BUYER, cart, new ArrayList<>(), new PurchaseDocument());
 
 				user.assignCart(cart);
 

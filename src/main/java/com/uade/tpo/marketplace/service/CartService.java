@@ -22,7 +22,7 @@ public interface CartService {
     @Transactional
     CartItem addItemMusicAlbum(Cart cart, Long musicAlbumId) throws Exception;
 
-    float calculateTotal(Long cartId);
+    double calculateTotal(Long cartId);
 
     
 }

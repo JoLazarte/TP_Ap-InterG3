@@ -7,8 +7,8 @@ import com.uade.tpo.marketplace.entity.User;
 import lombok.Data;
 
 @Data
-public class BuyRequest {
-    //private Long id;
+public class BuyDTO {
+    
     private LocalDateTime buyDate;
     private Cart cart;
     private User user;
