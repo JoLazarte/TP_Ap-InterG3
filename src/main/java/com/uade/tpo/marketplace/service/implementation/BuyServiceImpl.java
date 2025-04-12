@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.marketplace.entity.Buy;
+import com.uade.tpo.marketplace.entity.BuyItem;
 import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.repository.BuyRepository;
 import com.uade.tpo.marketplace.service.BuyService;
@@ -61,10 +62,12 @@ public class BuyServiceImpl implements BuyService{
         .user(cart.getUser())
         .build();
 
-      buy.setCart(cart);
+      List<BuyItem> itemsBuyed = cart.generateBuyItems();
+
+      buy.setItems(itemsBuyed);
 
       return buyRepository.save(buy);
-    } catch(Exception error){
+    }catch(Exception error){
       throw new Exception("[BuyService.createBuy] -> " + error.getMessage());
     }
   }

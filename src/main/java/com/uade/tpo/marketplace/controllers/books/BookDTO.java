@@ -1,15 +1,23 @@
 package com.uade.tpo.marketplace.controllers.books;
 
 import java.util.List;
+
+import com.uade.tpo.marketplace.controllers.products.ProductDTO;
 import com.uade.tpo.marketplace.entity.GenreBook;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
-public class BookDTO {
-    private Long id; //no hace falta que este
-    private String title;
-    private String author;
+@EqualsAndHashCode(callSuper=false)
+@AllArgsConstructor
+@NoArgsConstructor
+public class BookDTO extends ProductDTO{
+   
+    private String title;//?????
+    private String author;//?????
     private String editorial;
     private String description;
     private String isbn;

@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.tpo.marketplace.entity.MusicAlbum;
 import com.uade.tpo.marketplace.entity.ResponseData;
-import com.uade.tpo.marketplace.exceptions.MusicAlbumDuplicateException;
 import com.uade.tpo.marketplace.service.MusicAlbumService;
 
 import java.net.URI;

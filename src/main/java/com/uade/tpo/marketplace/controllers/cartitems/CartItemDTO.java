@@ -21,7 +21,7 @@ public class CartItemDTO {
     private MusicAlbum musicAlbum;
     private int quantityBook;
     private int quantityMalbum;
-    private Cart cart; // Opcional
+    private Cart cart; 
 
      public CartItem toEntityForBook() {
         return CartItem.builder()

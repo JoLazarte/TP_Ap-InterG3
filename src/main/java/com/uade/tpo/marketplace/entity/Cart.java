@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -32,12 +33,7 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<CartItem> items;
-/* 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "buy_id")
-    @JsonManagedReference
-    private Buy buy;
-*/
+
     
     public CartDTO toDTO() {
         // Crear un nuevo objeto CartRequest
@@ -71,7 +67,32 @@ public class Cart {
 
         return total;
     }
+ /////////////////////////////////////////////////////////////////
+    public List<BuyItem> generateBuyItems() {
+        List<BuyItem> itemsBuyed = new ArrayList<>();
+        this.getItems().forEach(item -> {
+            // Los libros en el carrito:
+            if (item.getQuantityBook() > item.getBook().getStock()) {
+                throw new RuntimeException("Not enough stock of product: " + item.getBook().getTitle());
+            }
+            else {
+                item.getBook().setStock(item.getBook().getStock() - item.getQuantityBook());
+            }
+            //Los discos en el carrito:
+            if (item.getQuantityMalbum() > item.getMusicAlbum().getStock()) {
+                throw new RuntimeException("Not enough stock of product: " + item.getMusicAlbum().getTitle());
+            }
+            else {
+                item.getMusicAlbum().setStock(item.getMusicAlbum().getStock() - item.getQuantityMalbum());
+            }
 
+            BuyItem bookBuyed = item.toBuyItemBook();
+            BuyItem malbumBuyed = item.toBuyItemMalbum();
+            itemsBuyed.add(bookBuyed);
+            itemsBuyed.add(malbumBuyed);
+        });
 
+        return itemsBuyed;
+    }
         
 }

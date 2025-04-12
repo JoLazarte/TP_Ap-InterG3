@@ -1,5 +1,7 @@
 package com.uade.tpo.marketplace.entity;
 
+import java.util.ArrayList;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.uade.tpo.marketplace.controllers.cartitems.CartItemDTO;
 
@@ -73,5 +75,27 @@ public class CartItem {
     public double getSubTotal() {
         return this.calculateTotalBook() + this.calculateTotalMusicAlbum();
     }
-   
+   //*************** Convierto los libros en el carrito a items comprados ******************/
+    public BuyItem toBuyItemBook() {
+        return BuyItem.builder()
+                .title(this.getBook().getTitle())
+                .description(this.getBook().getDescription())
+                .finalPrice(this.getBook().getPrice())
+                .totalQuantity(this.getQuantityBook())
+                .images(new ArrayList<>(this.getBook().getUrlImage()))
+                .build();
+
+    }
+    //*************** Convierto los discos en el carrito a items comprados ******************/
+    public BuyItem toBuyItemMalbum() {
+        return BuyItem.builder()
+                .title(this.getMusicAlbum().getTitle())
+                .description(this.getMusicAlbum().getDescription())
+                .finalPrice(this.getMusicAlbum().getPrice())
+                .totalQuantity(this.getQuantityMalbum())
+                .images(new ArrayList<>(this.getMusicAlbum().getUrlImage()))
+                .build();
+
+    }
+
 }

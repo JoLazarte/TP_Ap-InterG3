@@ -41,10 +41,7 @@ public class Book extends Product{
     @Enumerated(EnumType.STRING)
     private List<GenreBook> genreBooks;
 
-    public Book orElseThrow(Object object) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
-    }
+    
 
     
 }

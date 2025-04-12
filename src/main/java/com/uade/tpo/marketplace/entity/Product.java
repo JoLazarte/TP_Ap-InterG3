@@ -39,7 +39,7 @@ public abstract class Product {
     protected int stock;
     
     @ElementCollection
-    @Column
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     protected List<String> urlImage;
     
 }
