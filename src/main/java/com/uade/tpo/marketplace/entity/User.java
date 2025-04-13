@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.uade.tpo.marketplace.controllers.users.UserDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -63,12 +64,30 @@ public class User implements UserDetails{
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "purchaseDocument_id")
     @JsonManagedReference
-    private PurchaseDocument purchaseDocument; //(Aca se estableceria la relación con "documento de compra")
+    private List<PurchaseDocument> purchaseDocuments; //si tiene varias compras, tiene varios documentos de compra
    
-   
-
     public void assignCart(Cart cart) {
         this.cart.setUser(this);
+    }
+    public UserDTO toDTO() {
+        return new UserDTO(
+                this.id,
+                this.username,
+                this.firstName,
+                this.lastName,
+                this.email,
+                this.password,
+                this.role,
+                this.cart,
+                this.orders,
+                this.purchaseDocuments
+            );
+    }
+
+    public void updateData(User newUser){
+        setFirstName(newUser.getFirstName());
+        setLastName(newUser.getLastName());
+        setEmail(newUser.getEmail());
     }
 
     @Override

@@ -1,28 +1,30 @@
 package com.uade.tpo.marketplace.service;
 
+import com.uade.tpo.marketplace.entity.Buy;
 import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.entity.CartItem;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 public interface CartService {
-    Optional<Cart> getCartById(Long cartId);
 
+    public Cart getCartById(Long cartId) throws Exception;
     @Transactional
     Cart createCart() throws Exception;
-
-    @Transactional
-    void deleteCart(Long cartId);
- 
     @Transactional
     CartItem addItemBook(Cart cart,Long bookId) throws Exception;
-
     @Transactional
     CartItem addItemMusicAlbum(Cart cart, Long musicAlbumId) throws Exception;
+    
+    @Transactional
+    public void removeBookFromCart(Cart cart, Long bookId) throws Exception;
 
-    double calculateTotal(Long cartId);
+
+    @Transactional
+    public void removeItemBookFromCart(Long cartId, Long bookId) throws Exception;
 
     
+
+    public void emptyCart(Long cartId) throws Exception;
+    public Buy checkout(Long cartId) throws Exception;
 }

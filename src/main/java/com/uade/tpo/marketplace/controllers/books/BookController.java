@@ -11,7 +11,6 @@ import com.uade.tpo.marketplace.service.BookService;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,7 +34,7 @@ public class BookController {
     public ResponseEntity<Page<Book>> getBooks(
             @RequestParam(required = false) String author,
             @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size) {
+            @RequestParam(required = false) Integer size) throws Exception {
 
         if(author != null) {
             if (page == null || size == null)
@@ -66,30 +65,14 @@ public class BookController {
                 bookDTO.getUrlImage()
         );
         createdBooks.add(book);
-    }
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseData.success(createdBooks));
-    } catch (Exception error) {
-        System.out.printf("[BookController.createBooks] -> %s", error.getMessage() );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo crear la lista de libros"));
+        } catch (Exception error) {
+            System.out.printf("[BookController.createBooks] -> %s", error.getMessage() );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo crear la lista de libros"));
+        }
     }
-}
-
-    @GetMapping("/{bookId}")
-    public ResponseEntity<Book> getBookById(@PathVariable Long bookId) {
-        Optional<Book> result = bookService.getById(bookId);
-        if (result.isPresent())
-            return ResponseEntity.ok(result.get());
-
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/{bookId}")
-    public ResponseEntity<Book> updateBookStock(@PathVariable Long bookId, @RequestBody BookDTO bookDTO) {
-        bookService.updateStock(bookId,bookDTO.getStock());
-        return getBookById(bookId);
-    }
-
     @PostMapping
     public ResponseEntity<Object> createBook(@RequestBody BookDTO bookDTO){
         try {
@@ -108,6 +91,25 @@ public class BookController {
             System.out.printf("[BookController.createBook] -> %s", error.getMessage() );
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo crear el libro"));
         }
-   
     }
+
+    @GetMapping("/{bookId}")
+    public ResponseEntity<ResponseData<?>> getBookById(@PathVariable Long bookId) {
+        try {
+            Book book = bookService.getBookById(bookId);
+            BookDTO bookDTO = book.toDTO();
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(bookDTO));
+
+        } catch (Exception error) {
+        System.out.printf("[ProductController.getProductById] -> %s", error.getMessage() );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se encontro el producto"));
+        }
+    }
+
+    @PutMapping("/{bookId}")
+    public ResponseEntity<ResponseData<?>> updateBookStock(@PathVariable Long bookId, @RequestBody BookDTO bookDTO) {
+        bookService.updateStock(bookId,bookDTO.getStock());
+        return getBookById(bookId);
+    }
+
 }

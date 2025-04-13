@@ -2,6 +2,8 @@ package com.uade.tpo.marketplace.entity;
 
 import java.util.List;
 
+import com.uade.tpo.marketplace.controllers.books.BookDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -40,6 +42,21 @@ public class Book extends Product{
 
     @Enumerated(EnumType.STRING)
     private List<GenreBook> genreBooks;
+
+    public BookDTO toDTO() {
+        return new BookDTO(
+
+                this.title,
+                this.author,
+                this.editorial,
+                this.description,
+                this.isbn,
+                this.genreBooks,
+                this.price,
+                this.stock,
+                this.urlImage
+                );
+    }
 
     
 

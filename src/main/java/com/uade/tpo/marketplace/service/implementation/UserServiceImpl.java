@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.uade.tpo.marketplace.controllers.auth.RegisterRequest;
 import com.uade.tpo.marketplace.entity.Cart;
-import com.uade.tpo.marketplace.entity.PurchaseDocument;
 import com.uade.tpo.marketplace.entity.Role;
 import com.uade.tpo.marketplace.entity.User;
 import com.uade.tpo.marketplace.exceptions.UserException;
@@ -47,7 +46,7 @@ public class UserServiceImpl implements UserService{
 				User user = new User(null,request.getUsername(), request.getFirstName(), request.getLastName(),
 								request.getEmail(),
 								passwordEncoder.encode(request.getPassword()),
-								Role.BUYER, cart, new ArrayList<>(), new PurchaseDocument());
+								Role.BUYER, cart, new ArrayList<>(), new ArrayList<>());
 
 				user.assignCart(cart);
 
@@ -69,11 +68,26 @@ public class UserServiceImpl implements UserService{
         }
     }
 
-    public Page<User> getUsers(PageRequest pageable) {
-        return userRepository.findAll(pageable);
+    public Page<User> getUsers(PageRequest pageable) throws Exception {
+        try {
+          return userRepository.findAll(pageable);
+        } catch (Exception error) {
+          throw new Exception("[UserService.getAllUsers] -> " + error.getMessage());
+        }
+    }
+    public User updateUser(User user) throws Exception {
+        try {
+          return userRepository.save(user);
+        } catch (Exception error) {
+          throw new Exception("[UserService.updateUser] -> " + error.getMessage());
+        }
     }
 
-    public Optional<User> getUserById(Long userId) {
+    public Optional<User> getUserById(Long userId)throws Exception {
+        try{
         return userRepository.findById(userId);
+        }  catch (Exception error) {
+            throw new Exception("[UserService.updateUser] -> " + error.getMessage());
+          }
     } 
 }

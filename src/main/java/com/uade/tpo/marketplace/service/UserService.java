@@ -17,7 +17,9 @@ public interface UserService {
 
     public User getUserByUsername(String username) throws Exception;
 
-    public Page<User> getUsers(PageRequest pageRequest);
+    public Page<User> getUsers(PageRequest pageRequest) throws Exception;
 
-    public Optional<User> getUserById(Long userId);
+    public User updateUser(User user) throws Exception;
+
+    public Optional<User> getUserById(Long userId)throws Exception;
 }

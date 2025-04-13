@@ -12,8 +12,8 @@ import com.uade.tpo.marketplace.entity.GenreBook;
 import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
 
 public interface BookService {
-    public Page<Book> getBooks(PageRequest pageRequest);
-    public Optional<Book> getById(Long bookId);
+    public Page<Book> getBooks(PageRequest pageRequest) throws Exception;
+  
     public Book getBookById(Long bookId) throws Exception;
 
     @Transactional

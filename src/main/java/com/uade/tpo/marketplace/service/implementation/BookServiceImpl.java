@@ -22,12 +22,14 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private BookRepository bookRepository;
 
-    public Page<Book> getBooks(PageRequest pageable) {
-        return bookRepository.findAll(pageable);
+    public Page<Book> getBooks(PageRequest pageable) throws Exception {
+        try{
+            return bookRepository.findAll(pageable);
+        }catch (Exception error) {
+            throw new Exception("[BookServiceImpl.getBooks] -> " + error.getMessage());
+        }
     }
-    public Optional<Book> getById(Long bookId) {
-        return bookRepository.findById(bookId);
-    }
+    
     public Book getBookById(Long bookId) throws Exception {
         try {
             Book book = bookRepository.findById(bookId).orElseThrow(() -> new ProductException("producto no encontrado"));
@@ -36,7 +38,9 @@ public class BookServiceImpl implements BookService {
             throw new Exception("[ProductService.getProductById] -> " + error.getMessage());
           }
     }
+    
 
+    
     public Page<Book> getBooksByAuthor(String author, PageRequest pageable) {
         return bookRepository.findByAuthor(author, pageable);
     }

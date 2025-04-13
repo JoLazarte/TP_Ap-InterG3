@@ -7,6 +7,7 @@ import com.uade.tpo.marketplace.entity.Buy;
 import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.entity.PurchaseDocument;
 import com.uade.tpo.marketplace.entity.Role;
+import com.uade.tpo.marketplace.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,5 +39,19 @@ public class UserDTO {
     private List<Buy> orders;
 
     @JsonManagedReference
-    private PurchaseDocument purchaseDocument; 
+    private List<PurchaseDocument> purchaseDocuments; 
+
+    public User toEntity() {
+        return new User(
+                this.id,
+                this.username,
+                this.firstName,
+                this.lastName,
+                this.email,
+                this.password,
+                this.role,
+                this.cart,
+                this.orders,
+                this.purchaseDocuments);
+    }
 }

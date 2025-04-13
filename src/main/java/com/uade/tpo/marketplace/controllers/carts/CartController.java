@@ -30,7 +30,6 @@ public class CartController {
     @Autowired
     private UserService userService;
 
-
     @GetMapping("")
     public ResponseEntity<ResponseData<?>> getUserCart(@AuthenticationPrincipal UserDetails userDetails) {
     try {
@@ -50,22 +49,15 @@ public class CartController {
         }
     }
 
-
     @PutMapping("/book/{bookId}")
     public ResponseEntity<ResponseData<?>> addBookToCart(@AuthenticationPrincipal UserDetails userDetails,
       @PathVariable Long bookId) {
         try {
-
             User authUser = userService.getUserByUsername(userDetails.getUsername());
             Cart cart = authUser.getCart();
-
             CartItem addedBook = cartService.addItemBook(cart, bookId);
-
             CartItemDTO addedItemRequest = addedBook.toDTOForBook();
-
             return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedItemRequest));
-
-            //return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedItem));
 
         } catch (UserException | CartException | ProductException error) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
@@ -81,17 +73,11 @@ public class CartController {
     public ResponseEntity<ResponseData<?>> addMusicAlbumToCart(@AuthenticationPrincipal UserDetails userDetails,
       @PathVariable Long musicAlbumId) {
         try {
-
             User authUser = userService.getUserByUsername(userDetails.getUsername());
             Cart cart = authUser.getCart();
-
-            CartItem addedMalbum = cartService.addItemMusicAlbum(cart, musicAlbumId);
-            
+            CartItem addedMalbum = cartService.addItemMusicAlbum(cart, musicAlbumId);  
             CartItemDTO addedItemRequest = addedMalbum.toDTOForMalbum();
-
             return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedItemRequest));
-
-            //return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedItem));
 
         } catch (UserException | CartException | ProductException error) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
@@ -102,6 +88,8 @@ public class CartController {
           .body(ResponseData.error("No se pudo agregar el item al carro"));
         }
     }
+
+    
 
     
 }
