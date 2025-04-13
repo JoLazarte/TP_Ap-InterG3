@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uade.tpo.marketplace.entity.Buy;
 import com.uade.tpo.marketplace.entity.Cart;
+import com.uade.tpo.marketplace.entity.PurchaseDocument;
 import com.uade.tpo.marketplace.entity.Role;
 import com.uade.tpo.marketplace.entity.User;
 
@@ -36,6 +37,8 @@ public class UserDTO {
 
     private List<Buy> orders;
 
+    private List<PurchaseDocument> purchaseDocuments;
+
 
     public User toEntity() {
         return new User(
@@ -47,7 +50,8 @@ public class UserDTO {
                 this.password,
                 this.role,
                 this.cart,
-                this.orders
+                this.orders,
+                this.purchaseDocuments
                 );
     }
 }

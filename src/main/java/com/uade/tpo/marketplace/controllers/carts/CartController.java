@@ -30,7 +30,7 @@ public class CartController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/userCarts")
+    @GetMapping("/userCart")
     public ResponseEntity<ResponseData<?>> getUserCart(@AuthenticationPrincipal UserDetails userDetails) {
     try {
         User authUser = userService.getUserByUsername(userDetails.getUsername());

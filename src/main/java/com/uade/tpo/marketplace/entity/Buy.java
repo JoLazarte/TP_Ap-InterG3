@@ -69,9 +69,14 @@ public class Buy {
         .id(this.id)
         .itemsBuyed(this.itemsBuyed)
         .buyDate(this.buyDate)
+        .purchaseDocument(this.purchaseDocument)
         .user(user)
         .totalPrice(this.getTotalPrice())
         .build();
   }
+
+  public void assignPurchaseDocument(PurchaseDocument purchaseDocument) {
+    this.purchaseDocument.setBuy(this);
+}
 
 }

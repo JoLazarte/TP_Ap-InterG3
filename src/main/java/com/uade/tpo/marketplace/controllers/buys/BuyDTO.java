@@ -33,6 +33,7 @@ public class BuyDTO {
     public Buy toEntity() {
         return Buy.builder()
             .buyDate(this.buyDate)
+            .purchaseDocument(this.purchaseDocument)
             .user(this.user)
             .itemsBuyed(this.itemsBuyed)
             .build();

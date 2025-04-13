@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import com.uade.tpo.marketplace.entity.Buy;
 import com.uade.tpo.marketplace.entity.BuyItem;
 import com.uade.tpo.marketplace.entity.Cart;
+import com.uade.tpo.marketplace.entity.PurchaseDocument;
 import com.uade.tpo.marketplace.repository.BuyRepository;
 import com.uade.tpo.marketplace.service.BuyService;
+import com.uade.tpo.marketplace.service.PurchaseDocumentService;
 
 import jakarta.transaction.Transactional;
 
@@ -19,6 +21,8 @@ public class BuyServiceImpl implements BuyService{
    
     @Autowired
     private BuyRepository buyRepository;
+    @Autowired
+    private PurchaseDocumentService purchaseDocumentService;
 
     @Override
     @Transactional
@@ -37,6 +41,7 @@ public class BuyServiceImpl implements BuyService{
 
     public Buy createBuy(Cart cart) throws Exception {
     try{
+      PurchaseDocument purchaseDocument = purchaseDocumentService.createPurchaseDocument();
       Buy buy = Buy.builder()
         .buyDate(LocalDateTime.now())
         .user(cart.getUser())
@@ -45,6 +50,8 @@ public class BuyServiceImpl implements BuyService{
       List<BuyItem> itemsBuyed = cart.generateBuyItems();
 
       buy.setItems(itemsBuyed);
+
+      buy.assignPurchaseDocument(purchaseDocument);
 
       return buyRepository.save(buy);
     }catch(Exception error){

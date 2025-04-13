@@ -49,12 +49,13 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.GET, "/musicAlbums/**").permitAll()
                                                 .requestMatchers("/musicAlbums/**").hasAuthority(Role.ADMIN.name())
                                                 //Buy
-                                                .requestMatchers(HttpMethod.GET, "/buys/**").permitAll()
-						.requestMatchers("/buys/**").hasAuthority(Role.BUYER.name())
+                                                //.requestMatchers(HttpMethod.GET, "/buys/**").permitAll()
+						//.requestMatchers("/buys/**").hasAuthority(Role.BUYER.name())
+                                                .requestMatchers("/buys/**").authenticated()
 						// Cart
 						.requestMatchers("/carts/**").authenticated()
                                                 //CartItem
-                                                //.requestMatchers("/cartItems/**").authenticated()
+                                                .requestMatchers("/cartItems/**").authenticated()
                                                 //Purchasedocument
                                                 .requestMatchers("/purchaseDocuments/**").authenticated()
 						// Default

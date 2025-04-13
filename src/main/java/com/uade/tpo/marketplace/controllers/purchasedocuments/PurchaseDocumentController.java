@@ -1,57 +1,51 @@
 package com.uade.tpo.marketplace.controllers.purchasedocuments;
 
-import java.net.URI;
-import java.util.Optional;
-import org.springframework.data.domain.Page;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.tpo.marketplace.entity.PurchaseDocument;
-import com.uade.tpo.marketplace.exceptions.PurchaseDocumentDuplicateException;
+import com.uade.tpo.marketplace.entity.ResponseData;
+import com.uade.tpo.marketplace.entity.User;
+import com.uade.tpo.marketplace.exceptions.UserException;
 import com.uade.tpo.marketplace.service.PurchaseDocumentService;
+import com.uade.tpo.marketplace.service.UserService;
 
 @RestController
 @RequestMapping("/purchaseDocuments")
 public class PurchaseDocumentController {
     @Autowired
     private PurchaseDocumentService purchaseDocumentService;
-    @GetMapping
-    public ResponseEntity<Page<PurchaseDocument>> getPurchaseDocuments(
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size) {
-        if (page == null || size == null)
-            return ResponseEntity.ok(purchaseDocumentService.getPurchaseDocuments(PageRequest.of(0, Integer.MAX_VALUE)));
-        return ResponseEntity.ok(purchaseDocumentService.getPurchaseDocuments(PageRequest.of(page, size)));
+   
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/userBuys")
+    public ResponseEntity<ResponseData<?>> getBuysPurchDocs(@AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            User authUser = userService.getUserByUsername(userDetails.getUsername());
+
+            //List<BuyDTO> buys = buyService.getUserBuys(authUser.getId()).stream().map(Buy::toDTO).toList();
+
+            List<PurchaseDocumentDTO> purchaseDocumentDTOs = purchaseDocumentService.getBuysPurchDocs(authUser.getId()).stream().map(PurchaseDocument::toDTO).toList();
+
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(purchaseDocumentDTOs));
+
+             } catch (UserException error) {
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ResponseData.error(error.getMessage()));
+
+            } catch (Exception error) {
+                System.out.printf("[PurchaseDocumentController.getBuysPurchDocs] -> %s", error.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ResponseData.error("No se pudieron obtener los documentos de compra."));
+            }
     }
-    @GetMapping("/{purchaseDocumentId}")
-    public ResponseEntity<PurchaseDocument> getPurchaseDocumentById(@PathVariable Long purchaseDocumentId) {
-        Optional<PurchaseDocument> result = purchaseDocumentService.getPurchaseDocumentById(purchaseDocumentId);
-        if (result.isPresent())
-            return ResponseEntity.ok(result.get());
-
-        return ResponseEntity.noContent().build();
-    }
-    @PostMapping
-    public ResponseEntity<Object> createPurchaseDocument(@RequestBody PurchaseDocumentDTO purchaseDocumentDTO)
-           throws PurchaseDocumentDuplicateException {
-       PurchaseDocument result = purchaseDocumentService.createPurchaseDocument(
-                                   purchaseDocumentDTO.getBuy(),
-                                   purchaseDocumentDTO.getPurchaseDate(),
-                                   purchaseDocumentDTO.getTotalPrice(),
-                                   purchaseDocumentDTO.getPaymentMethod(),
-                                   purchaseDocumentDTO.getDescription()
-                                   );
-       return ResponseEntity.created(URI.create("/purchasedocuments/" + result.getId())).body(result);
-
-
-   }
+    
 
 }

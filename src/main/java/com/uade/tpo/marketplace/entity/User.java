@@ -61,6 +61,9 @@ public class User implements UserDetails{
     @JsonManagedReference
     private List<Buy> orders;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<PurchaseDocument> purchaseDocuments;
 
     public void assignCart(Cart cart) {
         this.cart.setUser(this);
@@ -75,7 +78,8 @@ public class User implements UserDetails{
                 this.password,
                 this.role,
                 this.cart,
-                this.orders
+                this.orders,
+                this.purchaseDocuments
                
             );
     }
