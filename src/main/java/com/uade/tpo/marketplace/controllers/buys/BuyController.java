@@ -27,7 +27,7 @@ public class BuyController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("")
+    @GetMapping("/userBuys")
     public ResponseEntity<ResponseData<?>> getUserBuys(@AuthenticationPrincipal UserDetails userDetails) {
     try {
       User authUser = userService.getUserByUsername(userDetails.getUsername());

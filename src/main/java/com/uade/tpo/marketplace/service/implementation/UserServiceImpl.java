@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService{
 				User user = new User(null,request.getUsername(), request.getFirstName(), request.getLastName(),
 								request.getEmail(),
 								passwordEncoder.encode(request.getPassword()),
-								Role.BUYER, cart, new ArrayList<>(), new ArrayList<>());
+								Role.BUYER, cart, new ArrayList<>());
 
 				user.assignCart(cart);
 

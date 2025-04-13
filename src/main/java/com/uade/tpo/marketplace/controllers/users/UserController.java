@@ -40,14 +40,12 @@ public class UserController {
             return ResponseEntity.ok(userService.getUsers(PageRequest.of(0, Integer.MAX_VALUE)));
         return ResponseEntity.ok(userService.getUsers(PageRequest.of(page, size)));
     }
-    
-    @GetMapping("")
+    /* 
+    @GetMapping("/data")
     public ResponseEntity<ResponseData<?>> getUserData(@AuthenticationPrincipal UserDetails userDetails) {
         try {
             User authUser = userService.getUserByUsername(userDetails.getUsername());
-
             UserDTO userDTO = authUser.toDTO();
-
             return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(userDTO));
 
         } catch (UserException error) {
@@ -57,7 +55,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo encontrar el usuario"));
         }
     }
-    @PutMapping("")
+    */
+    @PutMapping("/update")
     public ResponseEntity<ResponseData<?>> updateUser(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UserDTO userDTO) {
         try {
             User authUser = userService.getUserByUsername(userDetails.getUsername());

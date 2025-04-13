@@ -54,7 +54,7 @@ public class SecurityConfig {
 						// Cart
 						.requestMatchers("/carts/**").authenticated()
                                                 //CartItem
-                                                .requestMatchers("/cartItems/**").authenticated()
+                                                //.requestMatchers("/cartItems/**").authenticated()
                                                 //Purchasedocument
                                                 .requestMatchers("/purchaseDocuments/**").authenticated()
 						// Default

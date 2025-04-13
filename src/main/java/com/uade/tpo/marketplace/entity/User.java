@@ -61,11 +61,7 @@ public class User implements UserDetails{
     @JsonManagedReference
     private List<Buy> orders;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "purchaseDocument_id")
-    @JsonManagedReference
-    private List<PurchaseDocument> purchaseDocuments; //si tiene varias compras, tiene varios documentos de compra
-   
+
     public void assignCart(Cart cart) {
         this.cart.setUser(this);
     }
@@ -79,8 +75,8 @@ public class User implements UserDetails{
                 this.password,
                 this.role,
                 this.cart,
-                this.orders,
-                this.purchaseDocuments
+                this.orders
+               
             );
     }
 
@@ -95,28 +91,5 @@ public class User implements UserDetails{
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    
 }
