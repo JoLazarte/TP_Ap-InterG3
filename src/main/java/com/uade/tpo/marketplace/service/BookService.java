@@ -1,13 +1,13 @@
 package com.uade.tpo.marketplace.service;
 
-import java.util.List;
+//import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.uade.tpo.marketplace.entity.Book;
-import com.uade.tpo.marketplace.entity.GenreBook;
+//import com.uade.tpo.marketplace.entity.GenreBook;
 import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
 
 public interface BookService {
@@ -20,7 +20,7 @@ public interface BookService {
 
     public Page<Book> getBooksByAuthor(String author, PageRequest pageable);
 
-    public Book createBook(String title, String author, String editorial, String description, String isbn, List<GenreBook> genreBooks, double price, int stock, List<String> urlImages) throws BookDuplicateException;
+    public Book createBook(Book book) throws BookDuplicateException;
 
     //public List<Book> filterBooks(String title);
 }

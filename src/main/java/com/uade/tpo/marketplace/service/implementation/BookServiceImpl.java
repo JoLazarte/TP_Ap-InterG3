@@ -8,7 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.marketplace.entity.Book;
-import com.uade.tpo.marketplace.entity.GenreBook;
+//import com.uade.tpo.marketplace.entity.GenreBook;
 import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
 import com.uade.tpo.marketplace.exceptions.ProductException;
 import com.uade.tpo.marketplace.repository.BookRepository;
@@ -38,8 +38,6 @@ public class BookServiceImpl implements BookService {
           }
     }
     
-
-    
     public Page<Book> getBooksByAuthor(String author, PageRequest pageable) {
         return bookRepository.findByAuthor(author, pageable);
     }
@@ -48,24 +46,13 @@ public class BookServiceImpl implements BookService {
         bookRepository.updateStock(bookId, newStock);
     }
 
-    public Book createBook(String title, String author, String editorial, String description, String isbn, List<GenreBook> genreBooks, double price, int stock,
-        List<String> urlImages) throws BookDuplicateException {
-        List<Book> books = bookRepository.findByIsbn(isbn);
+    public Book createBook(Book book) throws BookDuplicateException {
+        List<Book> books = bookRepository.findByIsbn(book.getIsbn());
         if (books.isEmpty())
-            return bookRepository.save(new Book(
-                    title,
-                    author,
-                    editorial, description,
-                    isbn,
-                    genreBooks,
-                    price,
-                    10,
-                    urlImages
-                )); 
+            return bookRepository.save(book); 
         throw new BookDuplicateException();
     }
-   
-    
+  
 
    
 }

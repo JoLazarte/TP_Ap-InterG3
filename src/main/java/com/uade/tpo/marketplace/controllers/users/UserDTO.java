@@ -19,26 +19,17 @@ import lombok.NoArgsConstructor;
 public class UserDTO {
 
     private Long id;
-   
+
     private String username;
-    
     private String password;
-  
-    private String firstName;
-   
-    private String lastName;
-    
+    private String firstName; 
+    private String lastName;  
     private String email;
-
     private Role role;
-
     @JsonManagedReference
     private Cart cart;
-
     private List<Buy> orders;
-
     private List<PurchaseDocument> purchaseDocuments;
-
 
     public User toEntity() {
         return new User(

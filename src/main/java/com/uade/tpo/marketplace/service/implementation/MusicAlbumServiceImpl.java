@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.uade.tpo.marketplace.entity.Genre;
 import com.uade.tpo.marketplace.entity.MusicAlbum;
 import com.uade.tpo.marketplace.exceptions.MusicAlbumDuplicateException;
 import com.uade.tpo.marketplace.exceptions.ProductException;
@@ -45,24 +44,10 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
         musicAlbumRepository.updateStock(musicAlbumId, newStock);
     }
 
-
-
-    public MusicAlbum createMusicAlbum(String title, String author, String recordLabel,int year, String description, String isrc, List<Genre> genres, double price,
-        List<String> urlImages) throws MusicAlbumDuplicateException {
-        List<MusicAlbum> musicAlbums = musicAlbumRepository.findByIsrc(isrc);
+    public MusicAlbum createMusicAlbum(MusicAlbum musicAlbum) throws MusicAlbumDuplicateException {
+        List<MusicAlbum> musicAlbums = musicAlbumRepository.findByIsrc(musicAlbum.getIsrc());
         if (musicAlbums.isEmpty())
-            return musicAlbumRepository.save(new MusicAlbum(
-                    title,
-                    author,
-                    recordLabel, 
-                    year,
-                    description,
-                    isrc,
-                    genres,
-                    price,
-                    10,
-                    urlImages
-                    )); 
+            return musicAlbumRepository.save(musicAlbum); 
         throw new MusicAlbumDuplicateException();
     }
 

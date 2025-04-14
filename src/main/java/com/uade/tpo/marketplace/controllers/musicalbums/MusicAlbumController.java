@@ -64,18 +64,10 @@ public class MusicAlbumController {
     @PostMapping
     public ResponseEntity<Object> createmusicAlbum(@RequestBody MusicAlbumDTO musicAlbumDTO){
         try{
-            MusicAlbum result = musicAlbumService.createMusicAlbum(
-                musicAlbumDTO.getTitle(),
-                musicAlbumDTO.getAuthor(),
-                musicAlbumDTO.getRecordLabel(),
-                musicAlbumDTO.getYear(),
-                musicAlbumDTO.getDescription(),
-                musicAlbumDTO.getIsrc(),
-                musicAlbumDTO.getGenres(),
-                musicAlbumDTO.getPrice(),
-                musicAlbumDTO.getUrlImage());
-                
-            return ResponseEntity.created(URI.create("/musicAlbums/" + result.getId())).body(result);
+            MusicAlbum musicAlbum = musicAlbumDTO.toEntity();
+            MusicAlbum malbumCreated = musicAlbumService.createMusicAlbum(musicAlbum);
+            
+            return ResponseEntity.created(URI.create("/books/" + malbumCreated.getId())).body(malbumCreated);
         } catch (Exception error) {
             System.out.printf("[MusicAbumController.createMusicAlbum] -> %s", error.getMessage() );
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo crear el disco"));
@@ -89,17 +81,9 @@ public class MusicAlbumController {
         List<MusicAlbum> createdMusicAlbums = new ArrayList<>();
 
         for (MusicAlbumDTO musicAlbumDTO : musicAlbumDTOs) {
-            MusicAlbum musicAlbum = musicAlbumService.createMusicAlbum(
-                musicAlbumDTO.getTitle(),
-                musicAlbumDTO.getAuthor(),
-                musicAlbumDTO.getRecordLabel(),
-                musicAlbumDTO.getYear(),
-                musicAlbumDTO.getDescription(),
-                musicAlbumDTO.getIsrc(),
-                musicAlbumDTO.getGenres(),
-                musicAlbumDTO.getPrice(),
-                musicAlbumDTO.getUrlImage());
-            createdMusicAlbums.add(musicAlbum);
+            MusicAlbum musicAlbum = musicAlbumDTO.toEntity();
+            MusicAlbum musicAlbumCreated = musicAlbumService.createMusicAlbum(musicAlbum);
+            createdMusicAlbums.add(musicAlbumCreated);
     }
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseData.success(createdMusicAlbums));
     } catch (Exception error) {

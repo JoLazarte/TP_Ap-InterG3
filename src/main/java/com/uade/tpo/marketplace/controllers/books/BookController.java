@@ -53,18 +53,9 @@ public class BookController {
         List<Book> createdBooks = new ArrayList<>();
 
         for (BookDTO bookDTO : bookDTOs) {
-            Book book = bookService.createBook(
-                bookDTO.getTitle(),
-                bookDTO.getAuthor(),
-                bookDTO.getEditorial(),
-                bookDTO.getDescription(),
-                bookDTO.getIsbn(),
-                bookDTO.getGenreBooks(),
-                bookDTO.getPrice(),
-                bookDTO.getStock(),
-                bookDTO.getUrlImage()
-        );
-        createdBooks.add(book);
+            Book book = bookDTO.toEntity();
+            Book bookCreated = bookService.createBook(book);
+        createdBooks.add(bookCreated);
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseData.success(createdBooks));
@@ -76,17 +67,10 @@ public class BookController {
     @PostMapping
     public ResponseEntity<Object> createBook(@RequestBody BookDTO bookDTO){
         try {
-            Book book = bookService.createBook(
-                    bookDTO.getTitle(),
-                    bookDTO.getAuthor(),
-                    bookDTO.getEditorial(),
-                    bookDTO.getDescription(),
-                    bookDTO.getIsbn(),
-                    bookDTO.getGenreBooks(),
-                    bookDTO.getPrice(),
-                    bookDTO.getStock(),
-                    bookDTO.getUrlImage());
-        return ResponseEntity.created(URI.create("/books/" + book.getId())).body(book);
+            Book book = bookDTO.toEntity();
+            Book bookCreated = bookService.createBook(
+                   book);
+        return ResponseEntity.created(URI.create("/books/" + bookCreated.getId())).body(bookCreated);
         } catch (Exception error) {
             System.out.printf("[BookController.createBook] -> %s", error.getMessage() );
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo crear el libro"));

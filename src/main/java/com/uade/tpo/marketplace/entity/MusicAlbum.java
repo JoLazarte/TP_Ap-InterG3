@@ -2,6 +2,8 @@ package com.uade.tpo.marketplace.entity;
 
 import java.util.List;
 
+import com.uade.tpo.marketplace.controllers.musicalbums.MusicAlbumDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -18,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Entity
 public class MusicAlbum extends Product{
 
-    
     public MusicAlbum(String title, String author, String recordLabel, int year, String description, String isrc,
     List<Genre> genres, double price, int stock, List<String> urlImage
                   ) {
@@ -45,5 +46,21 @@ public class MusicAlbum extends Product{
 
     @Enumerated(EnumType.STRING)  
     private List<Genre> genres;
+
+    public MusicAlbumDTO toDTO() {
+        return new MusicAlbumDTO(
+
+                this.title,
+                this.author,
+                this.recordLabel,
+                this.year,
+                this.description,
+                this.isrc,
+                this.price,
+                this.genres,
+                this.stock,
+                this.urlImage
+                );
+    }
     
 }

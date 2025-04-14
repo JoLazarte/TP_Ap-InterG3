@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class ProductDTO {
     protected Long id;
     protected String title;
@@ -18,4 +19,5 @@ public class ProductDTO {
     protected int stock;
     protected List<String> urlImage;
    
+    
 }
