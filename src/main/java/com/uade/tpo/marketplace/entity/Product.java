@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.NotNull;
+//import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,22 +24,23 @@ public abstract class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
-
+    @NotNull
     @Column
     protected String title;
-
+    @NotNull
     @Column
     protected String author;
-
+    @NotNull
     @Column
     protected String description;
-
+    @NotNull
     @Column
     protected double price;
-
+    @NotNull
     @Column
     protected int stock;
     
+    //@NotEmpty
     @ElementCollection
     @Column(nullable = false, columnDefinition = "LONGTEXT")
     protected List<String> urlImage;

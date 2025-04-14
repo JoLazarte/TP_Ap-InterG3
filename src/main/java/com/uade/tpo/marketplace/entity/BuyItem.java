@@ -12,6 +12,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
+//import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,23 +28,23 @@ public class BuyItem {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
+  @NotNull
   @Column(nullable = false)
   private String title;
-
+  @NotNull
   @Column(nullable = false)
   private String description;
-
+  @NotNull
   @Column(nullable = false)
   private double finalPrice;
-  
+  @NotNull
   @Column(nullable = false)
   private int totalQuantity;
-  
+  //@NotEmpty
   @ElementCollection
   @Column(nullable = false, columnDefinition = "LONGTEXT")
   private List<String> images;
-
+  @NotNull
   @ManyToOne
   @JoinColumn(nullable = false, name = "buy_id")
   @JsonBackReference

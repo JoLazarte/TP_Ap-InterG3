@@ -25,20 +25,18 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private CartService cartService;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-	@Transactional
+	  @Transactional
     public User createUser(RegisterRequest request) throws Exception {
 			try {
 				boolean userExist = userRepository.existsByUsername(request.getUsername());
-                    if(userExist) throw new UserException("El usuario " + request.getUsername() + " ya existe");
-                        userExist = userRepository.existsByEmail(request.getEmail());
-                    if(userExist) throw new UserException("El email " + request.getEmail() + " ya esta registrado.");
+          if(userExist) throw new UserException("El usuario " + request.getUsername() + " ya existe");
+            userExist = userRepository.existsByEmail(request.getEmail());
+          if(userExist) throw new UserException("El email " + request.getEmail() + " ya esta registrado.");
 
 
 				Cart cart = cartService.createCart();

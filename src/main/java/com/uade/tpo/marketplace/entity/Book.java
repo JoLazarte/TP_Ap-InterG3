@@ -8,6 +8,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,16 +34,16 @@ public class Book extends Product{
         this.stock = stock;
         this.urlImage = urlImage;
     }
-
+    @NotNull
     @Column
     private String editorial;
-
+    @NotNull
     @Column
     private String isbn;
-
+    @NotNull
     @Enumerated(EnumType.STRING)
     private List<GenreBook> genreBooks;
-
+    @NotNull
     public BookDTO toDTO() {
         return new BookDTO(
 

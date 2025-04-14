@@ -21,11 +21,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-//import jakarta.validation.constraints.NotNull;//hay que agregar algo en dependencies
+
 
 @Data
 @Builder
@@ -56,11 +57,12 @@ public class User implements UserDetails{
     @JsonManagedReference
     private Cart cart;
     
-    //@NotNull
+    @NotNull
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Buy> orders;
-
+    
+    @NotNull
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<PurchaseDocument> purchaseDocuments;

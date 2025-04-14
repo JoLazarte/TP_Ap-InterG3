@@ -6,6 +6,8 @@ import com.uade.tpo.marketplace.controllers.products.ProductDTO;
 import com.uade.tpo.marketplace.entity.Book;
 import com.uade.tpo.marketplace.entity.GenreBook;
 
+//import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 
 import lombok.Data;
@@ -18,15 +20,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class BookDTO extends ProductDTO{
-   
+    @NotNull
     private String title;//?????
+    @NotNull
     private String author;//?????
+    @NotNull
     private String editorial;
+    @NotNull
     private String description;
+    @NotNull
     private String isbn;
+    @NotNull
     private List<GenreBook> genreBooks;
+    @NotNull
     private double price;
+    @NotNull
     private int stock;
+    //@NotEmpty
     private List<String> urlImage;
 
     public Book toEntity() {

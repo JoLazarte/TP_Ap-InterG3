@@ -18,7 +18,7 @@ public class ResponseData <T> {
     return new ResponseData<>(true, null, data);
 }
 
-public static <T> ResponseData<T> error(String errorMessage) {
+  public static <T> ResponseData<T> error(String errorMessage) {
     return new ResponseData<>(false, errorMessage, null);
 }
 }
