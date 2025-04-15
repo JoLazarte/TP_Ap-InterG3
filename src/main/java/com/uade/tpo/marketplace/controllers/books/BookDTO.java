@@ -39,9 +39,22 @@ public class BookDTO extends ProductDTO{
     //@NotEmpty
     private List<String> urlImage;
 
+    public BookDTO(Long id, String title, String author, String editorial, String description, String isbn,
+                List<GenreBook> genreBooks, double price, int stock, List<String> urlImage) {
+        this.id=id;            
+        this.title = title;
+        this.author = author;
+        this.editorial = editorial;
+        this.description = description;
+        this.isbn = isbn;
+        this.genreBooks = genreBooks;
+        this.price = price;
+        this.stock = stock;
+        this.urlImage = urlImage;
+    }
     public Book toEntity() {
         return new Book(
-
+                this.id,
                 this.title,
                 this.author,
                 this.editorial,
