@@ -38,14 +38,14 @@ public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
+    private String username;
     @Column
     private String firstName;
     @Column
     private String lastName;
     @Column(unique = true)
     private String email;
-    @Column(unique = true)
-    private String username;
     @Column
     private String password;
     @Enumerated(EnumType.STRING)
@@ -71,10 +71,10 @@ public class User implements UserDetails{
     public UserDTO toDTO() {
         return new UserDTO(
             this.id,
+            this.username,
             this.firstName,
             this.lastName,
             this.email,
-            this.username,
             this.password,
             this.role,
             this.cart,

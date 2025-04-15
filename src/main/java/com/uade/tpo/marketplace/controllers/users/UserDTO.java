@@ -22,15 +22,16 @@ public class UserDTO {
 
     private Long id;
     @NotNull
+    private String username;
+    @NotNull
     private String firstName; 
     @NotNull
     private String lastName;
     @NotNull
     private String email;
     @NotNull
-    private String username;
-    @NotNull
     private String password;
+    @NotNull
     private Role role;
     @JsonManagedReference
     @JsonIgnore
@@ -43,10 +44,10 @@ public class UserDTO {
     public User toEntity() {
         return new User(
                 this.id,
+                this.username,
                 this.firstName,
                 this.lastName,
                 this.email,
-                this.username,
                 this.password,
                 this.role,
                 this.cart,
