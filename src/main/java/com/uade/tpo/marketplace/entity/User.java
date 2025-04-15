@@ -38,20 +38,18 @@ public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
-    private String username;
-    @Column
-    private String password;
     @Column
     private String firstName;
     @Column
     private String lastName;
     @Column(unique = true)
     private String email;
-
+    @Column(unique = true)
+    private String username;
+    @Column
+    private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     @JsonManagedReference
@@ -72,16 +70,16 @@ public class User implements UserDetails{
     }
     public UserDTO toDTO() {
         return new UserDTO(
-                this.id,
-                this.username,
-                this.firstName,
-                this.lastName,
-                this.email,
-                this.password,
-                this.role,
-                this.cart,
-                this.orders,
-                this.purchaseDocuments
+            this.id,
+            this.firstName,
+            this.lastName,
+            this.email,
+            this.username,
+            this.password,
+            this.role,
+            this.cart,
+            this.orders,
+            this.purchaseDocuments
                
             );
     }
