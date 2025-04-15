@@ -1,9 +1,9 @@
 package com.uade.tpo.marketplace.service;
 
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.marketplace.controllers.auth.AuthenticationRequest;
@@ -20,30 +20,27 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
+        @Autowired
         private final UserRepository userRepository;
-        private final PasswordEncoder passwordEncoder;
+        @Autowired
         private final JwtService jwtService;
+        @Autowired
         private final AuthenticationManager authenticationManager;
+        @Autowired
+        private UserService userService;
 
         public AuthenticationResponse register(RegisterRequest request) throws Exception {
                 try{
-                        User user = User.builder()
-                                .username(request.getUsername())
-                                .firstName(request.getFirstName())
-                                .lastName(request.getLastName())
-                                .email(request.getEmail())
-                                .password(passwordEncoder.encode(request.getPassword()))
-                                .role(request.getRole()) 
-                                .build();
+                        User user = userService.createUser(request);
+                        //userRepository.save(user);
 
-                        userRepository.save(user);
                         String jwtToken = jwtService.generateToken(user);
                         return AuthenticationResponse.builder()
                                 .accessToken(jwtToken)
                                 .build();
                 }catch(UserException error){
                         throw new UserException(error.getMessage());
-                      }catch (Exception error){
+                }catch (Exception error){
                         throw new Exception("[AuthenticationService.register] -> " + error.getMessage());
                 }
         }
@@ -52,21 +49,22 @@ public class AuthenticationService {
                 try{
                         authenticationManager.authenticate(
                                 new UsernamePasswordAuthenticationToken(
-                                                request.getUsername(),
-                                                request.getPassword()));
+                                        request.getUsername(),
+                                        request.getPassword()));
                 User user = userRepository.findByUsername(request.getUsername())
                         .orElseThrow(() -> new UserException("El usuario " + request.getUsername() + " no existe."));
+                
                 String jwtToken = jwtService.generateToken(user);
                 return AuthenticationResponse.builder()
                         .accessToken(jwtToken)
                         .build();
                 } catch (AuthenticationException error){
                         System.out.printf("[AuthenticationService.authenticate] -> %s", error.getMessage());
-                                throw new AuthException("Usuario o contraseña incorrecto.");
-                        }catch (UserException error) {
-                                throw new UserException(error.getMessage());
-                        }catch (Exception error) {
-                                throw new Exception("[AuthenticationService.authenticate] -> " + error.getMessage());
-                        }
+                        throw new AuthException("Usuario o contraseña incorrecto.");
+                }catch (UserException error) {
+                        throw new UserException(error.getMessage());
+                }catch (Exception error) {
+                        throw new Exception("[AuthenticationService.authenticate] -> " + error.getMessage());
+                }
         }
 }

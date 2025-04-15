@@ -48,14 +48,17 @@ public class SecurityConfig {
 						//MusicAlbum
                                                 .requestMatchers(HttpMethod.GET, "/musicAlbums/**").permitAll()
                                                 .requestMatchers("/musicAlbums/**").hasAuthority(Role.ADMIN.name())
+                                                
                                                 //Buy
                                                 //.requestMatchers(HttpMethod.GET, "/buys/**").permitAll()
 						//.requestMatchers("/buys/**").hasAuthority(Role.BUYER.name())
-                                                .requestMatchers("/buys/**").authenticated()
+
+                                                //.requestMatchers("/buys/**").authenticated()
+
 						// Cart
 						.requestMatchers("/carts/**").authenticated()
                                                 //CartItem
-                                                .requestMatchers("/cartItems/**").authenticated()
+                                                //.requestMatchers("/cartItems/**").authenticated()
                                                 //Purchasedocument
                                                 .requestMatchers("/purchaseDocuments/**").authenticated()
 						// Default
