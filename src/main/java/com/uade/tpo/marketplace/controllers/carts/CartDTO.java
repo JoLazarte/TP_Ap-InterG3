@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CartDTO {
     private Long id;
-    @NotNull
+    //@NotNull
     @JsonBackReference
     private User user;
     @NotNull

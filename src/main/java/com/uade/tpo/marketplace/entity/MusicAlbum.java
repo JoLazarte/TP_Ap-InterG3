@@ -20,19 +20,20 @@ import lombok.NoArgsConstructor;
 @Entity
 public class MusicAlbum extends Product{
 
-    public MusicAlbum(String title, String author, String recordLabel, int year, String description, String isrc,
-    List<Genre> genres, double price, int stock, List<String> urlImage
+    public MusicAlbum(Long id, String title, String author, String recordLabel, int year, String description, String isrc,
+    double price, List<Genre> genres, int stock, List<String> urlImage
                   ) {
-    this.title = title;
-    this.author = author;
-    this.recordLabel = recordLabel;
-    this.year = year;
-    this.description = description;
-    this.isrc = isrc;
-    this.genres = genres;
-    this.price = price;
-    this.stock = stock;
-    this.urlImage = urlImage;
+                this.id= id;
+                this.title = title;
+                this.author = author;
+                this.recordLabel = recordLabel;
+                this.year = year;
+                this.description = description;
+                this.isrc = isrc;
+                this.price = price;
+                this.genres = genres;
+                this.stock = stock;
+                this.urlImage = urlImage;
 }
 
     @Column
@@ -49,7 +50,7 @@ public class MusicAlbum extends Product{
 
     public MusicAlbumDTO toDTO() {
         return new MusicAlbumDTO(
-
+                this.id,
                 this.title,
                 this.author,
                 this.recordLabel,

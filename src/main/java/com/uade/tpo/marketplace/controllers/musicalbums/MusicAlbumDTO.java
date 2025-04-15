@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper=false)
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class MusicAlbumDTO extends ProductDTO {
     @NotNull
     private String title;//???
@@ -39,17 +40,33 @@ public class MusicAlbumDTO extends ProductDTO {
     //@NotEmpty
     private List<String> urlImage;
 
+    public MusicAlbumDTO(Long id, String title, String author, String recordLabel, int year, String description, String isrc,
+    double price, List<Genre> genres, int stock, List<String> urlImage
+                  ) {
+                this.id= id;
+                this.title = title;
+                this.author = author;
+                this.recordLabel = recordLabel;
+                this.year = year;
+                this.description = description;
+                this.isrc = isrc;
+                this.price = price;
+                this.genres = genres;
+                this.stock = stock;
+                this.urlImage = urlImage;
+    }
+    
     public MusicAlbum toEntity() {
         return new MusicAlbum(
-
+                this.id,
                 this.title,
                 this.author,
                 this.recordLabel,
                 this.year,
                 this.description,
                 this.isrc,
-                this.genres,
                 this.price,
+                this.genres,
                 this.stock,
                 this.urlImage
                 );

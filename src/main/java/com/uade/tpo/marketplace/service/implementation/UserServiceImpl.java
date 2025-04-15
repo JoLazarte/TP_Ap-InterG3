@@ -38,17 +38,21 @@ public class UserServiceImpl implements UserService{
             userExist = userRepository.existsByEmail(request.getEmail());
           if(userExist) throw new UserException("El email " + request.getEmail() + " ya esta registrado.");
 
-
-				Cart cart = cartService.createCart();
-
+        Cart cart = cartService.createCart();
+        
 				User user = new User(null,request.getUsername(), request.getFirstName(), request.getLastName(),
 								request.getEmail(),
 								passwordEncoder.encode(request.getPassword()),
-								Role.BUYER, cart, new ArrayList<>(), new ArrayList<>());
+                request.getRole(), null, new ArrayList<>(), new ArrayList<>());
+        
+        if(request.getRole()==Role.BUYER){
+          user.setCart(cart);
+          user.assignCart(cart);
+        }
 
-				user.assignCart(cart);
-
-				return userRepository.save(user);
+        return userRepository.save(user);
+        
+				
 			} catch (UserException error) {
                 throw new UserException(error.getMessage());
             } catch (Exception error) {
