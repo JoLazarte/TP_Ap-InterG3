@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.uade.tpo.marketplace.controllers.purchasedocuments.PurchaseDocumentDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -12,51 +13,71 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
+@Builder
 public class PurchaseDocument {
-    public PurchaseDocument() {
+
+   // Constructor que inicializa la descripción del documento de compra
+    public PurchaseDocumentDTO toDTO() {
+        return PurchaseDocumentDTO.builder()
+            .id(this.id)
+            .buy(this.buy)
+            .purchaseDate(this.purchaseDate)
+            .user(this.user)
+            .totalPrice(this.totalPrice)
+            .paymentMethod(this.paymentMethod)
+            .description(this.description)
+            .build();
     }
 
-    // Constructor que inicializa la descripción del documento de compra
-    public PurchaseDocument(String description) {
-        this.description = description;
-    }
 
-    // Identificador único de la entidad, generado automáticamente
+   // Identificador único de la entidad, generado automáticamente
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Identificador único de la compra, que debe estar asociada a una "compra", asi se obtiene la lista de productos/el carrito comprado con toda la info necesaria
+
+   // Identificador único de la compra, que debe estar asociada a una "compra", asi se obtiene la lista de productos/el carrito comprado con toda la info necesaria
+    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "buy_id")
     @JsonManagedReference
     private Buy buy;
 
-    // Fecha en la que se realizó la compra
+   // Fecha en la que se realizó la compra
+    @NotNull
     @Column(name = "purchase_date", nullable = false)
     private LocalDate purchaseDate;
 
-    // Nombre del comprador que tiene que estar asociado a un usuario
-    @OneToOne(cascade = CascadeType.ALL) //Cada usuario-comprador tiene un solo carrito. Puede tener varias compras, pero un solo carrito a la vez
-    @JoinColumn(name = "user_id")
-    @JsonBackReference
-    private User buyer;
-
-    // Precio total de la compra
+   // Precio total de la compra
+    @NotNull
     @Column(name = "total_price", nullable = false)
     private double totalPrice;
 
-    // Método de pago utilizado en la compra
+   // Método de pago utilizado en la compra
+    @NotNull
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod; //podriamos convertirlo en un enum
 
-    // Descripción adicional de la compra
+   // Descripción adicional de la compra
     @Column
     private String description;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "user_id")
+    @JsonBackReference
+    private User user;
 
 }

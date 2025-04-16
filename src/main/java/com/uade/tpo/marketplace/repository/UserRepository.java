@@ -10,13 +10,8 @@ import com.uade.tpo.marketplace.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query(value = "select u from User u where u.email = ?1")
-    Optional<User> findByEmail(String mail);
+    @Query("SELECT u FROM User u WHERE u.username = ?1")
+    Optional<User> findByUsername(String username);
+    Boolean existsByUsername(String username);
+    Boolean existsByEmail(String email);
 }
-/*
-@Repository
-public interface UserRepository extends JpaRepository<User, Long>{
-    @Query(value = "select u from User u where u.email = ?1")
-    List<User> findByEmail(String email);
-}
-*/

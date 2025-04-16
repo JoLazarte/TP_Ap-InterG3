@@ -1,7 +1,14 @@
 package com.uade.tpo.marketplace.entity;
+
+import java.util.Collection;
 import java.util.List;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.uade.tpo.marketplace.controllers.users.UserDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -14,49 +21,79 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-//import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class User {
-    public User(){
-    }
-    public User(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
-    }
+public class User implements UserDetails{
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
+    private String username;
     @Column
-    private String userName;
+    private String firstName;
+    @Column
+    private String lastName;
+    @Column(unique = true)
+    private String email;
     @Column
     private String password;
-    @Column
-    private String name;
-    @Column
-    private String surname;
-    @Column
-    private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     @JsonManagedReference
     private Cart cart;
+    
+    @NotNull
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Buy> orders;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "purchaseDocument_id")
+    
+    @NotNull
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private PurchaseDocument purchaseDocument; //(Aca se estableceria la relación con "documento de compra")
+    private List<PurchaseDocument> purchaseDocuments;
 
-    public void registerUser(){
+    public void assignCart(Cart cart) {
+        this.cart.setUser(this);
+    }
+    public UserDTO toDTO() {
+        return new UserDTO(
+            this.id,
+            this.username,
+            this.firstName,
+            this.lastName,
+            this.email,
+            this.password,
+            this.role,
+            this.cart,
+            this.orders,
+            this.purchaseDocuments
+               
+            );
+    }
 
+    public void updateData(User newUser){
+        setFirstName(newUser.getFirstName());
+        setLastName(newUser.getLastName());
+        setEmail(newUser.getEmail());
     }
-    public void loginUser(){
-        
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
+
+    
 }

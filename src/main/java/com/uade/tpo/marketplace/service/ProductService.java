@@ -1,17 +1,15 @@
 package com.uade.tpo.marketplace.service;
 
-import java.util.Optional;
+import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 import com.uade.tpo.marketplace.entity.Product;
 
 public interface ProductService {
-    public Optional<Product> getProductsById(Long productId);
+    public Product getProductById(Long id) throws Exception;
     
-    Page<Product> getProducts(PageRequest pageRequest);
+    public List<Product> getAllProducts() throws Exception;
 
-    Product createProduct(Product product);
+    public Product createProduct(Product product) throws Exception;
 
 }

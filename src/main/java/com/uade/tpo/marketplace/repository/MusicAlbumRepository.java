@@ -1,7 +1,6 @@
 package com.uade.tpo.marketplace.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -15,9 +14,6 @@ import com.uade.tpo.marketplace.entity.MusicAlbum;
 @Repository
 public interface MusicAlbumRepository extends JpaRepository<MusicAlbum, Long> {
 
-    @Query(value = "select b from MusicAlbum b where b.id = ?1")
-    Optional<MusicAlbum> findMusicAlbumById(Long MusicAlbumId);
-
     @Query(value = "select b from MusicAlbum b where b.isrc = ?1")
     List<MusicAlbum> findByIsrc(String isrc);
 
@@ -27,6 +23,5 @@ public interface MusicAlbumRepository extends JpaRepository<MusicAlbum, Long> {
     @Modifying
     @Query(value = "update MusicAlbum b set b.stock = ?2 where b.id = ?1")
     void updateStock(Long id, int newStock);
-
-    List<MusicAlbum> findByTitleContainingIgnoreCase(String title);
+    
 }

@@ -1,27 +1,28 @@
 package com.uade.tpo.marketplace.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.uade.tpo.marketplace.entity.Book;
-import com.uade.tpo.marketplace.entity.GenreBook;
 import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
 
 public interface BookService {
-    public Page<Book> getBooks(PageRequest pageRequest);
+    public Page<Book> getBooks(PageRequest pageRequest) throws Exception;
+  
+    public Book getBookById(Long bookId) throws Exception;
 
-    public Optional<Book> getBookById(Long bookId);
+    public Book updateBook(Book book) throws Exception;
+
+    @Transactional
+    public void deleteBook(Long bookId) throws Exception;
 
     @Transactional
     public void updateStock(Long bookId, int newStock);
 
     public Page<Book> getBooksByAuthor(String author, PageRequest pageable);
 
-    public Book createBook(String title, String author, String editorial, String description, String isbn, GenreBook genreBooks, Float price, int stock, List<String> urlImages) throws BookDuplicateException;
+    public Book createBook(Book book) throws BookDuplicateException;
 
-    public List<Book> filterBooks(String title);
+    //public List<Book> filterBooks(String title);
 }

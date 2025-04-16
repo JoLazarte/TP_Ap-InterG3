@@ -2,23 +2,40 @@ package com.uade.tpo.marketplace.entity;
 
 import java.util.List;
 
+import com.uade.tpo.marketplace.controllers.books.BookDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data 
+@EqualsAndHashCode(callSuper=false)
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name="PRODUCT")
+
 public class Book extends Product{
 
-    public Book() {
-    }
-    
-    public Book(String title, String author, String editorial, String description, String isbn,
-                GenreBook genreBooks, float price, int stock, List<String> urlImage) {
+    @NotNull
+    @Column
+    private String editorial;
+    @NotNull
+    @Column
+    private String isbn;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private List<GenreBook> genreBooks;
+
+    public Book(Long id, String title, String author, String editorial, String description, String isbn,
+                List<GenreBook> genreBooks, double price, int stock, List<String> urlImage) {
+        this.id=id;            
         this.title = title;
         this.author = author;
         this.editorial = editorial;
@@ -30,14 +47,22 @@ public class Book extends Product{
         this.urlImage = urlImage;
     }
 
-    @Column
-    private String editorial;
+    public BookDTO toDTO() {
+        return new BookDTO(
+                this.id,
+                this.title,
+                this.author,
+                this.editorial,
+                this.description,
+                this.isbn,
+                this.genreBooks,
+                this.price,
+                this.stock,
+                this.urlImage
+                );
+    }
 
-    @Column
-    private String isbn;
-
-    @Enumerated(EnumType.STRING)
-    private GenreBook genreBooks;
+    
 
     
 }
