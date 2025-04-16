@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.tpo.marketplace.entity.Book;
 import com.uade.tpo.marketplace.entity.ResponseData;
+import com.uade.tpo.marketplace.exceptions.ProductException;
 import com.uade.tpo.marketplace.service.BookService;
 
 import java.net.URI;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -90,6 +92,34 @@ public class BookController {
         }
     }
 
+    @PutMapping("")
+    public ResponseEntity<ResponseData<?>> updateBook(@RequestBody BookDTO bookDTO) {
+        try {
+        Book book = bookDTO.toEntity();
+        Book updatedBook = bookService.updateBook(book);
+        BookDTO updatedBookDTO = updatedBook.toDTO();
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(updatedBookDTO));
+
+        }catch (ProductException error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
+
+        } catch (Exception error) {
+            System.out.printf("[BookController.updateBook] -> %s", error.getMessage() );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo actualizar el libro"));
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseData<?>> deleteBook(@PathVariable Long bookId) {
+        try {
+            bookService.deleteBook(bookId);
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(null));
+
+        } catch (Exception error) {
+            System.out.printf("[ProductController.deleteProduct] -> %s", error.getMessage() );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo eliminar el producto"));
+        }
+    }
     @PutMapping("/{bookId}")
     public ResponseEntity<ResponseData<?>> updateBookStock(@PathVariable Long bookId, @RequestBody BookDTO bookDTO) {
         bookService.updateStock(bookId,bookDTO.getStock());

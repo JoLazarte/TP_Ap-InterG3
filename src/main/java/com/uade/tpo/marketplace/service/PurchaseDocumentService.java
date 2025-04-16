@@ -5,8 +5,6 @@ import java.util.Optional;
 
 import com.uade.tpo.marketplace.entity.PurchaseDocument;
 
-
-
 public interface PurchaseDocumentService {
 
    public List<PurchaseDocument> getBuysPurchDocs(Long userId) throws Exception;

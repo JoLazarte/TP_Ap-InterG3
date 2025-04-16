@@ -58,7 +58,6 @@ public class Buy {
       totalPrice += itemBuyed.getSubTotal();
     }
     return totalPrice;
-
   }
 
   public void setItems(List<BuyItem> itemsBuyed) {

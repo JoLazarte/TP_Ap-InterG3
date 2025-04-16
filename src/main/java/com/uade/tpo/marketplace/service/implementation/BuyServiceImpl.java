@@ -24,11 +24,6 @@ public class BuyServiceImpl implements BuyService{
     @Autowired
     private PurchaseDocumentService purchaseDocumentService;
 
-    @Override
-    @Transactional
-    public void deleteBuy(Long buyId) {
-        buyRepository.deleteById(buyId);
-    }
 
     @Transactional
     public List<Buy> getUserBuys(Long userId) throws Exception {
@@ -48,7 +43,6 @@ public class BuyServiceImpl implements BuyService{
         .build();
 
       List<BuyItem> itemsBuyed = cart.generateBuyItems();
-
       buy.setItems(itemsBuyed);
 
       buy.assignPurchaseDocument(purchaseDocument);

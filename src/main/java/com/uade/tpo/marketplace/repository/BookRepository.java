@@ -15,9 +15,6 @@ import com.uade.tpo.marketplace.entity.Book;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    @Query(value = "select b from Buy b where b.buyDate = ?1")
-    Book findBookById(Long bookId);
-
     @Query(value = "select b from Book b where b.isbn = ?1")
     List<Book> findByIsbn(String isbn);
 

@@ -15,16 +15,15 @@ public interface CartService {
     CartItem addItemBook(Cart cart,Long bookId) throws Exception;
     @Transactional
     CartItem addItemMusicAlbum(Cart cart, Long musicAlbumId) throws Exception;
-    
     @Transactional
     public void removeBookFromCart(Cart cart, Long bookId) throws Exception;
-
-
+    @Transactional
+    public void removeMalbumFromCart(Cart cart, Long malbumId) throws Exception;
     @Transactional
     public void removeItemBookFromCart(Long cartId, Long bookId) throws Exception;
-
-    
-
+    @Transactional
+    public void removeItemMalbumFromCart(Long cartId, Long malbumId) throws Exception;
     public void emptyCart(Long cartId) throws Exception;
     public Buy checkout(Long cartId) throws Exception;
+
 }

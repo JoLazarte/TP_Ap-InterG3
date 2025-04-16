@@ -14,9 +14,6 @@ import com.uade.tpo.marketplace.entity.MusicAlbum;
 @Repository
 public interface MusicAlbumRepository extends JpaRepository<MusicAlbum, Long> {
 
-    @Query(value = "select b from MusicAlbum b where b.id = ?1")
-    MusicAlbum findMusicAlbumById(Long MusicAlbumId);
-
     @Query(value = "select b from MusicAlbum b where b.isrc = ?1")
     List<MusicAlbum> findByIsrc(String isrc);
 

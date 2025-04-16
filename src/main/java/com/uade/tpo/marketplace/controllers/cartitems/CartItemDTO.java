@@ -22,13 +22,14 @@ public class CartItemDTO {
     private Book book;  
     
     private MusicAlbum musicAlbum;
+
     private int quantityBook;
     private int quantityMalbum;
     @JsonIgnore
     @NotNull
     private Cart cart; 
 
-     public CartItem toEntityForBook() {
+    public CartItem toEntityForBook() {
         return CartItem.builder()
                 .id(this.id)
                 .book(this.book)
@@ -56,4 +57,6 @@ public class CartItemDTO {
     public Long getCartId() {
         return this.cart.getId();
     }
+
+    
 }
