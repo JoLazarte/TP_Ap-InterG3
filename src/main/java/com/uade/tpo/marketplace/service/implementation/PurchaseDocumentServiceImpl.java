@@ -34,7 +34,7 @@ public class PurchaseDocumentServiceImpl implements PurchaseDocumentService {
           PurchaseDocument purchaseDocument = new PurchaseDocument();
           return purchaseDocument;
         } catch (Exception error) {
-          throw new Exception("[CartService.createCart] -> " + error.getMessage());
+          throw new Exception("[PurchaseDocumentService.createPurchaseDocument] -> " + error.getMessage());
         }
     }
 

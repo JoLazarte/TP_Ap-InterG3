@@ -1,11 +1,11 @@
 package com.uade.tpo.marketplace.controllers.purchasedocuments;
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.uade.tpo.marketplace.entity.Buy;
 import com.uade.tpo.marketplace.entity.User;
 
-import jakarta.validation.constraints.NotNull;
+//import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,18 +18,18 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PurchaseDocumentDTO {
     private Long id;
-    @NotNull
-    @JsonManagedReference
+    //@NotNull
+    @JsonBackReference
     private Buy buy;
-    @NotNull
+   // @NotNull
     private User user;
-    @NotNull
+   // @NotNull
     private LocalDate purchaseDate;
-    @NotNull
+   // @NotNull
     private double totalPrice;
-    @NotNull
+   // @NotNull
     private String paymentMethod; //podriamos convertirlo en un enum
-    @NotNull
+   // @NotNull
     private String description;
 
     
