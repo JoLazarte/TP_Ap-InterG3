@@ -1,9 +1,11 @@
 package com.uade.tpo.marketplace.controllers.carts;
 
-import com.uade.tpo.marketplace.controllers.cartitems.CartItemDTO;
+import com.uade.tpo.marketplace.controllers.cartitems.CartBookDTO;
+import com.uade.tpo.marketplace.controllers.cartitems.CartMalbumDTO;
 import com.uade.tpo.marketplace.entity.Buy;
 import com.uade.tpo.marketplace.entity.Cart;
-import com.uade.tpo.marketplace.entity.CartItem;
+import com.uade.tpo.marketplace.entity.CartBook;
+import com.uade.tpo.marketplace.entity.CartMalbum;
 import com.uade.tpo.marketplace.entity.ResponseData;
 import com.uade.tpo.marketplace.entity.User;
 
@@ -56,15 +58,15 @@ public class CartController {
         try {
             User authUser = userService.getUserByUsername(userDetails.getUsername());
             Cart cart = authUser.getCart();
-            CartItem addedBook = cartService.addItemBook(cart, bookId);
-            CartItemDTO addedItemRequest = addedBook.toDTOForBook();
-            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedItemRequest));
+            CartBook addedBook = cartService.addItemBook(cart, bookId);
+            CartBookDTO addedBookDTO = addedBook.toDTOForBook();
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedBookDTO));
 
         } catch (UserException | CartException | ProductException error) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
 
         } catch (Exception error) {
-        System.out.printf("[CartController.addItemToCart] -> %s", error.getMessage());
+        System.out.printf("[CartController.addBookToCart] -> %s", error.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(ResponseData.error("No se pudo agregar el item al carro"));
         }
@@ -76,15 +78,15 @@ public class CartController {
         try {
             User authUser = userService.getUserByUsername(userDetails.getUsername());
             Cart cart = authUser.getCart();
-            CartItem addedMalbum = cartService.addItemMusicAlbum(cart, musicAlbumId);  
-            CartItemDTO addedItemRequest = addedMalbum.toDTOForMalbum();
-            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedItemRequest));
+            CartMalbum addedMalbum = cartService.addItemMusicAlbum(cart, musicAlbumId);  
+            CartMalbumDTO addedMalbumDTO = addedMalbum.toDTOForMalbum();
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedMalbumDTO));
 
         } catch (UserException | CartException | ProductException error) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
 
         } catch (Exception error) {
-        System.out.printf("[CartController.addItemToCart] -> %s", error.getMessage());
+        System.out.printf("[CartController.addMusicAlbumToCart] -> %s", error.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(ResponseData.error("No se pudo agregar el item al carro"));
         }

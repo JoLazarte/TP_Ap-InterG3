@@ -11,7 +11,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.uade.tpo.marketplace.controllers.cartitems.CartItemDTO;
+import com.uade.tpo.marketplace.controllers.cartitems.CartBookDTO;
+import com.uade.tpo.marketplace.controllers.cartitems.CartMalbumDTO;
 import com.uade.tpo.marketplace.controllers.carts.CartDTO;
 
 @Entity
@@ -32,8 +33,11 @@ public class Cart {
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<CartItem> items;
+    private List<CartBook> bookItems;
 
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<CartMalbum> malbumItems;
     
     public CartDTO toDTO() {
         // Crear un nuevo objeto CartRequest
@@ -44,15 +48,15 @@ public class Cart {
         cartRequest.setUser(this.getUser());
 
         // Convertir la lista de cartItems de Cart a una lista de CartItemRequests
-        List<CartItemDTO> cartItemRequestsBooks = this.getItems().stream()
-                .map(CartItem::toDTOForBook)
+        List<CartBookDTO> cartItemRequestsBooks = this.getBookItems().stream()
+                .map(CartBook::toDTOForBook)
                 .toList();
-        List<CartItemDTO> cartItemRequestsMalbums = this.getItems().stream()
-                .map(CartItem::toDTOForMalbum)
+        List<CartMalbumDTO> cartItemRequestsMalbums = this.getMalbumItems().stream()
+                .map(CartMalbum::toDTOForMalbum)
                 .toList();
         // Asignar la lista de ItemDTO al CartDTO
-        cartRequest.setItems(cartItemRequestsBooks);
-        cartRequest.setItems(cartItemRequestsMalbums);
+        cartRequest.setBookItems(cartItemRequestsBooks);
+        cartRequest.setMalbumItems(cartItemRequestsMalbums);
         cartRequest.setTotalPrice(this.calculateTotalPrice());
 
         return cartRequest; // Devolver el CartDTO convertido
@@ -61,16 +65,20 @@ public class Cart {
     public double calculateTotalPrice() {
         double total = 0;
 
-        for (CartItem item : this.getItems()) {
-            total += item.getSubTotal();
+        for (CartBook itemBook : this.getBookItems()) {
+            total += itemBook.getSubTotal();
+        }
+        for (CartMalbum itemMalbum : this.getMalbumItems()) {
+            total += itemMalbum.getSubTotal();
         }
 
         return total;
     }
- /////////////////////////////////////////////////////////////////
+ ////******************************* Compramos los items del carrito ********************************/////
+    
     public List<BuyItem> generateBuyItems() {
         List<BuyItem> itemsBuyed = new ArrayList<>();
-        this.getItems().forEach(item -> {
+        this.getBookItems().forEach(item -> {
             // Los libros en el carrito:
             if (item.getQuantityBook() > item.getBook().getStock()) {
                 throw new RuntimeException("Not enough stock of product: " + item.getBook().getTitle());
@@ -78,6 +86,12 @@ public class Cart {
             else {
                 item.getBook().setStock(item.getBook().getStock() - item.getQuantityBook());
             }
+            BuyItem bookBuyed = item.toBuyItemBook();
+            itemsBuyed.add(bookBuyed);
+            
+        });
+
+        this.getMalbumItems().forEach(item -> {
             //Los discos en el carrito:
             if (item.getQuantityMalbum() > item.getMusicAlbum().getStock()) {
                 throw new RuntimeException("Not enough stock of product: " + item.getMusicAlbum().getTitle());
@@ -85,10 +99,7 @@ public class Cart {
             else {
                 item.getMusicAlbum().setStock(item.getMusicAlbum().getStock() - item.getQuantityMalbum());
             }
-
-            BuyItem bookBuyed = item.toBuyItemBook();
             BuyItem malbumBuyed = item.toBuyItemMalbum();
-            itemsBuyed.add(bookBuyed);
             itemsBuyed.add(malbumBuyed);
         });
 
