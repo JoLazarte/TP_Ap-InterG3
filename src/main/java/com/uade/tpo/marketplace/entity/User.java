@@ -60,7 +60,7 @@ public class User implements UserDetails{
     @JsonManagedReference
     private List<Buy> orders;
     
-    @NotNull
+    //@NotNull
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<PurchaseDocument> purchaseDocuments;

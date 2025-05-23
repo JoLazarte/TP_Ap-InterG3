@@ -3,7 +3,8 @@ package com.uade.tpo.marketplace.service.implementation;
 import com.uade.tpo.marketplace.entity.Book;
 import com.uade.tpo.marketplace.entity.Buy;
 import com.uade.tpo.marketplace.entity.Cart;
-import com.uade.tpo.marketplace.entity.CartItem;
+import com.uade.tpo.marketplace.entity.CartBook;
+import com.uade.tpo.marketplace.entity.CartMalbum;
 import com.uade.tpo.marketplace.entity.MusicAlbum;
 import com.uade.tpo.marketplace.exceptions.CartException;
 import com.uade.tpo.marketplace.exceptions.ProductException;
@@ -51,13 +52,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Transactional
-    public CartItem addItemBook(Cart cart, Long bookId) throws Exception {
+    public CartBook addItemBook(Cart cart, Long bookId) throws Exception {
         try {
             Book book = bookService.getBookById(bookId);
             if (book.getStock() == 0) {
                 throw new ProductException("Se acabo el stock del producto seleccionado");
             }
-            CartItem cartItem = cart.getItems().stream()
+            CartBook cartItem = cart.getBookItems().stream()
                 .filter(item -> item.getBookId().equals(book.getId()))
                 .findFirst()
                 .orElse(null);
@@ -71,12 +72,12 @@ public class CartServiceImpl implements CartService {
                 }
             } else {
             // Si no existe, creamos un nuevo ítem
-                cartItem = new CartItem();
+                cartItem = new CartBook();
                 cartItem.setBook(book);
                 cartItem.setQuantityBook(1);
                 cartItem.setCart(cart);
             // Agregamos el nuevo ítem al carrito
-                cart.getItems().add(cartItem);
+                cart.getBookItems().add(cartItem);
             }
             // Guardar el carrito actualizado
             cartRepository.save(cart);
@@ -86,19 +87,19 @@ public class CartServiceImpl implements CartService {
         } catch (ProductException error) {
             throw new ProductException(error.getMessage());
         } catch (Exception error) {
-            throw new Exception("[CartService.addItemToCart] -> " + error.getMessage());
+            throw new Exception("[CartService.addBookToCart] -> " + error.getMessage());
         }
     }
     
     @Transactional
-    public CartItem addItemMusicAlbum(Cart cart, Long musicAlbumId) throws Exception {
+    public CartMalbum addItemMusicAlbum(Cart cart, Long musicAlbumId) throws Exception {
         try {
             MusicAlbum musicAlbum = musicAlbumService.getMusicAlbumById(musicAlbumId);
             if (musicAlbum.getStock() == 0) {
                 throw new ProductException("Se acabo el stock del producto seleccionado");
             }
-            CartItem cartItem = cart.getItems().stream()
-                .filter(item -> item.getBookId().equals(musicAlbum.getId()))
+            CartMalbum cartItem = cart.getMalbumItems().stream()
+                .filter(item -> item.getMusicAlbumId().equals(musicAlbum.getId()))
                 .findFirst()
                 .orElse(null);
 
@@ -111,12 +112,12 @@ public class CartServiceImpl implements CartService {
                 }
             } else {
                 // Si no existe, creamos un nuevo ítem
-                cartItem = new CartItem();
+                cartItem = new CartMalbum();
                 cartItem.setMusicAlbum(musicAlbum);
                 cartItem.setQuantityMalbum(1);
                 cartItem.setCart(cart);
             // Agregamos el nuevo ítem al carrito
-            cart.getItems().add(cartItem);
+            cart.getMalbumItems().add(cartItem);
         }
             // Guardar el carrito actualizado
             cartRepository.save(cart);
@@ -134,14 +135,14 @@ public class CartServiceImpl implements CartService {
     public void removeBookFromCart(Cart cart, Long bookId) throws Exception {
         try {
             Book book = bookService.getBookById(bookId);
-            CartItem item = cart.getItems().stream()
+            CartBook item = cart.getBookItems().stream()
                 .filter(cartItem -> cartItem.getBookId().equals(book.getId()))
                 .findFirst()
                 .orElse(null);
 
             if (item != null) {
                 if (item.getQuantityBook() == 1) {
-                cart.getItems().remove(item);
+                cart.getBookItems().remove(item);
                 } else {
                     item.setQuantityBook(item.getQuantityBook() - 1);
                 }
@@ -158,15 +159,15 @@ public class CartServiceImpl implements CartService {
     public void removeMalbumFromCart(Cart cart, Long malbumId) throws Exception {
         try {
             MusicAlbum musicAlbum = musicAlbumService.getMusicAlbumById(malbumId);
-            CartItem item = cart.getItems().stream()
+            CartMalbum item = cart.getMalbumItems().stream()
                 .filter(cartItem -> cartItem.getMusicAlbumId().equals(musicAlbum.getId()))
                 .findFirst()
                 .orElse(null);
             if (item != null) {
-                if (item.getQuantityBook() == 1) {
-                cart.getItems().remove(item);
+                if (item.getQuantityMalbum() == 1) {
+                cart.getMalbumItems().remove(item);
                 } else {
-                    item.setQuantityBook(item.getQuantityBook() - 1);
+                    item.setQuantityMalbum(item.getQuantityMalbum() - 1);
                 }
             }
             cartRepository.save(cart);
@@ -182,11 +183,11 @@ public class CartServiceImpl implements CartService {
       try {
         Cart cart = getCartById(cartId);
         Book book = bookService.getBookById(bookId);
-        CartItem item = cart.getItems().stream()
+        CartBook item = cart.getBookItems().stream()
             .filter(cartItem -> cartItem.getBookId().equals(book.getId()))
             .findFirst()
             .orElse(null);
-        cart.getItems().remove(item);
+        cart.getBookItems().remove(item);
         cartRepository.save(cart);
       } catch (CartException error) {
         throw new CartException(error.getMessage());
@@ -200,11 +201,11 @@ public class CartServiceImpl implements CartService {
       try {
         Cart cart = getCartById(cartId);
         MusicAlbum musicAlbum = musicAlbumService.getMusicAlbumById(malbumId);
-        CartItem item = cart.getItems().stream()
+        CartMalbum item = cart.getMalbumItems().stream()
             .filter(cartItem -> cartItem.getMusicAlbumId().equals(musicAlbum.getId()))
             .findFirst()
             .orElse(null);
-        cart.getItems().remove(item);
+        cart.getMalbumItems().remove(item);
         cartRepository.save(cart);
       } catch (CartException error) {
         throw new CartException(error.getMessage());
@@ -216,7 +217,8 @@ public class CartServiceImpl implements CartService {
     public void emptyCart(Long cartId) throws Exception {
         try {
             Cart cart = getCartById(cartId);
-            cart.getItems().clear();
+            cart.getBookItems().clear();
+            cart.getMalbumItems().clear();
             cartRepository.save(cart);
         } catch (CartException error) {
             throw new CartException(error.getMessage());

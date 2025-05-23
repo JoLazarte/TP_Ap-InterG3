@@ -36,20 +36,22 @@ public class BuyServiceImpl implements BuyService{
 
     public Buy createBuy(Cart cart) throws Exception {
     try{
-      PurchaseDocument purchaseDocument = purchaseDocumentService.createPurchaseDocument();
+      PurchaseDocument purchaseDocument = purchaseDocumentService.createPurchaseDocument(); 
       Buy buy = Buy.builder()
         .buyDate(LocalDateTime.now())
         .user(cart.getUser())
         .build();
 
+      buy.setPurchaseDocument(purchaseDocument);
+      buy.assignPurchaseDocument(purchaseDocument);
+
       List<BuyItem> itemsBuyed = cart.generateBuyItems();
       buy.setItems(itemsBuyed);
 
-      buy.assignPurchaseDocument(purchaseDocument);
-
       return buyRepository.save(buy);
-    }catch(Exception error){
-      throw new Exception("[BuyService.createBuy] -> " + error.getMessage());
+
+    } catch(Exception error){
+       throw new Exception("[BuyService.createBuy] -> " + error.getMessage());
     }
   }
 

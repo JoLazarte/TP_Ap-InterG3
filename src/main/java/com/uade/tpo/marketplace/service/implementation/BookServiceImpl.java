@@ -69,7 +69,7 @@ public class BookServiceImpl implements BookService {
 
             List<Cart> carts = cartRepository.findAll();
               for (Cart cart : carts) {
-                  cart.getItems().removeIf(item -> item.getBook().getId().equals(bookId));
+                  cart.getBookItems().removeIf(item -> item.getBook().getId().equals(bookId));
               }
               cartRepository.saveAll(carts);
 

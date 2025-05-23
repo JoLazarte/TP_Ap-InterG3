@@ -69,7 +69,7 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
         try {
             List<Cart> carts = cartRepository.findAll();
               for (Cart cart : carts) {
-                  cart.getItems().removeIf(item -> item.getMusicAlbum().getId().equals(malbumId));
+                  cart.getMalbumItems().removeIf(item -> item.getMusicAlbum().getId().equals(malbumId));
               }
               cartRepository.saveAll(carts);
 

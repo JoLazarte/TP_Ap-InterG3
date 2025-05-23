@@ -37,10 +37,10 @@ public class Buy {
   @NotNull
   @Column(nullable = false)
   private LocalDateTime buyDate;
-  @NotNull
+ //@NotNull
   @OneToOne(cascade = CascadeType.ALL) 
   @JoinColumn(name = "purchasedDocument_id")
-  @JsonBackReference
+  @JsonManagedReference
   private PurchaseDocument purchaseDocument;
   @NotEmpty
   @OneToMany(mappedBy = "buy", cascade = CascadeType.ALL)
@@ -70,7 +70,7 @@ public class Buy {
         .id(this.id)
         .itemsBuyed(this.itemsBuyed)
         .buyDate(this.buyDate)
-        .purchaseDocument(this.purchaseDocument)
+        .purchaseDocument(purchaseDocument)
         .user(user)
         .totalPrice(this.getTotalPrice())
         .build();
