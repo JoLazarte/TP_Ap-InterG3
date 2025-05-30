@@ -1,6 +1,7 @@
 package com.uade.tpo.marketplace.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.uade.tpo.marketplace.controllers.wishlist.WishListItemDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,8 +37,10 @@ public class WishListItem {
     return WishListItemDTO.builder()
         .id(this.id)
         .user(this.user)
-        .book(this.book)
-        .malbum(this.malbum)
+        //.book(this.book)
+        //.malbum(this.malbum)
+        .product(this.book)
+        .product(this.malbum)
         .build();
 
   }

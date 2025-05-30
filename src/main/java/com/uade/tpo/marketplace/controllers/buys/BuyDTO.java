@@ -26,7 +26,7 @@ public class BuyDTO {
     //@NotNull
   
     @NotNull
-    private List<BuyItem> itemsBuyed;
+    private List<BuyItem> items;
     @NotNull
     @JsonBackReference
     private User user;
@@ -38,7 +38,7 @@ public class BuyDTO {
             //.id(this.id)
             .buyDate(this.buyDate)
             .user(this.user)
-            .itemsBuyed(this.itemsBuyed)
+            .items(this.items)
             .build();
   }
     

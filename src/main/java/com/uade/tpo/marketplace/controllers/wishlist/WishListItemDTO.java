@@ -24,9 +24,9 @@ public class WishListItemDTO {
   public WishListItem toEntity() {
     return WishListItem.builder()
         .id(this.id)
-        .user(this.user)
-        .book(this.book)
-        .malbum(this.malbum)
+        .user(user)
+        .book(book)
+        .malbum(malbum)
         .build();
   }
 }

@@ -78,8 +78,8 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
               }
               cartRepository.saveAll(carts);
 
-              searchRepository.deleteByProductId(malbumId);
-              wishListItemRepository.deleteByProductId(malbumId);
+              searchRepository.deleteByMalbumId(malbumId);
+              wishListItemRepository.deleteByMalbumId(malbumId);
               musicAlbumRepository.deleteById(malbumId);
 
           } catch (Exception error) {

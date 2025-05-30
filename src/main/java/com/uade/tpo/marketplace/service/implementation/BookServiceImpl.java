@@ -79,8 +79,8 @@ public class BookServiceImpl implements BookService {
               }
               cartRepository.saveAll(carts);
 
-              searchRepository.deleteByProductId(bookId);
-              wishListItemRepository.deleteByProductId(bookId);
+              searchRepository.deleteByBookId(bookId);
+              wishListItemRepository.deleteByBookId(bookId);
               bookRepository.deleteById(bookId);
 
           } catch (Exception error) {
