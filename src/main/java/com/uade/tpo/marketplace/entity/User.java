@@ -59,11 +59,16 @@ public class User implements UserDetails{
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Buy> orders;
-    
-    //@NotNull
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+
+    @NotNull
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL ,orphanRemoval = true)
     @JsonManagedReference
-    private List<PurchaseDocument> purchaseDocuments;
+    private List<WishListItem> wishList;
+
+    @NotNull
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Search> lastSearches;
 
     public void assignCart(Cart cart) {
         this.cart.setUser(this);
@@ -79,9 +84,8 @@ public class User implements UserDetails{
             this.role,
             this.cart,
             this.orders,
-            this.purchaseDocuments
-               
-            );
+            this.wishList,
+            this.lastSearches);
     }
 
     public void updateData(User newUser){

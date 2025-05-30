@@ -59,8 +59,7 @@ public class SecurityConfig {
 						.requestMatchers("/carts/**").authenticated()
                                                 //CartItem
                                                 //.requestMatchers("/cartItems/**").authenticated()
-                                                //Purchasedocument
-                                                .requestMatchers("/purchaseDocuments/**").authenticated()
+                                             
 						// Default
                                                 .anyRequest().authenticated())
                                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

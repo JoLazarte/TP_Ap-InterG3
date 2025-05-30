@@ -40,8 +40,6 @@ public class Buy {
  //@NotNull
   @OneToOne(cascade = CascadeType.ALL) 
   @JoinColumn(name = "purchasedDocument_id")
-  @JsonManagedReference
-  private PurchaseDocument purchaseDocument;
   @NotEmpty
   @OneToMany(mappedBy = "buy", cascade = CascadeType.ALL)
   @JsonManagedReference
@@ -70,14 +68,9 @@ public class Buy {
         .id(this.id)
         .itemsBuyed(this.itemsBuyed)
         .buyDate(this.buyDate)
-        .purchaseDocument(purchaseDocument)
         .user(user)
         .totalPrice(this.getTotalPrice())
         .build();
   }
-
-  public void assignPurchaseDocument(PurchaseDocument purchaseDocument) {
-    this.purchaseDocument.setBuy(this);
-}
 
 }
