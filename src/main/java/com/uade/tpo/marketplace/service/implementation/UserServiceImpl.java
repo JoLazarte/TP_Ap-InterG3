@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService{
 				User user = new User(null,request.getUsername(), request.getFirstName(), request.getLastName(),
 								request.getEmail(),
 								passwordEncoder.encode(request.getPassword()),
-                request.getRole(), null, new ArrayList<>(), new ArrayList<>());
+                request.getRole(), null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         
         if(request.getRole()==Role.BUYER){
           user.setCart(cart);

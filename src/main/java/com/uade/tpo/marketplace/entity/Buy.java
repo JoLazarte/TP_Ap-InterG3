@@ -16,7 +16,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -37,15 +36,11 @@ public class Buy {
   @NotNull
   @Column(nullable = false)
   private LocalDateTime buyDate;
- //@NotNull
-  @OneToOne(cascade = CascadeType.ALL) 
-  @JoinColumn(name = "purchasedDocument_id")
-  @JsonManagedReference
-  private PurchaseDocument purchaseDocument;
-  @NotEmpty
+ 
+  //@NotEmpty
   @OneToMany(mappedBy = "buy", cascade = CascadeType.ALL)
   @JsonManagedReference
-  private List<BuyItem> itemsBuyed;
+  private List<BuyItem> items;
   @NotNull
   @ManyToOne
   @JoinColumn(nullable = false, name = "user_id")
@@ -54,30 +49,25 @@ public class Buy {
  
   public double getTotalPrice() {
     double totalPrice = 0;
-    for (BuyItem itemBuyed : itemsBuyed) {
-      totalPrice += itemBuyed.getSubTotal();
+    for (BuyItem item : items) {
+      totalPrice += item.getSubTotal();
     }
     return totalPrice;
   }
 
-  public void setItems(List<BuyItem> itemsBuyed) {
-    itemsBuyed.forEach(itemBuyed -> itemBuyed.setBuy(this));
-    this.itemsBuyed = itemsBuyed;
+  public void setItems(List<BuyItem> itemsB) {
+    itemsB.forEach(itemB -> itemB.setBuy(this));
+    this.items = itemsB;
   }
 
   public BuyDTO toDTO() {
     return BuyDTO.builder()
         .id(this.id)
-        .itemsBuyed(this.itemsBuyed)
+        .items(this.items)
         .buyDate(this.buyDate)
-        .purchaseDocument(purchaseDocument)
         .user(user)
         .totalPrice(this.getTotalPrice())
         .build();
   }
-
-  public void assignPurchaseDocument(PurchaseDocument purchaseDocument) {
-    this.purchaseDocument.setBuy(this);
-}
 
 }

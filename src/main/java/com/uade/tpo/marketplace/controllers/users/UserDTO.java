@@ -6,9 +6,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uade.tpo.marketplace.entity.Buy;
 import com.uade.tpo.marketplace.entity.Cart;
-import com.uade.tpo.marketplace.entity.PurchaseDocument;
 import com.uade.tpo.marketplace.entity.Role;
+import com.uade.tpo.marketplace.entity.Search;
 import com.uade.tpo.marketplace.entity.User;
+import com.uade.tpo.marketplace.entity.WishListItem;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -38,8 +39,10 @@ public class UserDTO {
     private Cart cart;
     @JsonIgnore
     private List<Buy> orders;
+     @JsonIgnore
+    private List<WishListItem> wishList;
     @JsonIgnore
-    private List<PurchaseDocument> purchaseDocuments;
+    private List<Search> lastSearches;
 
     public User toEntity() {
         return new User(
@@ -52,7 +55,8 @@ public class UserDTO {
                 this.role,
                 this.cart,
                 this.orders,
-                this.purchaseDocuments
-                );
+                this.wishList,
+                this.lastSearches);     
+                
     }
 }

@@ -4,10 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uade.tpo.marketplace.entity.Buy;
 import com.uade.tpo.marketplace.entity.BuyItem;
-import com.uade.tpo.marketplace.entity.PurchaseDocument;
 import com.uade.tpo.marketplace.entity.User;
 
 import jakarta.validation.constraints.NotNull;
@@ -26,10 +24,9 @@ public class BuyDTO {
     @NotNull
     private LocalDateTime buyDate;
     //@NotNull
-    @JsonManagedReference
-    private PurchaseDocument purchaseDocument;
+  
     @NotNull
-    private List<BuyItem> itemsBuyed;
+    private List<BuyItem> items;
     @NotNull
     @JsonBackReference
     private User user;
@@ -38,11 +35,10 @@ public class BuyDTO {
  
     public Buy toEntity() {
         return Buy.builder()
-            .id(this.id)
+            //.id(this.id)
             .buyDate(this.buyDate)
-            .purchaseDocument(purchaseDocument)
             .user(this.user)
-            .itemsBuyed(this.itemsBuyed)
+            .items(this.items)
             .build();
   }
     

@@ -39,9 +39,6 @@ public class SecurityConfig {
                                                 .requestMatchers("/auth/**").permitAll()
                                                 // User
 						.requestMatchers("/users/**").authenticated()
-						// Product
-						.requestMatchers(HttpMethod.GET, "/products/**").permitAll()
-						.requestMatchers("/products/**").hasAuthority(Role.ADMIN.name())
                                                 //Book
                                                 .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
                                                 .requestMatchers("/books/**").hasAuthority(Role.ADMIN.name())
@@ -59,8 +56,7 @@ public class SecurityConfig {
 						.requestMatchers("/carts/**").authenticated()
                                                 //CartItem
                                                 //.requestMatchers("/cartItems/**").authenticated()
-                                                //Purchasedocument
-                                                .requestMatchers("/purchaseDocuments/**").authenticated()
+                                             
 						// Default
                                                 .anyRequest().authenticated())
                                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

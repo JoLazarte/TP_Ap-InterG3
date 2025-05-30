@@ -13,6 +13,8 @@ import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
 import com.uade.tpo.marketplace.exceptions.ProductException;
 import com.uade.tpo.marketplace.repository.BookRepository;
 import com.uade.tpo.marketplace.repository.CartRepository;
+import com.uade.tpo.marketplace.repository.SearchRepository;
+import com.uade.tpo.marketplace.repository.WishListItemRepository;
 import com.uade.tpo.marketplace.service.BookService;
 
 import jakarta.transaction.Transactional;
@@ -24,6 +26,10 @@ public class BookServiceImpl implements BookService {
     private BookRepository bookRepository;
     @Autowired
     private CartRepository cartRepository;
+    @Autowired
+    private WishListItemRepository wishListItemRepository;
+    @Autowired
+    private SearchRepository searchRepository;
 
     public Page<Book> getBooks(PageRequest pageable) throws Exception {
         try{
@@ -73,8 +79,8 @@ public class BookServiceImpl implements BookService {
               }
               cartRepository.saveAll(carts);
 
-              //searchRepository.deleteByProductId(bookId);
-              //wishListItemRepository.deleteByProductId(bookId);
+              searchRepository.deleteByBookId(bookId);
+              wishListItemRepository.deleteByBookId(bookId);
               bookRepository.deleteById(bookId);
 
           } catch (Exception error) {

@@ -27,16 +27,6 @@ public class ProductDTO {
     protected int stock;
     //@NotEmpty
     protected List<String> urlImage;
-    /* 
-    public Product toEntity() {
-        return new Product(
-                this.id,
-                this.title,
-                this.author,
-                this.description,
-                this.price,
-                this.stock,
-                this.urlImage);
-    }
-    */
+    
+    
 }
