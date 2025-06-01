@@ -37,10 +37,10 @@ public class WishListItem {
     return WishListItemDTO.builder()
         .id(this.id)
         .user(this.user)
-        //.book(this.book)
-        //.malbum(this.malbum)
-        .product(this.book)
-        .product(this.malbum)
+        .book(this.book)
+        .malbum(this.malbum)
+    //.product(this.book)
+        //.product(this.malbum)
         .build();
 
   }
