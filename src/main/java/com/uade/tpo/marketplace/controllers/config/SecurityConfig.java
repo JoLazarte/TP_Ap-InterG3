@@ -33,35 +33,36 @@ public class SecurityConfig {
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-                http.csrf(AbstractHttpConfigurer::disable)
-                                .authorizeHttpRequests(req -> req
-                                                //Auth
-                                                .requestMatchers("/auth/**").permitAll()
-                                                // User
-						.requestMatchers("/users/**").authenticated()
-                                                //Book
-                                                .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
-                                                .requestMatchers("/books/**").hasAuthority(Role.ADMIN.name())
-						//MusicAlbum
-                                                .requestMatchers(HttpMethod.GET, "/musicAlbums/**").permitAll()
-                                                .requestMatchers("/musicAlbums/**").hasAuthority(Role.ADMIN.name())
-                                                
-                                                //Buy
-                                                //.requestMatchers(HttpMethod.GET, "/buys/**").permitAll()
-						//.requestMatchers("/buys/**").hasAuthority(Role.BUYER.name())
+                http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                    .csrf(AbstractHttpConfigurer::disable)
+                    .authorizeHttpRequests(req -> req
+                            //Auth
+                            .requestMatchers("/auth/**").permitAll()
+                            // User
+                            .requestMatchers("/users/**").authenticated()
+                            //Book
+                            .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
+                            .requestMatchers("/books/**").hasAuthority(Role.ADMIN.name())
+                            //MusicAlbum
+                            .requestMatchers(HttpMethod.GET, "/musicAlbums/**").permitAll()
+                            .requestMatchers("/musicAlbums/**").hasAuthority(Role.ADMIN.name())
+                            
+                            //Buy
+                            //.requestMatchers(HttpMethod.GET, "/buys/**").permitAll()
+                            //.requestMatchers("/buys/**").hasAuthority(Role.BUYER.name())
 
-                                                //.requestMatchers("/buys/**").authenticated()
+                            //.requestMatchers("/buys/**").authenticated()
 
-						// Cart
-						.requestMatchers("/carts/**").authenticated()
-                                                //CartItem
-                                                //.requestMatchers("/cartItems/**").authenticated()
-                                             
-						// Default
-                                                .anyRequest().authenticated())
-                                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                                .authenticationProvider(authenticationProvider)
-                                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                            // Cart
+                            .requestMatchers("/carts/**").authenticated()
+                            //CartItem
+                            //.requestMatchers("/cartItems/**").authenticated()
+                            
+                            // Default
+                            .anyRequest().authenticated())
+                    .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+                    .authenticationProvider(authenticationProvider)
+                    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
                 return http.build();
         }
@@ -69,9 +70,9 @@ public class SecurityConfig {
 	@Bean
 	public UrlBasedCorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration corsConfig = new CorsConfiguration();
-		corsConfig.setAllowedOrigins(List.of("http://localhost:3000")); // Origen permitido
+		corsConfig.setAllowedOrigins(List.of("*")); // Permite cualquier origen
 		corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos permitidos
-		corsConfig.setAllowCredentials(true); // Si necesitas enviar cookies o autenticación
+		corsConfig.setAllowCredentials(false); // Debe ser false cuando se usa "*" como origen
 		corsConfig.addAllowedHeader("*"); // Permite todos los headers
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
