@@ -38,10 +38,10 @@ public class MusicAlbumDTO extends ProductDTO {
     @NotNull
     private int stock;
     //@NotEmpty
-    private List<String> urlImage;
+    private String urlImage;
 
     public MusicAlbumDTO(Long id, String title, String author, String recordLabel, int year, String description, String isrc,
-    double price, List<Genre> genres, int stock, List<String> urlImage
+    double price, List<Genre> genres, int stock, String urlImage
                   ) {
                 this.id= id;
                 this.title = title;

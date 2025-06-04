@@ -34,7 +34,7 @@ public class Book extends Product{
     private List<GenreBook> genreBooks;
 
     public Book(Long id, String title, String author, String editorial, String description, String isbn,
-                List<GenreBook> genreBooks, double price, int stock, List<String> urlImage) {
+                List<GenreBook> genreBooks, double price, int stock, String urlImage) {
         this.id=id;            
         this.title = title;
         this.author = author;

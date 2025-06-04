@@ -23,7 +23,7 @@ public enum GenreBook {
     PHILOSOPHICAL,
     POSTMODERN,
     RELIGIOUS,
-    REALIST,
+    MAGICALREALISM,
     SATIRE,
     POLITICAL,
     EROTIC,
@@ -32,6 +32,7 @@ public enum GenreBook {
     COMEDY,
     PARODY,
     DARK_COMEDY,
+    DYSTOPIA,
     SCI_FI,
     SURREAL,
     TALE,
@@ -46,5 +47,5 @@ public enum GenreBook {
     BIBLIOGRAPHY,
     COOKBOOK,
     JOURNALISTIC,
-    ART 
+    ART, ANTINOVEL
 }

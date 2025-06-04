@@ -1,11 +1,9 @@
 package com.uade.tpo.marketplace.entity;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,7 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.NotEmpty;
+//import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,9 +39,8 @@ public class BuyItem {
   @Column(nullable = false)
   private int totalQuantity;
   //@NotEmpty
-  @ElementCollection
   @Column(nullable = false, columnDefinition = "LONGTEXT")
-  private List<String> images;
+  private String images;
   @NotNull
   @ManyToOne
   @JoinColumn(nullable = false, name = "buy_id")

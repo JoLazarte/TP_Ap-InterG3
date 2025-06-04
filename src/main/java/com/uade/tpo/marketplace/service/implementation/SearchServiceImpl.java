@@ -11,7 +11,8 @@ import com.uade.tpo.marketplace.controllers.books.BookDTO;
 import com.uade.tpo.marketplace.controllers.musicalbums.MusicAlbumDTO;
 import com.uade.tpo.marketplace.entity.Book;
 import com.uade.tpo.marketplace.entity.MusicAlbum;
-import com.uade.tpo.marketplace.entity.Search;
+import com.uade.tpo.marketplace.entity.SearchBook;
+import com.uade.tpo.marketplace.entity.SearchMusicAlbum;
 import com.uade.tpo.marketplace.entity.User;
 import com.uade.tpo.marketplace.exceptions.ProductException;
 import com.uade.tpo.marketplace.repository.BookRepository;
@@ -30,9 +31,18 @@ public class SearchServiceImpl implements SearchService {
   @Autowired
   private UserRepository userRepository;
 
-  public List<Search> findAllSearchesByUserId(User authUser) throws Exception {
+  public List<SearchBook> findBookSearchesByUserId(User authUser) throws Exception {
     try {
-      List<Search> searches = authUser.getLastSearches();
+      List<SearchBook> searches = authUser.getLastBookSearches();
+      Collections.reverse(searches);
+      return searches;
+    } catch (Exception error) {
+      throw new Exception("[SearchItemService.findAllSearchesByUserId] -> " + error.getMessage());
+    }
+  }
+  public List<SearchMusicAlbum> findMalbumSearchesByUserId(User authUser) throws Exception {
+    try {
+      List<SearchMusicAlbum> searches = authUser.getLastMalbumSearches();
       Collections.reverse(searches);
       return searches;
     } catch (Exception error) {
@@ -40,17 +50,17 @@ public class SearchServiceImpl implements SearchService {
     }
   }
 
-  public Search addBookSearch(User authUser, BookDTO bookDTO) throws Exception {
+  public SearchBook addBookSearch(User authUser, BookDTO bookDTO) throws Exception {
     try {
       Book book = bookRepository.findById(bookDTO.getId())
           .orElseThrow(() -> new ProductException("Producto no encontrado"));
 
-      List<Search> searches = authUser.getLastSearches();
+      List<SearchBook> searches = authUser.getLastBookSearches();
       if (searches.size() >= 10) {
         searches.remove(0);
       }
 
-      Search search = Search.builder().user(authUser).book(book).date(LocalDateTime.now()).build();
+      SearchBook search = SearchBook.builder().user(authUser).book(book).date(LocalDateTime.now()).build();
       searches.add(search);
       userRepository.save(authUser);
       return search;
@@ -60,17 +70,17 @@ public class SearchServiceImpl implements SearchService {
       throw new Exception("[SearchItemService.addSearch] -> " + error.getMessage());
     }
   }
-  public Search addMalbumSearch(User authUser, MusicAlbumDTO malbumDTO) throws Exception {
+  public SearchMusicAlbum addMalbumSearch(User authUser, MusicAlbumDTO malbumDTO) throws Exception {
     try {
       MusicAlbum malbum = malbumRepository.findById(malbumDTO.getId())
           .orElseThrow(() -> new ProductException("Producto no encontrado"));
 
-      List<Search> searches = authUser.getLastSearches();
+      List<SearchMusicAlbum> searches = authUser.getLastMalbumSearches();
       if (searches.size() >= 10) {
         searches.remove(0);
       }
 
-      Search search = Search.builder().user(authUser).malbum(malbum).date(LocalDateTime.now()).build();
+      SearchMusicAlbum search = SearchMusicAlbum.builder().user(authUser).malbum(malbum).date(LocalDateTime.now()).build();
       searches.add(search);
       userRepository.save(authUser);
       return search;
@@ -83,7 +93,8 @@ public class SearchServiceImpl implements SearchService {
 
   public void emptySearches(User authUser) throws Exception {
     try {
-      authUser.getLastSearches().clear();
+      authUser.getLastBookSearches().clear();
+      authUser.getLastMalbumSearches().clear();
       userRepository.save(authUser);
     } catch (Exception error) {
       throw new Exception("[SearchItemService.emptySearches] -> " + error.getMessage());

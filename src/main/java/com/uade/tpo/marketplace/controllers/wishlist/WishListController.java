@@ -9,36 +9,36 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.uade.tpo.marketplace.controllers.books.BookDTO;
 import com.uade.tpo.marketplace.controllers.musicalbums.MusicAlbumDTO;
-import com.uade.tpo.marketplace.controllers.wishlist.WishListItemDTO;
+import com.uade.tpo.marketplace.controllers.wishlist.WishListMusicAlbumDTO;
 import com.uade.tpo.marketplace.entity.ResponseData;
 import com.uade.tpo.marketplace.entity.User;
-import com.uade.tpo.marketplace.entity.WishListItem;
+import com.uade.tpo.marketplace.entity.WishListBook;
+import com.uade.tpo.marketplace.entity.WishListMusicAlbum;
 import com.uade.tpo.marketplace.exceptions.ProductException;
 import com.uade.tpo.marketplace.exceptions.UserException;
 import com.uade.tpo.marketplace.exceptions.WishListException;
 import com.uade.tpo.marketplace.service.UserService;
-import com.uade.tpo.marketplace.service.WishListItemService;
+import com.uade.tpo.marketplace.service.WishListService;
 
 import java.util.List;
-
-
 
 @Controller
 @RequestMapping("/wishlist")
 public class WishListController {
     @Autowired
-    private WishListItemService wishListService;
+    private WishListService wishListService;
+
     @Autowired
     private UserService userService;
 
-    @GetMapping("")
-    public ResponseEntity<?> getUserWishList(@AuthenticationPrincipal UserDetails userDetails) {
+    @GetMapping("/books")
+    public ResponseEntity<?> getUserBookWishList(@AuthenticationPrincipal UserDetails userDetails) {
         try {
             User authUser = userService.getUserByUsername(userDetails.getUsername());
 
-            List<WishListItem> wishList = wishListService.findAllWishListItemsByUserId(authUser.getId());
+            List<WishListBook> wishList = wishListService.findAllWishListBooksByUserId(authUser.getId());
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(ResponseData.success(wishList.stream().map(WishListItem::toDTO).toList()));
+                    .body(ResponseData.success(wishList.stream().map(WishListBook::toDTO).toList()));
 
         } catch (UserException error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
@@ -50,13 +50,31 @@ public class WishListController {
         }
 
     }
+    @GetMapping("/musicAlbums")
+    public ResponseEntity<?> getUserMalbumWishList(@AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            User authUser = userService.getUserByUsername(userDetails.getUsername());
 
+            List<WishListMusicAlbum> wishList = wishListService.findAllWishListMalbumsByUserId(authUser.getId());
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(ResponseData.success(wishList.stream().map(WishListMusicAlbum::toDTO).toList()));
+
+        } catch (UserException error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
+
+        } catch (Exception error) {
+            System.out.printf("[WishListItemController.getUserWishList] -> %s", error.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResponseData.error("No se pudo recuperar la wishlist del usuario"));
+        }
+
+    }
     @PutMapping("/books/{bookId}")
     public ResponseEntity<?> addBookToWishList(@AuthenticationPrincipal UserDetails userDetails,
             @RequestBody BookDTO bookDTO) {
         try {
             User authUser = userService.getUserByUsername(userDetails.getUsername());
-            WishListItem item = wishListService.addBookToWishList(authUser, bookDTO);
+            WishListBook item = wishListService.addBookToWishList(authUser, bookDTO);
             return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(item.toDTO()));
 
         } catch (UserException | ProductException | WishListException error) {
@@ -67,14 +85,13 @@ public class WishListController {
             System.out.printf("[WishListItemController.addProductToWishList] -> %s", error.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error(error.getMessage()));
         }
-
     }
     @PutMapping("/musicAlbum/{musicAlbumId}")
     public ResponseEntity<?> addMalbumToWishList(@AuthenticationPrincipal UserDetails userDetails,
             @RequestBody MusicAlbumDTO malbumDTO) {
         try {
             User authUser = userService.getUserByUsername(userDetails.getUsername());
-            WishListItem item = wishListService.addMalbumToWishList(authUser, malbumDTO);
+            WishListMusicAlbum item = wishListService.addMalbumToWishList(authUser, malbumDTO);
             return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(item.toDTO()));
 
         } catch (UserException | ProductException | WishListException error) {
@@ -85,7 +102,6 @@ public class WishListController {
             System.out.printf("[WishListItemController.addProductToWishList] -> %s", error.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error(error.getMessage()));
         }
-
     }
 
     @PutMapping("/{bookId}")
@@ -94,7 +110,7 @@ public class WishListController {
         try {
             User authUser = userService.getUserByUsername(userDetails.getUsername());
             wishListService.removeBookFromWishList(authUser, bookId);
-            List<WishListItemDTO> wishlist = authUser.getWishList().stream().map(WishListItem::toDTO).toList();
+            List<WishListBookDTO> wishlist = authUser.getWishListBooks().stream().map(WishListBook::toDTO).toList();
             return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(wishlist));
 
         } catch (UserException | ProductException | WishListException error) {
@@ -105,7 +121,6 @@ public class WishListController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(ResponseData.error("No se pudo recuperar la wishlist del usuario"));
         }
-
     }
     @PutMapping("/{musicAlbumId}")
     public ResponseEntity<?> removeMalbumFromWishList(@AuthenticationPrincipal UserDetails userDetails,
@@ -113,7 +128,7 @@ public class WishListController {
         try {
             User authUser = userService.getUserByUsername(userDetails.getUsername());
             wishListService.removeMalbumFromWishList(authUser, malbumId);
-            List<WishListItemDTO> wishlist = authUser.getWishList().stream().map(WishListItem::toDTO).toList();
+            List<WishListMusicAlbumDTO> wishlist = authUser.getWishListMalbums().stream().map(WishListMusicAlbum::toDTO).toList();
             return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(wishlist));
 
         } catch (UserException | ProductException | WishListException error) {
@@ -124,7 +139,6 @@ public class WishListController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(ResponseData.error("No se pudo recuperar la wishlist del usuario"));
         }
-
     }
 
     @PutMapping("/empty")

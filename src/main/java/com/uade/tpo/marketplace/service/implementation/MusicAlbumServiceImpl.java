@@ -13,8 +13,8 @@ import com.uade.tpo.marketplace.exceptions.MusicAlbumDuplicateException;
 import com.uade.tpo.marketplace.exceptions.ProductException;
 import com.uade.tpo.marketplace.repository.CartRepository;
 import com.uade.tpo.marketplace.repository.MusicAlbumRepository;
-import com.uade.tpo.marketplace.repository.SearchRepository;
-import com.uade.tpo.marketplace.repository.WishListItemRepository;
+import com.uade.tpo.marketplace.repository.SearchMusicAlbumRepository;
+import com.uade.tpo.marketplace.repository.WishListMusicAlbumRepository;
 import com.uade.tpo.marketplace.service.MusicAlbumService;
 
 import jakarta.transaction.Transactional;
@@ -27,9 +27,10 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
     @Autowired
     private CartRepository cartRepository;
     @Autowired
-    private WishListItemRepository wishListItemRepository;
+    private WishListMusicAlbumRepository wishListMalbumRepository;
+ 
     @Autowired
-    private SearchRepository searchRepository;
+    private SearchMusicAlbumRepository searchMusicAlbumRepository;
 
     public Page<MusicAlbum> getMusicAlbums(PageRequest pageable) {
         return musicAlbumRepository.findAll(pageable);
@@ -78,8 +79,8 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
               }
               cartRepository.saveAll(carts);
 
-              searchRepository.deleteByMalbumId(malbumId);
-              wishListItemRepository.deleteByMalbumId(malbumId);
+              searchMusicAlbumRepository.deleteByMalbumId(malbumId);
+              wishListMalbumRepository.deleteByMalbumId(malbumId);
               musicAlbumRepository.deleteById(malbumId);
 
           } catch (Exception error) {

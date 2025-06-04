@@ -1,5 +1,4 @@
 package com.uade.tpo.marketplace.controllers.products;
-import java.util.List;
 
 //import com.uade.tpo.marketplace.entity.Product;
 
@@ -26,7 +25,7 @@ public class ProductDTO {
     @NotNull
     protected int stock;
     //@NotEmpty
-    protected List<String> urlImage;
+    protected String urlImage;
     
     
 }

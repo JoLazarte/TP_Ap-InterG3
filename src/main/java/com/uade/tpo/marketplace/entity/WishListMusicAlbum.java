@@ -1,9 +1,13 @@
 package com.uade.tpo.marketplace.entity;
-import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.uade.tpo.marketplace.controllers.search.SearchDTO;
+import com.uade.tpo.marketplace.controllers.wishlist.WishListMusicAlbumDTO;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,35 +18,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Search {
+public class WishListMusicAlbum {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
-  @Column(nullable = false)
-  private LocalDateTime date;
-
   @ManyToOne
   @JoinColumn(nullable = false, name = "user_id")
   @JsonBackReference
   private User user;
-
-  @ManyToOne
-  @JoinColumn(nullable = false, name = "book_id")
-  private Book book;
-
   @ManyToOne
   @JoinColumn(nullable = false, name = "malbum_id")
   private MusicAlbum malbum;
 
-  public SearchDTO toDTO() {
-    return SearchDTO.builder()
+  public WishListMusicAlbumDTO toDTO() {
+    return WishListMusicAlbumDTO.builder()
         .id(this.id)
-        .date(this.date)
-        .book(this.book)
+        .user(this.user)
         .malbum(this.malbum)
-        .user(user)
         .build();
+
   }
 }
-

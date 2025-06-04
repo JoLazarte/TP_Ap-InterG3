@@ -1,6 +1,7 @@
 package com.uade.tpo.marketplace.entity;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.uade.tpo.marketplace.controllers.wishlist.WishListItemDTO;
+import com.uade.tpo.marketplace.controllers.wishlist.WishListBookDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WishListItem {
+public class WishListBook {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -29,19 +30,15 @@ public class WishListItem {
   @ManyToOne
   @JoinColumn(nullable = false, name = "book_id")
   private Book book;
-  @ManyToOne
-  @JoinColumn(nullable = false, name = "malbum_id")
-  private MusicAlbum malbum;
 
-  public WishListItemDTO toDTO() {
-    return WishListItemDTO.builder()
+
+  public WishListBookDTO toDTO() {
+    return WishListBookDTO.builder()
         .id(this.id)
         .user(this.user)
         .book(this.book)
-        .malbum(this.malbum)
-        //.product(this.book)
-        //.product(this.malbum)
         .build();
 
   }
 }
+

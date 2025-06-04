@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class MusicAlbum extends Product{
 
     public MusicAlbum(Long id, String title, String author, String recordLabel, int year, String description, String isrc,
-    double price, List<Genre> genres, int stock, List<String> urlImage
+    double price, List<Genre> genres, int stock, String urlImage
                   ) {
                 this.id= id;
                 this.title = title;

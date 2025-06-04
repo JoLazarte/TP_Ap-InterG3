@@ -1,7 +1,5 @@
 package com.uade.tpo.marketplace.entity;
 
-import java.util.ArrayList;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.uade.tpo.marketplace.controllers.cartitems.CartBookDTO;
 import jakarta.persistence.*;
@@ -63,7 +61,7 @@ public class CartBook {
                 .description(this.getBook().getDescription())
                 .finalPrice(this.getBook().getPrice())
                 .totalQuantity(this.getQuantityBook())
-                .images(new ArrayList<>(this.getBook().getUrlImage()))
+                .images(this.getBook().getUrlImage())
                 .build();
 
     }

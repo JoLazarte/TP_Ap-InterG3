@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import com.uade.tpo.marketplace.controllers.books.BookDTO;
 import com.uade.tpo.marketplace.controllers.musicalbums.MusicAlbumDTO;
 import com.uade.tpo.marketplace.entity.ResponseData;
-import com.uade.tpo.marketplace.entity.Search;
+import com.uade.tpo.marketplace.entity.SearchBook;
+import com.uade.tpo.marketplace.entity.SearchMusicAlbum;
 import com.uade.tpo.marketplace.entity.User;
 import com.uade.tpo.marketplace.exceptions.UserException;
 import com.uade.tpo.marketplace.service.SearchService;
@@ -29,13 +30,13 @@ public class SearchController {
     private UserService userService;
 
     // Obtener todas las búsquedas de un usuario
-    @GetMapping("")
-    public ResponseEntity<?> getUserSearches(@AuthenticationPrincipal UserDetails userDetails) {
+    @GetMapping("/bookSearch")
+    public ResponseEntity<?> getUserBookSearches(@AuthenticationPrincipal UserDetails userDetails) {
         try {
             User authUser = userService.getUserByUsername(userDetails.getUsername());
-            List<Search> searches = searchService.findAllSearchesByUserId(authUser);
+            List<SearchBook> searches = searchService.findBookSearchesByUserId(authUser);
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(ResponseData.success(searches.stream().map(Search::toDTO).toList()));
+                    .body(ResponseData.success(searches.stream().map(SearchBook::toDTO).toList()));
         } catch (UserException error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
 
@@ -46,13 +47,29 @@ public class SearchController {
         }
     }
 
+    @GetMapping("/musicAlbumSearch")
+    public ResponseEntity<?> getUserMalbumSearches(@AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            User authUser = userService.getUserByUsername(userDetails.getUsername());
+            List<SearchMusicAlbum> searches = searchService.findMalbumSearchesByUserId(authUser);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(ResponseData.success(searches.stream().map(SearchMusicAlbum::toDTO).toList()));
+        } catch (UserException error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
+
+        } catch (Exception error) {
+            System.out.printf("[SearchController.getUserSearches] -> %s", error.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResponseData.error("No se pudo recuperar las búsquedas del usuario"));
+        }
+    }
     // Añadir una nueva búsqueda
     @PutMapping("/books")
     public ResponseEntity<?> addBookSearch(@AuthenticationPrincipal UserDetails userDetails,
             @RequestBody BookDTO bookDTO) {
         try {
             User authUser = userService.getUserByUsername(userDetails.getUsername());
-            Search search = searchService.addBookSearch(authUser, bookDTO);
+            SearchBook search = searchService.addBookSearch(authUser, bookDTO);
             return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(search.toDTO()));
         } catch (UserException error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
@@ -68,7 +85,7 @@ public class SearchController {
             @RequestBody MusicAlbumDTO malbumDTO) {
         try {
             User authUser = userService.getUserByUsername(userDetails.getUsername());
-            Search search = searchService.addMalbumSearch(authUser, malbumDTO);
+            SearchMusicAlbum search = searchService.addMalbumSearch(authUser, malbumDTO);
             return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(search.toDTO()));
         } catch (UserException error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));

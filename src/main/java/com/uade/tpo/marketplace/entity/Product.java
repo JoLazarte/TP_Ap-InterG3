@@ -1,11 +1,8 @@
 package com.uade.tpo.marketplace.entity;
 
-import java.util.List;
-
 import com.uade.tpo.marketplace.controllers.products.ProductDTO;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -43,9 +40,8 @@ public abstract class Product {
     protected int stock;
     
     //@NotEmpty
-    @ElementCollection
     @Column(nullable = false, columnDefinition = "LONGTEXT")
-    protected List<String> urlImage;
+    protected String urlImage;
 
     public ProductDTO toDTO() {
         return new ProductDTO(

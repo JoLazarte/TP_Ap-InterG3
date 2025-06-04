@@ -37,10 +37,10 @@ public class BookDTO extends ProductDTO{
     @NotNull
     private int stock;
     //@NotEmpty
-    private List<String> urlImage;
+    private String urlImage;
 
     public BookDTO(Long id, String title, String author, String editorial, String description, String isbn,
-                List<GenreBook> genreBooks, double price, int stock, List<String> urlImage) {
+                List<GenreBook> genreBooks, double price, int stock, String urlImage) {
         this.id=id;            
         this.title = title;
         this.author = author;
