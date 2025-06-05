@@ -46,7 +46,9 @@ public class SecurityConfig {
                             //MusicAlbum
                             .requestMatchers(HttpMethod.GET, "/musicAlbums/**").permitAll()
                             .requestMatchers("/musicAlbums/**").hasAuthority(Role.ADMIN.name())
-                            
+                            //Mockup
+                            .requestMatchers(HttpMethod.GET, "/mockup/**").permitAll()
+                            .requestMatchers("/mockup/**").hasAuthority(Role.ADMIN.name())
                             //Buy
                             //.requestMatchers(HttpMethod.GET, "/buys/**").permitAll()
                             //.requestMatchers("/buys/**").hasAuthority(Role.BUYER.name())

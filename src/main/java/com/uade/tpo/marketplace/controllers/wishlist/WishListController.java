@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.uade.tpo.marketplace.controllers.books.BookDTO;
 import com.uade.tpo.marketplace.controllers.musicalbums.MusicAlbumDTO;
-import com.uade.tpo.marketplace.controllers.wishlist.WishListMusicAlbumDTO;
+
 import com.uade.tpo.marketplace.entity.ResponseData;
 import com.uade.tpo.marketplace.entity.User;
 import com.uade.tpo.marketplace.entity.WishListBook;

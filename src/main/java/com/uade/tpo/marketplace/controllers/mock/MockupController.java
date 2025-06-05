@@ -1,22 +1,25 @@
 package com.uade.tpo.marketplace.controllers.mock;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.uade.tpo.marketplace.entity.Book;
 import com.uade.tpo.marketplace.entity.Genre;
 import com.uade.tpo.marketplace.entity.GenreBook;
 import com.uade.tpo.marketplace.entity.MusicAlbum;
 import com.uade.tpo.marketplace.entity.ResponseData;
+import com.uade.tpo.marketplace.entity.Role;
+import com.uade.tpo.marketplace.entity.User;
 import com.uade.tpo.marketplace.exceptions.UserException;
+import com.uade.tpo.marketplace.repository.UserRepository;
 import com.uade.tpo.marketplace.service.BookService;
 import com.uade.tpo.marketplace.service.MusicAlbumService;
 import com.uade.tpo.marketplace.service.UserService;
@@ -33,8 +36,11 @@ public class MockupController {
   @Autowired
   private MusicAlbumService malbumService;
 
-  @PostMapping("/initializeProducts")
-  public ResponseEntity<ResponseData<String>> initializeDB(@AuthenticationPrincipal UserDetails userDetails) {
+  @Autowired
+  private UserRepository userRepository;
+
+  @PostMapping("/initializeBooks")
+  public ResponseEntity<ResponseData<String>> initializeBooksDB(@AuthenticationPrincipal UserDetails userDetails) {
     try {
       userService.getUserByUsername(userDetails.getUsername());
 
@@ -92,6 +98,64 @@ public class MockupController {
           .body(ResponseData.error("No se pudo inicializar la DB"));
     }
   }
+  @PostMapping("/initializeMusicAlbums")
+  public ResponseEntity<ResponseData<String>> initializeMalbumsDB(@AuthenticationPrincipal UserDetails userDetails) {
+    try {
+      userService.getUserByUsername(userDetails.getUsername());
+    
+      MusicAlbum malbum1 = new MusicAlbum(null,"Abbey Road",  "The Beatles",  "Apple Records", 1969, "Uno de los álbumes más icónicos del rock.", "GBAYE0601690",
+               24.99,  List.of(Genre.CLASSICAL, Genre.ROCK),5, "https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg");
+      MusicAlbum malbum2 = new MusicAlbum(null,"Dark Side of the Moon", "Pink Floyd","Harvest Records",1973, "Un álbum revolucionario que definió el rock progresivo.", "GBCTA7300014",
+               29.99, List.of(Genre.PROGRESSIVE, Genre.PSYCHODELIC), 8, "" );
+      MusicAlbum malbum3 = new MusicAlbum(null, "Thriller", "Michael Jackson", "Epic Records", 1982, "El álbum más vendido de todos los tiempos.",  "USSM19902990", 
+               27.99, List.of(Genre.POP, Genre.FUNK,Genre.RB), 12, "https://upload.wikimedia.org/wikipedia/en/5/55/Michael_Jackson_-_Thriller.png"  );
+      MusicAlbum malbum4 = new MusicAlbum(null, "Back in Black",  "AC/DC", "Atlantic Records",1980, "Un clásico del hard rock que marcó una época.",  "AUATA7900123",
+               23.99, List.of(Genre.ROCK, Genre.HARDROCK), 6, "https://upload.wikimedia.org/wikipedia/commons/9/92/ACDC_Back_in_Black.png" );
+      MusicAlbum malbum5 = new MusicAlbum(null, "Nevermind", "Nirvana", "DGC Records", 1991, "El álbum que definió el grunge y cambió el rock alternativo.", "USDGC9100123",
+               25.99, List.of(Genre.ROCK, Genre.GRUNGE),10, "https://upload.wikimedia.org/wikipedia/en/b/b7/NirvanaNevermindalbumcover.jpg" );
 
+      malbumService.createMusicAlbum(malbum1);
+      malbumService.createMusicAlbum(malbum2);
+      malbumService.createMusicAlbum(malbum3);
+      malbumService.createMusicAlbum(malbum4);  
+      malbumService.createMusicAlbum(malbum5);
+
+      return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success("Base inicializada correctamente!"));
+
+    } catch (UserException error) {
+      return ResponseEntity.status(HttpStatus.OK).body(ResponseData.error(error.getMessage()));
+    } catch (Exception error) {
+      System.out.printf("[MockupController.initializeDB] -> %s", error.getMessage());
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(ResponseData.error("No se pudo inicializar la DB"));
+    }
+  }
+
+  @PostMapping("/initializeAdmins")
+  public ResponseEntity<ResponseData<String>> initializeAdminsDB(@AuthenticationPrincipal UserDetails userDetails) {
+    try {
+      userService.getUserByUsername(userDetails.getUsername());
+
+      User admin1 = new User(null, "jolazarte","Joanna","Lazarte","jolazarte@gmail.com","1abcdeft", Role.ADMIN, null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>() );
+      User admin2 = new User(null, "cami","Cami","Nani","caminani@gmail.com","9iuhjt33", Role.ADMIN, null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>() );
+      User admin3 = new User(null, "facundo","Facundo","Solá","fsola@gmail.com","fggh678", Role.ADMIN, null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>() );
+      User admin4 = new User(null, "santiago","Santiago","Gallero","sgallero@gmail.com","0oph644", Role.ADMIN, null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>() );
+  
+
+      userRepository.save(admin1);
+      userRepository.save(admin2);      
+      userRepository.save(admin3);
+      userRepository.save(admin4); 
+  
+      return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success("Base de admins inicializada correctamente!"));
+
+    } catch (UserException error) {
+      return ResponseEntity.status(HttpStatus.OK).body(ResponseData.error(error.getMessage()));
+    } catch (Exception error) {
+      System.out.printf("[MockupController.initializeDB] -> %s", error.getMessage());
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(ResponseData.error("No se pudo inicializar la DB"));
+    }
+  }
 }
 
