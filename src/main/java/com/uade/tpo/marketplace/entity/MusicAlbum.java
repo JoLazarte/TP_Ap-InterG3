@@ -5,6 +5,7 @@ import java.util.List;
 import com.uade.tpo.marketplace.controllers.musicalbums.MusicAlbumDTO;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -12,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.ElementCollection;
+import java.util.stream.Collectors;
 
 @Data 
 @EqualsAndHashCode(callSuper=false)
@@ -45,23 +48,23 @@ public class MusicAlbum extends Product{
     @Column
     private String isrc;
 
-    @Enumerated(EnumType.STRING)  
+ 
+ @ElementCollection(targetClass = Genre.class)
+    @Enumerated(EnumType.STRING)
     private List<Genre> genres;
 
-    public MusicAlbumDTO toDTO() {
-        return new MusicAlbumDTO(
-                this.id,
-                this.title,
-                this.author,
-                this.recordLabel,
-                this.year,
-                this.description,
-                this.isrc,
-                this.price,
-                this.genres,
-                this.stock,
-                this.urlImage
-                );
-    }
-    
-}
+public MusicAlbumDTO toDTO() {
+    return new MusicAlbumDTO(
+            this.id,
+            this.title,
+            this.author,
+            this.recordLabel,
+            this.year,
+            this.description,
+            this.isrc,
+            this.price,
+            this.genres != null ? this.genres.stream().map(Enum::name).collect(Collectors.toList()) : null,
+            this.stock,
+            this.urlImage
+    );
+} }
