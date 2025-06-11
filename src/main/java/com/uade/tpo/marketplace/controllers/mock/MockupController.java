@@ -98,38 +98,56 @@ public class MockupController {
           .body(ResponseData.error("No se pudo inicializar la DB"));
     }
   }
-  @PostMapping("/initializeMusicAlbums")
-  public ResponseEntity<ResponseData<String>> initializeMalbumsDB(@AuthenticationPrincipal UserDetails userDetails) {
-    try {
-      userService.getUserByUsername(userDetails.getUsername());
-    
-      MusicAlbum malbum1 = new MusicAlbum(null,"Abbey Road",  "The Beatles",  "Apple Records", 1969, "Uno de los álbumes más icónicos del rock.", "GBAYE0601690",
-               24.99,  List.of(Genre.CLASSICAL, Genre.ROCK),5, "https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg");
-      MusicAlbum malbum2 = new MusicAlbum(null,"Dark Side of the Moon", "Pink Floyd","Harvest Records",1973, "Un álbum revolucionario que definió el rock progresivo.", "GBCTA7300014",
-               29.99, List.of(Genre.PROGRESSIVE, Genre.PSYCHODELIC), 8, "" );
-      MusicAlbum malbum3 = new MusicAlbum(null, "Thriller", "Michael Jackson", "Epic Records", 1982, "El álbum más vendido de todos los tiempos.",  "USSM19902990", 
-               27.99, List.of(Genre.POP, Genre.FUNK,Genre.RB), 12, "https://upload.wikimedia.org/wikipedia/en/5/55/Michael_Jackson_-_Thriller.png"  );
-      MusicAlbum malbum4 = new MusicAlbum(null, "Back in Black",  "AC/DC", "Atlantic Records",1980, "Un clásico del hard rock que marcó una época.",  "AUATA7900123",
-               23.99, List.of(Genre.ROCK, Genre.HARDROCK), 6, "https://upload.wikimedia.org/wikipedia/commons/9/92/ACDC_Back_in_Black.png" );
-      MusicAlbum malbum5 = new MusicAlbum(null, "Nevermind", "Nirvana", "DGC Records", 1991, "El álbum que definió el grunge y cambió el rock alternativo.", "USDGC9100123",
-               25.99, List.of(Genre.ROCK, Genre.GRUNGE),10, "https://upload.wikimedia.org/wikipedia/en/b/b7/NirvanaNevermindalbumcover.jpg" );
+@PostMapping("/initializeMusicAlbums")
+public ResponseEntity<ResponseData<String>> initializeMalbumsDB(@AuthenticationPrincipal UserDetails userDetails) {
+  try {
+    userService.getUserByUsername(userDetails.getUsername());
 
-      malbumService.createMusicAlbum(malbum1);
-      malbumService.createMusicAlbum(malbum2);
-      malbumService.createMusicAlbum(malbum3);
-      malbumService.createMusicAlbum(malbum4);  
-      malbumService.createMusicAlbum(malbum5);
+    MusicAlbum malbum1 = new MusicAlbum(null, "Abbey Road", "The Beatles", "Apple Records", 1969,
+      "Uno de los álbumes más icónicos del rock.", "GBAYE0601690",
+      24.99, List.of(Genre.CLASSICAL, Genre.ROCK), 5,
+      "https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg");
 
-      return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success("Base inicializada correctamente!"));
+    MusicAlbum malbum2 = new MusicAlbum(null, "Dark Side of the Moon", "Pink Floyd", "Harvest Records", 1973,
+      "Un álbum revolucionario que definió el rock progresivo.", "GBCTA7300014",
+      29.99, List.of(Genre.PROGRESSIVE, Genre.PSYCHODELIC), 8,
+      "");
 
-    } catch (UserException error) {
-      return ResponseEntity.status(HttpStatus.OK).body(ResponseData.error(error.getMessage()));
-    } catch (Exception error) {
-      System.out.printf("[MockupController.initializeDB] -> %s", error.getMessage());
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-          .body(ResponseData.error("No se pudo inicializar la DB"));
-    }
+    MusicAlbum malbum3 = new MusicAlbum(null, "Thriller", "Michael Jackson", "Epic Records", 1982,
+      "El álbum más vendido de todos los tiempos.", "USSM19902990",
+      27.99, List.of(Genre.POP, Genre.FUNK, Genre.RB), 12,
+      "https://upload.wikimedia.org/wikipedia/en/5/55/Michael_Jackson_-_Thriller.png");
+
+    MusicAlbum malbum4 = new MusicAlbum(null, "Back in Black", "AC/DC", "Atlantic Records", 1980,
+      "Un clásico del hard rock que marcó una época.", "AUATA7900123",
+      23.99, List.of(Genre.ROCK, Genre.HARDROCK), 6,
+      "https://upload.wikimedia.org/wikipedia/commons/9/92/ACDC_Back_in_Black.png");
+
+    MusicAlbum malbum5 = new MusicAlbum(null, "Nevermind", "Nirvana", "DGC Records", 1991,
+      "El álbum que definió el grunge y cambió el rock alternativo.", "USDGC9100123",
+      25.99, List.of(Genre.ROCK, Genre.GRUNGE), 10,
+      "https://upload.wikimedia.org/wikipedia/en/b/b7/NirvanaNevermindalbumcover.jpg");
+
+    malbumService.createMusicAlbum(malbum1);
+    malbumService.createMusicAlbum(malbum2);
+    malbumService.createMusicAlbum(malbum3);
+    malbumService.createMusicAlbum(malbum4);
+    malbumService.createMusicAlbum(malbum5);
+
+    return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success("Base inicializada correctamente!"));
+
+  } catch (com.uade.tpo.marketplace.exceptions.MusicAlbumDuplicateException error) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        .body(ResponseData.error("Uno o más discos ya existen en la base de datos."));
+  } catch (UserException error) {
+    return ResponseEntity.status(HttpStatus.OK).body(ResponseData.error(error.getMessage()));
+  } catch (Exception error) {
+    error.printStackTrace();
+    System.out.printf("[MockupController.initializeDB] -> %s", error.getMessage());
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(ResponseData.error("No se pudo inicializar la DB"));
   }
+}
 
   @PostMapping("/initializeAdmins")
   public ResponseEntity<ResponseData<String>> initializeAdminsDB(@AuthenticationPrincipal UserDetails userDetails) {
