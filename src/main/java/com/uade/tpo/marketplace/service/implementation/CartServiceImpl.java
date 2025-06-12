@@ -239,4 +239,49 @@ public class CartServiceImpl implements CartService {
             throw new Exception("[CartService.checkout] -> " + error.getMessage());
         }
     }
+
+    @Transactional
+    public CartBook addItemBookWithQuantity(Cart cart, Long bookId, int quantity) throws Exception {
+        try {
+            Book book = bookService.getBookById(bookId);
+            if (book.getStock() == 0) {
+                throw new ProductException("Se acabó el stock del producto seleccionado");
+            }
+            
+            CartBook cartItem = cart.getBookItems().stream()
+                .filter(item -> item.getBookId().equals(book.getId()))
+                .findFirst()
+                .orElse(null);
+
+            if (cartItem != null) {
+                // Si ya existe, verificamos que haya stock suficiente para la cantidad total
+                if (book.getStock() < cartItem.getQuantityBook() + quantity) {
+                    throw new ProductException("No hay stock suficiente del producto elegido");
+                } else {
+                    cartItem.setQuantityBook(cartItem.getQuantityBook() + quantity);
+                }
+            } else {
+                // Si no existe, verificamos que haya stock suficiente para la cantidad solicitada
+                if (book.getStock() < quantity) {
+                    throw new ProductException("No hay stock suficiente del producto elegido");
+                }
+                // Creamos un nuevo ítem
+                cartItem = new CartBook();
+                cartItem.setBook(book);
+                cartItem.setQuantityBook(quantity);
+                cartItem.setCart(cart);
+                // Agregamos el nuevo ítem al carrito
+                cart.getBookItems().add(cartItem);
+            }
+            // Guardar el carrito actualizado
+            cartRepository.save(cart);
+            return cartItem;
+        } catch (CartException error) {
+            throw new CartException(error.getMessage());
+        } catch (ProductException error) {
+            throw new ProductException(error.getMessage());
+        } catch (Exception error) {
+            throw new Exception("[CartService.addItemBookWithQuantity] -> " + error.getMessage());
+        }
+    }
 }

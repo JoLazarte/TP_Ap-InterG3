@@ -26,33 +26,35 @@ public class AuthenticationController {
         @RequestBody RegisterRequest request) {
         try {
             AuthenticationResponse authResponse = authService.register(request);
-            if(authResponse.getAccessToken() != null) return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(authResponse));
+            if(authResponse.getAccessToken() != null) 
+                return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(authResponse));
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error("No se pudo registrar el usuario"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ResponseData.error("No se pudo registrar el usuario"));
 
         } catch (UserException error) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ResponseData.error(error.getMessage()));
-
-            } catch (Exception error) {
-            System.out.printf("[AuthenticationController.register] -> %s", error.getMessage() );
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo registrar el usuario"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ResponseData.error(error.getMessage()));
+        } catch (Exception error) {
+            System.out.printf("[AuthenticationController.register] -> %s", error.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ResponseData.error("No se pudo registrar el usuario"));
         }
-
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<ResponseData<?>> authenticate(
         @RequestBody AuthenticationRequest request) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(authService.authenticate(request)));
-
-            }catch (UserException | AuthException error) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ResponseData.error(error.getMessage()));
-        }catch (Exception error) {
-            System.out.printf("[AuthenticationController.authenticate] -> %s", error.getMessage() );
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("Usuario o contraseña invalido."));
+            return ResponseEntity.status(HttpStatus.OK)
+                .body(ResponseData.success(authService.authenticate(request)));
+        } catch (UserException | AuthException error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ResponseData.error(error.getMessage()));
+        } catch (Exception error) {
+            System.out.printf("[AuthenticationController.authenticate] -> %s", error.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ResponseData.error("Usuario o contraseña inválido."));
         }
-
     }
 }

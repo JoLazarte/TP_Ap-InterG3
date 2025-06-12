@@ -37,6 +37,11 @@ public class AuthenticationService {
                         String jwtToken = jwtService.generateToken(user);
                         return AuthenticationResponse.builder()
                                 .accessToken(jwtToken)
+                                .username(user.getUsername())
+                                .email(user.getEmail())
+                                .role(user.getRole())
+                                .firstName(user.getFirstName())
+                                .lastName(user.getLastName())
                                 .build();
                 }catch(UserException error){
                         throw new UserException(error.getMessage());
@@ -57,6 +62,11 @@ public class AuthenticationService {
                 String jwtToken = jwtService.generateToken(user);
                 return AuthenticationResponse.builder()
                         .accessToken(jwtToken)
+                        .username(user.getUsername())
+                        .email(user.getEmail())
+                        .role(user.getRole())
+                        .firstName(user.getFirstName())
+                        .lastName(user.getLastName())
                         .build();
                 } catch (AuthenticationException error){
                         System.out.printf("[AuthenticationService.authenticate] -> %s", error.getMessage());
