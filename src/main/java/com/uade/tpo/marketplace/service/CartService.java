@@ -26,5 +26,7 @@ public interface CartService {
     public void removeItemMalbumFromCart(Long cartId, Long malbumId) throws Exception;
     public void emptyCart(Long cartId) throws Exception;
     public Buy checkout(Long cartId) throws Exception;
+    @Transactional
+    CartBook addItemBookWithQuantity(Cart cart, Long bookId, int quantity) throws Exception;
 
 }
