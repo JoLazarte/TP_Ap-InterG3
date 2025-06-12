@@ -50,11 +50,7 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/mockup/**").permitAll()
                             .requestMatchers("/mockup/**").hasAuthority(Role.ADMIN.name())
                             //Buy
-                            //.requestMatchers(HttpMethod.GET, "/buys/**").permitAll()
-                            //.requestMatchers("/buys/**").hasAuthority(Role.BUYER.name())
-
-                            //.requestMatchers("/buys/**").authenticated()
-
+                            .requestMatchers("/buys/**").authenticated()
                             // Cart
                             .requestMatchers("/carts/**").authenticated()
                             //CartItem

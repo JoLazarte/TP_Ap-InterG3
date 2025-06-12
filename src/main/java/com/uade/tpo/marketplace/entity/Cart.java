@@ -14,6 +14,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uade.tpo.marketplace.controllers.cartitems.CartBookDTO;
 import com.uade.tpo.marketplace.controllers.cartitems.CartMalbumDTO;
 import com.uade.tpo.marketplace.controllers.carts.CartDTO;
+import com.uade.tpo.marketplace.entity.BuyItem.ProductType;
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Data
@@ -76,34 +78,33 @@ public class Cart {
     }
  ////******************************* Compramos los items del carrito ********************************/////
     
+    @Transactional
     public List<BuyItem> generateBuyItems() {
-        List<BuyItem> itemsBuyed = new ArrayList<>();
-        this.getBookItems().forEach(item -> {
-            // Los libros en el carrito:
-            if (item.getQuantityBook() > item.getBook().getStock()) {
-                throw new RuntimeException("Not enough stock of product: " + item.getBook().getTitle());
-            }
-            else {
-                item.getBook().setStock(item.getBook().getStock() - item.getQuantityBook());
-            }
-            BuyItem bookBuyed = item.toBuyItemBook();
-            itemsBuyed.add(bookBuyed);
-            
-        });
+        List<BuyItem> buyItems = new ArrayList<>();
 
-        this.getMalbumItems().forEach(item -> {
-            //Los discos en el carrito:
-            if (item.getQuantityMalbum() > item.getMusicAlbum().getStock()) {
-                throw new RuntimeException("Not enough stock of product: " + item.getMusicAlbum().getTitle());
-            }
-            else {
-                item.getMusicAlbum().setStock(item.getMusicAlbum().getStock() - item.getQuantityMalbum());
-            }
-            BuyItem malbumBuyed = item.toBuyItemMalbum();
-            itemsBuyed.add(malbumBuyed);
-        });
+        // Generar BuyItems para libros
+        for (CartBook item : bookItems) {
+            BuyItem buyItem = BuyItem.builder()
+                    .productId(item.getBook().getId())
+                    .productType(ProductType.BOOK)
+                    .quantity(item.getQuantityBook())
+                    .unitPrice(item.getBook().getPrice())
+                    .build();
+            buyItems.add(buyItem);
+        }
 
-        return itemsBuyed;
+        // Generar BuyItems para álbumes
+        for (CartMalbum item : malbumItems) {
+            BuyItem buyItem = BuyItem.builder()
+                    .productId(item.getMusicAlbum().getId())
+                    .productType(ProductType.MUSIC_ALBUM)
+                    .quantity(item.getQuantityMalbum())
+                    .unitPrice(item.getMusicAlbum().getPrice())
+                    .build();
+            buyItems.add(buyItem);
+        }
+
+        return buyItems;
     }
         
 }

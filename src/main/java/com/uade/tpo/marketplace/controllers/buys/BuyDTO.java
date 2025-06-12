@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.uade.tpo.marketplace.entity.Buy;
 import com.uade.tpo.marketplace.entity.BuyItem;
 import com.uade.tpo.marketplace.entity.User;
+import com.uade.tpo.marketplace.entity.Cart;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -32,12 +33,15 @@ public class BuyDTO {
     private User user;
     @NotNull
     private double totalPrice;
+    @JsonBackReference
+    private Cart cart;
  
     public Buy toEntity() {
         return Buy.builder()
             //.id(this.id)
             .buyDate(this.buyDate)
             .user(this.user)
+            .cart(this.cart)
             .items(this.items)
             .build();
   }

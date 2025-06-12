@@ -3,7 +3,6 @@ package com.uade.tpo.marketplace.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +15,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 
 @Data
 @Entity
@@ -27,28 +28,31 @@ public class BuyItem {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @NotNull
-  @Column(nullable = false)
-  private String title;
+  @Column(name = "product_id", nullable = false)
+  private Long productId;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "product_type", nullable = false)
+  private ProductType productType;
   @NotNull
   @Column(nullable = false)
-  private String description;
+  private Integer quantity;
   @NotNull
-  @Column(nullable = false)
-  private double finalPrice;
-  @NotNull
-  @Column(nullable = false)
-  private int totalQuantity;
-  //@NotEmpty
-  @Column(nullable = false, columnDefinition = "LONGTEXT")
+  @Column(name = "unit_price", nullable = false)
+  private Double unitPrice;
+  @Column(columnDefinition = "LONGTEXT")
   private String images;
   @NotNull
   @ManyToOne
-  @JoinColumn(nullable = false, name = "buy_id")
+  @JoinColumn(name = "buy_id", nullable = false)
   @JsonBackReference
   private Buy buy;
 
   public double getSubTotal() {
-    return this.finalPrice * this.totalQuantity;
+    return this.unitPrice * this.quantity;
   }
 
+  public enum ProductType {
+    BOOK,
+    MUSIC_ALBUM
+  }
 }

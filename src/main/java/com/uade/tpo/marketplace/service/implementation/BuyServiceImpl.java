@@ -34,6 +34,7 @@ public class BuyServiceImpl implements BuyService{
         Buy buy = Buy.builder()
           .buyDate(LocalDateTime.now())
           .user(cart.getUser())
+          .cart(cart)
           .build();
 
         List<BuyItem> itemsBuyed = cart.generateBuyItems();

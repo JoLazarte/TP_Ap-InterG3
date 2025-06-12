@@ -78,6 +78,32 @@ public class CartController {
         }
     }
 
+    @PutMapping("/update/musicAlbum")
+    public ResponseEntity<ResponseData<?>> updateCartMusicAlbum(
+        @AuthenticationPrincipal UserDetails userDetails,
+        @RequestBody UpdateCartMalbumDTO updateCartMalbumDTO) {
+        try {
+            User authUser = userService.getUserByUsername(userDetails.getUsername());
+            Cart cart = authUser.getCart();
+            CartMalbum addedMalbum;
+            
+            if (updateCartMalbumDTO.getQuantity() != null && updateCartMalbumDTO.getQuantity() > 0) {
+                addedMalbum = cartService.addItemMusicAlbumWithQuantity(cart, updateCartMalbumDTO.getMusicAlbumId(), updateCartMalbumDTO.getQuantity());
+            } else {
+                addedMalbum = cartService.addItemMusicAlbum(cart, updateCartMalbumDTO.getMusicAlbumId());
+            }
+            
+            CartMalbumDTO addedMalbumDTO = addedMalbum.toDTOForMalbum();
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedMalbumDTO));
+        } catch (UserException | CartException | ProductException error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
+        } catch (Exception error) {
+            System.out.printf("[CartController.updateCartMusicAlbum] -> %s", error.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ResponseData.error("No se pudo actualizar el carrito"));
+        }
+    }
+
     @PutMapping("/musicAlbum/{musicAlbumId}")
     public ResponseEntity<ResponseData<?>> addMusicAlbumToCart(@AuthenticationPrincipal UserDetails userDetails,
       @PathVariable Long musicAlbumId) {
@@ -89,12 +115,11 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedMalbumDTO));
 
         } catch (UserException | CartException | ProductException error) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
-
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
         } catch (Exception error) {
-        System.out.printf("[CartController.addMusicAlbumToCart] -> %s", error.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-          .body(ResponseData.error("No se pudo agregar el item al carro"));
+            System.out.printf("[CartController.addMusicAlbumToCart] -> %s", error.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ResponseData.error("No se pudo agregar el item al carro"));
         }
     }
 
@@ -203,26 +228,6 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(ResponseData.error("No se pudo generar la compra"));
       }
-    }
-
-    @PutMapping("/book/{bookId}/quantity/{quantity}")
-    public ResponseEntity<ResponseData<?>> addBooksToCart(
-        @AuthenticationPrincipal UserDetails userDetails,
-        @PathVariable Long bookId,
-        @PathVariable int quantity) {
-        try {
-            User authUser = userService.getUserByUsername(userDetails.getUsername());
-            Cart cart = authUser.getCart();
-            CartBook addedBook = cartService.addItemBookWithQuantity(cart, bookId, quantity);
-            CartBookDTO addedBookDTO = addedBook.toDTOForBook();
-            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(addedBookDTO));
-        } catch (UserException | CartException | ProductException error) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
-        } catch (Exception error) {
-            System.out.printf("[CartController.addBooksToCart] -> %s", error.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ResponseData.error("No se pudo agregar los items al carro"));
-        }
     }
 
     

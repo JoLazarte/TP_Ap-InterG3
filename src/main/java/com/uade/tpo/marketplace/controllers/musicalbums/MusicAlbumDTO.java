@@ -34,14 +34,14 @@ public class MusicAlbumDTO extends ProductDTO {
     @NotNull
     private double price;
     @NotNull
-    private List<Genre> genres;
+    private List<String> genres;
     @NotNull
     private int stock;
     //@NotEmpty
     private String urlImage;
 
-    public MusicAlbumDTO(Long id, String title, String author, String recordLabel, int year, String description, String isrc,
-    double price, List<Genre> genres, int stock, String urlImage
+     public MusicAlbumDTO(Long id, String title, String author, String recordLabel, int year, String description, String isrc,
+    double price, List<String> genres, int stock, String urlImage
                   ) {
                 this.id= id;
                 this.title = title;
@@ -55,7 +55,7 @@ public class MusicAlbumDTO extends ProductDTO {
                 this.stock = stock;
                 this.urlImage = urlImage;
     }
-    
+
     public MusicAlbum toEntity() {
         return new MusicAlbum(
                 this.id,
@@ -66,9 +66,8 @@ public class MusicAlbumDTO extends ProductDTO {
                 this.description,
                 this.isrc,
                 this.price,
-                this.genres,
+                this.genres != null ? this.genres.stream().map(Genre::valueOf).toList() : null,
                 this.stock,
                 this.urlImage
                 );
-    }
-}
+    } }

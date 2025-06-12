@@ -28,5 +28,7 @@ public interface CartService {
     public Buy checkout(Long cartId) throws Exception;
     @Transactional
     CartBook addItemBookWithQuantity(Cart cart, Long bookId, int quantity) throws Exception;
+    @Transactional
+    CartMalbum addItemMusicAlbumWithQuantity(Cart cart, Long musicAlbumId, int quantity) throws Exception;
 
 }

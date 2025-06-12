@@ -227,14 +227,35 @@ public class CartServiceImpl implements CartService {
         }
     }
 
+    @Transactional
     public Buy checkout(Long cartId) throws Exception {
         try {
             Cart cart = getCartById(cartId);
+            
+            // Actualizar stock de libros
+            for (CartBook item : cart.getBookItems()) {
+                if (item.getQuantityBook() > item.getBook().getStock()) {
+                    throw new ProductException("No hay stock suficiente del producto: " + item.getBook().getTitle());
+                }
+                int newStock = item.getBook().getStock() - item.getQuantityBook();
+                bookService.updateStock(item.getBook().getId(), newStock);
+            }
+
+            // Actualizar stock de álbumes
+            for (CartMalbum item : cart.getMalbumItems()) {
+                if (item.getQuantityMalbum() > item.getMusicAlbum().getStock()) {
+                    throw new ProductException("No hay stock suficiente del producto: " + item.getMusicAlbum().getTitle());
+                }
+                int newStock = item.getMusicAlbum().getStock() - item.getQuantityMalbum();
+                musicAlbumService.updateStock(item.getMusicAlbum().getId(), newStock);
+            }
+
             Buy buy = buyService.createBuy(cart);
-        emptyCart(cartId);
-        return buy;
+            return buy;
         } catch (CartException error) {
             throw new CartException(error.getMessage());
+        } catch (ProductException error) {
+            throw new ProductException(error.getMessage());
         } catch (Exception error) {
             throw new Exception("[CartService.checkout] -> " + error.getMessage());
         }
@@ -282,6 +303,51 @@ public class CartServiceImpl implements CartService {
             throw new ProductException(error.getMessage());
         } catch (Exception error) {
             throw new Exception("[CartService.addItemBookWithQuantity] -> " + error.getMessage());
+        }
+    }
+
+    @Transactional
+    public CartMalbum addItemMusicAlbumWithQuantity(Cart cart, Long musicAlbumId, int quantity) throws Exception {
+        try {
+            MusicAlbum musicAlbum = musicAlbumService.getMusicAlbumById(musicAlbumId);
+            if (musicAlbum.getStock() == 0) {
+                throw new ProductException("Se acabó el stock del producto seleccionado");
+            }
+            
+            CartMalbum cartItem = cart.getMalbumItems().stream()
+                .filter(item -> item.getMusicAlbumId().equals(musicAlbum.getId()))
+                .findFirst()
+                .orElse(null);
+
+            if (cartItem != null) {
+                // Si ya existe, verificamos que haya stock suficiente para la cantidad total
+                if (musicAlbum.getStock() < cartItem.getQuantityMalbum() + quantity) {
+                    throw new ProductException("No hay stock suficiente del producto elegido");
+                } else {
+                    cartItem.setQuantityMalbum(cartItem.getQuantityMalbum() + quantity);
+                }
+            } else {
+                // Si no existe, verificamos que haya stock suficiente para la cantidad solicitada
+                if (musicAlbum.getStock() < quantity) {
+                    throw new ProductException("No hay stock suficiente del producto elegido");
+                }
+                // Creamos un nuevo ítem
+                cartItem = new CartMalbum();
+                cartItem.setMusicAlbum(musicAlbum);
+                cartItem.setQuantityMalbum(quantity);
+                cartItem.setCart(cart);
+                // Agregamos el nuevo ítem al carrito
+                cart.getMalbumItems().add(cartItem);
+            }
+            // Guardar el carrito actualizado
+            cartRepository.save(cart);
+            return cartItem;
+        } catch (CartException error) {
+            throw new CartException(error.getMessage());
+        } catch (ProductException error) {
+            throw new ProductException(error.getMessage());
+        } catch (Exception error) {
+            throw new Exception("[CartService.addItemMusicAlbumWithQuantity] -> " + error.getMessage());
         }
     }
 }

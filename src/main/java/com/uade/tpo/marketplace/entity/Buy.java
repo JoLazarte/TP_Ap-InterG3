@@ -46,6 +46,11 @@ public class Buy {
   @JoinColumn(nullable = false, name = "user_id")
   @JsonBackReference
   private User user;
+
+  @ManyToOne
+  @JoinColumn(name = "cart_id")
+  @JsonBackReference
+  private Cart cart;
  
   public double getTotalPrice() {
     double totalPrice = 0;
@@ -66,6 +71,7 @@ public class Buy {
         .items(this.items)
         .buyDate(this.buyDate)
         .user(user)
+        .cart(cart)
         .totalPrice(this.getTotalPrice())
         .build();
   }
