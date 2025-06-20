@@ -57,11 +57,9 @@ public class CartBook {
    //*************** Convierto los libros en el carrito a items comprados ******************/
     public BuyItem toBuyItemBook() {
         return BuyItem.builder()
-                .title(this.getBook().getTitle())
-                .description(this.getBook().getDescription())
                 .finalPrice(this.getBook().getPrice())
                 .totalQuantity(this.getQuantityBook())
-                .images(this.getBook().getUrlImage())
+                .book(this.getBook())
                 .build();
 
     }

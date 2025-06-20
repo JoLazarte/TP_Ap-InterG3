@@ -54,11 +54,9 @@ public class CartMalbum {
     //*************** Convierto los discos en el carrito a items comprados ******************/
     public BuyItem toBuyItemMalbum() {
         return BuyItem.builder()
-                .title(this.getMusicAlbum().getTitle())
-                .description(this.getMusicAlbum().getDescription())
                 .finalPrice(this.getMusicAlbum().getPrice())
                 .totalQuantity(this.getQuantityMalbum())
-                .images(this.getMusicAlbum().getUrlImage())
+                .musicAlbum(this.getMusicAlbum())
                 .build();
 
     }

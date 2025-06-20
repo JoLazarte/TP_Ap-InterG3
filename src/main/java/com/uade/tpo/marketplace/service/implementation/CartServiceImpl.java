@@ -1,7 +1,6 @@
 package com.uade.tpo.marketplace.service.implementation;
 
 import com.uade.tpo.marketplace.entity.Book;
-import com.uade.tpo.marketplace.entity.Buy;
 import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.entity.CartBook;
 import com.uade.tpo.marketplace.entity.CartMalbum;
@@ -10,7 +9,6 @@ import com.uade.tpo.marketplace.exceptions.CartException;
 import com.uade.tpo.marketplace.exceptions.ProductException;
 import com.uade.tpo.marketplace.repository.CartRepository;
 import com.uade.tpo.marketplace.service.BookService;
-import com.uade.tpo.marketplace.service.BuyService;
 import com.uade.tpo.marketplace.service.CartService;
 import com.uade.tpo.marketplace.service.MusicAlbumService;
 
@@ -28,8 +26,6 @@ public class CartServiceImpl implements CartService {
     private BookService bookService;
     @Autowired
     private MusicAlbumService musicAlbumService;
-    @Autowired
-    private BuyService buyService;
    
     public Cart createCart() throws Exception {
         try {
@@ -224,19 +220,6 @@ public class CartServiceImpl implements CartService {
             throw new CartException(error.getMessage());
         } catch (Exception error) {
         throw new Exception("[CartService.emptyCart] -> " + error.getMessage());
-        }
-    }
-
-    public Buy checkout(Long cartId) throws Exception {
-        try {
-            Cart cart = getCartById(cartId);
-            Buy buy = buyService.createBuy(cart);
-        emptyCart(cartId);
-        return buy;
-        } catch (CartException error) {
-            throw new CartException(error.getMessage());
-        } catch (Exception error) {
-            throw new Exception("[CartService.checkout] -> " + error.getMessage());
         }
     }
 

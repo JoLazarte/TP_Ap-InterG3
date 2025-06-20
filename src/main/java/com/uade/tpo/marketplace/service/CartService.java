@@ -1,6 +1,5 @@
 package com.uade.tpo.marketplace.service;
 
-import com.uade.tpo.marketplace.entity.Buy;
 import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.entity.CartBook;
 import com.uade.tpo.marketplace.entity.CartMalbum;
@@ -25,7 +24,6 @@ public interface CartService {
     @Transactional
     public void removeItemMalbumFromCart(Long cartId, Long malbumId) throws Exception;
     public void emptyCart(Long cartId) throws Exception;
-    public Buy checkout(Long cartId) throws Exception;
     @Transactional
     CartBook addItemBookWithQuantity(Cart cart, Long bookId, int quantity) throws Exception;
 

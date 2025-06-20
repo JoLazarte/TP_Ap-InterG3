@@ -187,23 +187,6 @@ public class CartController {
       }
   }
 
-    @PutMapping("/confirm")
-    public ResponseEntity<ResponseData<?>> confirmCart(@AuthenticationPrincipal UserDetails userDetails) {
-      try {
-        User authUser = userService.getUserByUsername(userDetails.getUsername());
-        Cart cart = authUser.getCart();
-       Buy buy = cartService.checkout(cart.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(buy));
-
-      } catch (UserException | CartException error) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
-
-      } catch (Exception error) {
-        System.out.printf("[CartController.confirmCart] -> %s", error.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-          .body(ResponseData.error("No se pudo generar la compra"));
-      }
-    }
 
     @PutMapping("/book/{bookId}/quantity/{quantity}")
     public ResponseEntity<ResponseData<?>> addBooksToCart(

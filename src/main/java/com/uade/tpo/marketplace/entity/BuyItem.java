@@ -28,19 +28,19 @@ public class BuyItem {
   private Long id;
   @NotNull
   @Column(nullable = false)
-  private String title;
-  @NotNull
-  @Column(nullable = false)
-  private String description;
-  @NotNull
-  @Column(nullable = false)
   private double finalPrice;
   @NotNull
   @Column(nullable = false)
   private int totalQuantity;
-  //@NotEmpty
-  @Column(nullable = false, columnDefinition = "LONGTEXT")
-  private String images;
+  
+  @ManyToOne
+  @JoinColumn(name = "book_id")
+  private Book book;
+  
+  @ManyToOne
+  @JoinColumn(name = "music_album_id")
+  private MusicAlbum musicAlbum;
+  
   @NotNull
   @ManyToOne
   @JoinColumn(nullable = false, name = "buy_id")
