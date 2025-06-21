@@ -50,10 +50,6 @@ public class User implements UserDetails{
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id")
-    @JsonManagedReference
-    private Cart cart;
     
     @NotNull
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -80,9 +76,6 @@ public class User implements UserDetails{
     @JsonManagedReference
     private List<SearchMusicAlbum> lastMalbumSearches;
 
-    public void assignCart(Cart cart) {
-        this.cart.setUser(this);
-    }
     public UserDTO toDTO() {
         return new UserDTO(
             this.id,
@@ -92,7 +85,6 @@ public class User implements UserDetails{
             this.email,
             this.password,
             this.role,
-            this.cart,
             this.orders,
             this.wishListMalbums,
             this.wishListBooks,

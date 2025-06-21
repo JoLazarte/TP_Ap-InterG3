@@ -23,6 +23,8 @@ public class BuyDTO {
     private Long id;
     @NotNull
     private LocalDateTime buyDate;
+    @NotNull
+    private boolean confirmed;
     //@NotNull
   
     @NotNull
@@ -37,6 +39,7 @@ public class BuyDTO {
         return Buy.builder()
             //.id(this.id)
             .buyDate(this.buyDate)
+            .confirmed(this.confirmed)
             .user(this.user)
             .items(this.items)
             .build();

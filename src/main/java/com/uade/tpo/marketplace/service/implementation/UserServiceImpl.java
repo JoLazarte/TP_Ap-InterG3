@@ -10,12 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.marketplace.controllers.auth.RegisterRequest;
-import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.entity.Role;
 import com.uade.tpo.marketplace.entity.User;
 import com.uade.tpo.marketplace.exceptions.UserException;
 import com.uade.tpo.marketplace.repository.UserRepository;
-import com.uade.tpo.marketplace.service.CartService;
 import com.uade.tpo.marketplace.service.UserService;
 
 import jakarta.transaction.Transactional;
@@ -25,8 +23,6 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private CartService cartService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -38,17 +34,12 @@ public class UserServiceImpl implements UserService{
             userExist = userRepository.existsByEmail(request.getEmail());
           if(userExist) throw new UserException("El email " + request.getEmail() + " ya esta registrado.");
 
-        Cart cart = cartService.createCart();
         
 				User user = new User(null,request.getUsername(), request.getFirstName(), request.getLastName(),
 								request.getEmail(),
 								passwordEncoder.encode(request.getPassword()),
-                request.getRole(), null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                request.getRole(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         
-        if(request.getRole()==Role.BUYER){
-          user.setCart(cart);
-          user.assignCart(cart);
-        }
 
         return userRepository.save(user);
         

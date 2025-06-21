@@ -15,7 +15,7 @@ public interface BuyRepository extends JpaRepository<Buy, Long>  {
     @Query(value = "select b from Buy b where b.buyDate = ?1")
     Optional<Buy> findByDate(LocalDateTime buyDate);
 
-    @Query(value = "select b from Buy b where b.user = ?1")
+    @Query(value = "select b from Buy b where b.user.id = ?1")
     List<Buy> findByUserId(Long userId);
 
 }

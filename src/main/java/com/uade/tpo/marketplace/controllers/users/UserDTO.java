@@ -5,7 +5,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uade.tpo.marketplace.entity.Buy;
-import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.entity.Role;
 import com.uade.tpo.marketplace.entity.SearchBook;
 import com.uade.tpo.marketplace.entity.SearchMusicAlbum;
@@ -36,9 +35,6 @@ public class UserDTO {
     private String password;
     @NotNull
     private Role role;
-    @JsonManagedReference
-    @JsonIgnore
-    private Cart cart;
     @JsonIgnore
     private List<Buy> orders;
     @JsonIgnore
@@ -59,7 +55,6 @@ public class UserDTO {
                 this.email,
                 this.password,
                 this.role,
-                this.cart,
                 this.orders,
                 this.wishListMalbums,
                 this.wishListBooks,
