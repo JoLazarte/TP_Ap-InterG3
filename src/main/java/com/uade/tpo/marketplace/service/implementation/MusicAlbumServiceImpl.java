@@ -7,11 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.entity.MusicAlbum;
 import com.uade.tpo.marketplace.exceptions.MusicAlbumDuplicateException;
 import com.uade.tpo.marketplace.exceptions.ProductException;
-import com.uade.tpo.marketplace.repository.CartRepository;
 import com.uade.tpo.marketplace.repository.MusicAlbumRepository;
 import com.uade.tpo.marketplace.repository.SearchMusicAlbumRepository;
 import com.uade.tpo.marketplace.repository.WishListMusicAlbumRepository;
@@ -24,8 +22,6 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
 
     @Autowired
     private MusicAlbumRepository musicAlbumRepository;
-    @Autowired
-    private CartRepository cartRepository;
     @Autowired
     private WishListMusicAlbumRepository wishListMalbumRepository;
  
@@ -73,12 +69,6 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
     @Transactional
     public void deleteMalbum(Long malbumId) throws Exception {
         try {
-            List<Cart> carts = cartRepository.findAll();
-              for (Cart cart : carts) {
-                  cart.getMalbumItems().removeIf(item -> item.getMusicAlbum().getId().equals(malbumId));
-              }
-              cartRepository.saveAll(carts);
-
               searchMusicAlbumRepository.deleteByMalbumId(malbumId);
               wishListMalbumRepository.deleteByMalbumId(malbumId);
               musicAlbumRepository.deleteById(malbumId);

@@ -8,11 +8,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.marketplace.entity.Book;
-import com.uade.tpo.marketplace.entity.Cart;
 import com.uade.tpo.marketplace.exceptions.BookDuplicateException;
 import com.uade.tpo.marketplace.exceptions.ProductException;
 import com.uade.tpo.marketplace.repository.BookRepository;
-import com.uade.tpo.marketplace.repository.CartRepository;
 import com.uade.tpo.marketplace.repository.SearchBookRepository;
 import com.uade.tpo.marketplace.repository.WishListBookRepository;
 import com.uade.tpo.marketplace.service.BookService;
@@ -24,8 +22,6 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     private BookRepository bookRepository;
-    @Autowired
-    private CartRepository cartRepository;
     @Autowired
     private WishListBookRepository wishListBookRepository;
     @Autowired
@@ -72,13 +68,6 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void deleteBook(Long bookId) throws Exception {
         try {
-
-            List<Cart> carts = cartRepository.findAll();
-              for (Cart cart : carts) {
-                  cart.getBookItems().removeIf(item -> item.getBook().getId().equals(bookId));
-              }
-              cartRepository.saveAll(carts);
-
               searchBookRepository.deleteByBookId(bookId);
               wishListBookRepository.deleteByBookId(bookId);
               bookRepository.deleteById(bookId);
