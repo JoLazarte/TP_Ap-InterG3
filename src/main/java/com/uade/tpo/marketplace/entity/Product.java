@@ -42,6 +42,10 @@ public abstract class Product {
     //@NotEmpty
     @Column(nullable = false, columnDefinition = "LONGTEXT")
     protected String urlImage;
+    
+    @NotNull
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+    protected boolean active;
 
     public ProductDTO toDTO() {
         return new ProductDTO(
@@ -51,7 +55,8 @@ public abstract class Product {
                 this.description,
                 this.price,
                 this.stock,
-                this.urlImage);
+                this.urlImage,
+                this.active);
     }
 
 }

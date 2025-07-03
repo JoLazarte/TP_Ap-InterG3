@@ -26,6 +26,8 @@ public class ProductDTO {
     protected int stock;
     //@NotEmpty
     protected String urlImage;
+    @NotNull
+    protected boolean active;
     
     
 }

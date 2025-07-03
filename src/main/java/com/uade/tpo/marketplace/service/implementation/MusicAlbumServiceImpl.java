@@ -84,5 +84,63 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
     public void updateStock(Long musicAlbumId, int newStock) {
         musicAlbumRepository.updateStock(musicAlbumId, newStock);
     }
+    
+    // Implementación de métodos para filtrar productos activos
+    public Page<MusicAlbum> getActiveMusicAlbums(PageRequest pageable) {
+        return musicAlbumRepository.findAllActive(pageable);
+    }
+    
+    public Page<MusicAlbum> getActiveMusicAlbumsByAuthor(String author, PageRequest pageable) {
+        return musicAlbumRepository.findByAuthorAndActive(author, pageable);
+    }
+    
+    public MusicAlbum getActiveMusicAlbumById(Long musicAlbumId) throws Exception {
+        try {
+            MusicAlbum musicAlbum = musicAlbumRepository.findById(musicAlbumId).orElseThrow(() -> new ProductException("producto no encontrado"));
+            if (!musicAlbum.isActive()) {
+                throw new ProductException("El producto no está activo");
+            }
+            return musicAlbum;
+          } catch (Exception error) {
+            throw new Exception("[MusicAlbumServiceImpl.getActiveMusicAlbumById] -> " + error.getMessage());
+          }
+    }
+    
+    // Métodos de administración para activar/desactivar productos
+    @Transactional
+    public void activateMusicAlbum(Long musicAlbumId) throws Exception {
+        try {
+            if (!musicAlbumRepository.existsById(musicAlbumId)) {
+                throw new ProductException("El álbum musical con id: '" + musicAlbumId + "' no existe.");
+            }
+            musicAlbumRepository.updateActiveStatus(musicAlbumId, true);
+        } catch (Exception error) {
+            throw new Exception("[MusicAlbumServiceImpl.activateMusicAlbum] -> " + error.getMessage());
+        }
+    }
+    
+    @Transactional
+    public void deactivateMusicAlbum(Long musicAlbumId) throws Exception {
+        try {
+            if (!musicAlbumRepository.existsById(musicAlbumId)) {
+                throw new ProductException("El álbum musical con id: '" + musicAlbumId + "' no existe.");
+            }
+            musicAlbumRepository.updateActiveStatus(musicAlbumId, false);
+        } catch (Exception error) {
+            throw new Exception("[MusicAlbumServiceImpl.deactivateMusicAlbum] -> " + error.getMessage());
+        }
+    }
+    
+    @Transactional
+    public void updateActiveStatus(Long musicAlbumId, boolean active) throws Exception {
+        try {
+            if (!musicAlbumRepository.existsById(musicAlbumId)) {
+                throw new ProductException("El álbum musical con id: '" + musicAlbumId + "' no existe.");
+            }
+            musicAlbumRepository.updateActiveStatus(musicAlbumId, active);
+        } catch (Exception error) {
+            throw new Exception("[MusicAlbumServiceImpl.updateActiveStatus] -> " + error.getMessage());
+        }
+    }
 
 }

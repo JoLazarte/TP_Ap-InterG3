@@ -25,5 +25,22 @@ public interface MusicAlbumService {
 
     public MusicAlbum createMusicAlbum(MusicAlbum musicAlbum) throws MusicAlbumDuplicateException;
 
+    // Métodos para filtrar productos activos
+    public Page<MusicAlbum> getActiveMusicAlbums(PageRequest pageRequest);
+    
+    public Page<MusicAlbum> getActiveMusicAlbumsByAuthor(String author, PageRequest pageable);
+    
+    public MusicAlbum getActiveMusicAlbumById(Long musicAlbumId) throws Exception;
+    
+    // Métodos de administración para activar/desactivar productos
+    @Transactional
+    public void activateMusicAlbum(Long musicAlbumId) throws Exception;
+    
+    @Transactional
+    public void deactivateMusicAlbum(Long musicAlbumId) throws Exception;
+    
+    @Transactional
+    public void updateActiveStatus(Long musicAlbumId, boolean active) throws Exception;
+
    // public List<MusicAlbum> getMusicAlbumByTitle(String title);
 }

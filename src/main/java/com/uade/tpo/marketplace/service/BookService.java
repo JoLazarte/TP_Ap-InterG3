@@ -24,5 +24,22 @@ public interface BookService {
 
     public Book createBook(Book book) throws BookDuplicateException;
 
+    // Métodos para filtrar productos activos
+    public Page<Book> getActiveBooks(PageRequest pageRequest) throws Exception;
+    
+    public Page<Book> getActiveBooksByAuthor(String author, PageRequest pageable);
+    
+    public Book getActiveBookById(Long bookId) throws Exception;
+    
+    // Métodos de administración para activar/desactivar productos
+    @Transactional
+    public void activateBook(Long bookId) throws Exception;
+    
+    @Transactional
+    public void deactivateBook(Long bookId) throws Exception;
+    
+    @Transactional
+    public void updateActiveStatus(Long bookId, boolean active) throws Exception;
+
     //public List<Book> filterBooks(String title);
 }

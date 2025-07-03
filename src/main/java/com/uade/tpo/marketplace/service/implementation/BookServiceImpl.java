@@ -85,6 +85,67 @@ public class BookServiceImpl implements BookService {
         bookRepository.updateStock(bookId, newStock);
     }
   
+    // Implementación de métodos para filtrar productos activos
+    public Page<Book> getActiveBooks(PageRequest pageable) throws Exception {
+        try{
+            return bookRepository.findAllActive(pageable);
+        }catch (Exception error) {
+            throw new Exception("[BookServiceImpl.getActiveBooks] -> " + error.getMessage());
+        }
+    }
+    
+    public Page<Book> getActiveBooksByAuthor(String author, PageRequest pageable) {
+        return bookRepository.findByAuthorAndActive(author, pageable);
+    }
+    
+    public Book getActiveBookById(Long bookId) throws Exception {
+        try {
+            Book book = bookRepository.findById(bookId).orElseThrow(() -> new ProductException("producto no encontrado"));
+            if (!book.isActive()) {
+                throw new ProductException("El producto no está activo");
+            }
+            return book;
+          } catch (Exception error) {
+            throw new Exception("[BookServiceImpl.getActiveBookById] -> " + error.getMessage());
+          }
+    }
+    
+    // Métodos de administración para activar/desactivar productos
+    @Transactional
+    public void activateBook(Long bookId) throws Exception {
+        try {
+            if (!bookRepository.existsById(bookId)) {
+                throw new ProductException("El libro con id: '" + bookId + "' no existe.");
+            }
+            bookRepository.updateActiveStatus(bookId, true);
+        } catch (Exception error) {
+            throw new Exception("[BookServiceImpl.activateBook] -> " + error.getMessage());
+        }
+    }
+    
+    @Transactional
+    public void deactivateBook(Long bookId) throws Exception {
+        try {
+            if (!bookRepository.existsById(bookId)) {
+                throw new ProductException("El libro con id: '" + bookId + "' no existe.");
+            }
+            bookRepository.updateActiveStatus(bookId, false);
+        } catch (Exception error) {
+            throw new Exception("[BookServiceImpl.deactivateBook] -> " + error.getMessage());
+        }
+    }
+    
+    @Transactional
+    public void updateActiveStatus(Long bookId, boolean active) throws Exception {
+        try {
+            if (!bookRepository.existsById(bookId)) {
+                throw new ProductException("El libro con id: '" + bookId + "' no existe.");
+            }
+            bookRepository.updateActiveStatus(bookId, active);
+        } catch (Exception error) {
+            throw new Exception("[BookServiceImpl.updateActiveStatus] -> " + error.getMessage());
+        }
+    }
 
    
 }
