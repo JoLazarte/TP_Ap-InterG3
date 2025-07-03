@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +40,9 @@ public class MockupController {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
   @PostMapping("/initializeBooks")
   public ResponseEntity<ResponseData<String>> initializeBooksDB(@AuthenticationPrincipal UserDetails userDetails) {
     try {
@@ -64,22 +68,14 @@ public class MockupController {
           "Una novela experimental que puede leerse en múltiples órdenes.", "978-8420437484",
           List.of(GenreBook.ANTINOVEL, GenreBook.FICCION), 19.99, 6,
           "https://acdn-us.mitiendanube.com/stores/001/029/689/products/rayuela1-70d4301f60dc01384c16171187155984-1024-1024.png ", true);
-      // Book book6 = new Book(null, );
-      // Book book7 = new Book(null, );
-      // Book book8 = new Book(null, );
-      // Book book9 = new Book(null, );
-      // Book book10 = new Book(null, );
+     
 
       bookService.createBook(book1);
       bookService.createBook(book2);
       bookService.createBook(book3);
       bookService.createBook(book4);
       bookService.createBook(book5);
-      // bookService.createBook(book6);
-      // bookService.createBook(book7);
-      // bookService.createBook(book8);
-      // bookService.createBook(book9);
-      // bookService.createBook(book10);
+    
 
       MusicAlbum malbum1 = new MusicAlbum(null, "Abbey Road", "The Beatles", "Apple Records", 1969,
           "Uno de los álbumes más icónicos del rock.", "GBAYE0601690",
@@ -170,18 +166,18 @@ public class MockupController {
           "jolazarte", "Joanna",
           "Lazarte",
           "jolazarte@gmail.com",
-          "1abcdeft",
+          passwordEncoder.encode( "1abcdeft"),
           Role.ADMIN,
           new ArrayList<>(),
           new ArrayList<>(),
           new ArrayList<>(),
           new ArrayList<>(),
           new ArrayList<>());
-      User admin2 = new User(null, "cami", "Cami", "Nani", "caminani@gmail.com", "9iuhjt33", Role.ADMIN,
+      User admin2 = new User(null, "cami", "Cami", "Nani", "caminani@gmail.com", passwordEncoder.encode("9iuhjt33"), Role.ADMIN,
           new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-      User admin3 = new User(null, "facundo", "Facundo", "Solá", "fsola@gmail.com", "fggh678", Role.ADMIN,
+      User admin3 = new User(null, "facundo", "Facundo", "Solá", "fsola@gmail.com", passwordEncoder.encode("fggh678"), Role.ADMIN,
           new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-      User admin4 = new User(null, "santiago", "Santiago", "Gallero", "sgallero@gmail.com", "0oph644", Role.ADMIN,
+      User admin4 = new User(null, "santiago", "Santiago", "Gallero", "sgallero@gmail.com", passwordEncoder.encode("0oph644"), Role.ADMIN,
           new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
       userRepository.save(admin1);

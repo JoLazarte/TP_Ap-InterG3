@@ -10,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.marketplace.controllers.auth.RegisterRequest;
-import com.uade.tpo.marketplace.entity.Role;
 import com.uade.tpo.marketplace.entity.User;
 import com.uade.tpo.marketplace.exceptions.UserException;
 import com.uade.tpo.marketplace.repository.UserRepository;

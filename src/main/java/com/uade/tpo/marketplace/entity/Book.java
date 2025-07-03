@@ -78,8 +78,5 @@ public class Book extends Product{
                 this.active
                 );
     }
-
-    
-
     
 }

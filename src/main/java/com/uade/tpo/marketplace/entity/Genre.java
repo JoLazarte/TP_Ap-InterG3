@@ -1,19 +1,17 @@
 package com.uade.tpo.marketplace.entity;
 
 public enum Genre {
-
-
-
-
-    CLASSICAL,
     ROCK,
-
-
-    PROGRESSIVE,
-    PSYCHODELIC,
+    HARDROCK,
     POP,
+    JAZZ,
+    CLASSICAL,
+    ELECTRONIC,
+    REGGAETON,
+    HIPHOP,
+    PROGRESSIVE,
+    PSYCHODELIC, 
     FUNK,
     RB,
-    HARDROCK,
     GRUNGE
 }

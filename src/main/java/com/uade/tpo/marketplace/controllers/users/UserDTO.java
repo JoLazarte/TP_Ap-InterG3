@@ -3,7 +3,6 @@ package com.uade.tpo.marketplace.controllers.users;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uade.tpo.marketplace.entity.Buy;
 import com.uade.tpo.marketplace.entity.Role;
 import com.uade.tpo.marketplace.entity.SearchBook;

@@ -27,8 +27,7 @@ import com.uade.tpo.marketplace.service.BuyService;
 import com.uade.tpo.marketplace.service.UserService;
 import com.uade.tpo.marketplace.service.BookService;
 import com.uade.tpo.marketplace.service.MusicAlbumService;
-import com.uade.tpo.marketplace.controllers.buys.BuyDTO;
-import com.uade.tpo.marketplace.controllers.buys.CreateBuyRequest;
+
 
 @RestController
 @RequestMapping("/buys")

@@ -52,13 +52,6 @@ public class SecurityConfig {
                             //Buy
                             //.requestMatchers(HttpMethod.GET, "/buys/**").permitAll()
                             //.requestMatchers("/buys/**").hasAuthority(Role.BUYER.name())
-
-                            //.requestMatchers("/buys/**").authenticated()
-
-                            // Cart
-                            .requestMatchers("/carts/**").authenticated()
-                            //CartItem
-                            //.requestMatchers("/cartItems/**").authenticated()
                             
                             // Default
                             .anyRequest().authenticated())
