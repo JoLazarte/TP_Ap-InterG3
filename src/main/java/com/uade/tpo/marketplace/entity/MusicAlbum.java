@@ -34,7 +34,25 @@ public class MusicAlbum extends Product{
                 this.genres = genres;
                 this.stock = stock;
                 this.urlImage = urlImage;
-}
+                this.active = true; // Valor por defecto
+    }
+    
+    public MusicAlbum(Long id, String title, String author, String recordLabel, int year, String description, String isrc,
+    double price, List<Genre> genres, int stock, String urlImage, boolean active
+                  ) {
+                this.id= id;
+                this.title = title;
+                this.author = author;
+                this.recordLabel = recordLabel;
+                this.year = year;
+                this.description = description;
+                this.isrc = isrc;
+                this.price = price;
+                this.genres = genres;
+                this.stock = stock;
+                this.urlImage = urlImage;
+                this.active = active;
+    }
 
     @Column
     private String recordLabel;
@@ -60,7 +78,8 @@ public class MusicAlbum extends Product{
                 this.price,
                 this.genres,
                 this.stock,
-                this.urlImage
+                this.urlImage,
+                this.active
                 );
     }
     

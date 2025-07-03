@@ -39,6 +39,8 @@ public class MusicAlbumDTO extends ProductDTO {
     private int stock;
     //@NotEmpty
     private String urlImage;
+    @NotNull
+    private boolean active;
 
     public MusicAlbumDTO(Long id, String title, String author, String recordLabel, int year, String description, String isrc,
     double price, List<Genre> genres, int stock, String urlImage
@@ -54,6 +56,24 @@ public class MusicAlbumDTO extends ProductDTO {
                 this.genres = genres;
                 this.stock = stock;
                 this.urlImage = urlImage;
+                this.active = true; // Valor por defecto
+    }
+    
+    public MusicAlbumDTO(Long id, String title, String author, String recordLabel, int year, String description, String isrc,
+    double price, List<Genre> genres, int stock, String urlImage, boolean active
+                  ) {
+                this.id= id;
+                this.title = title;
+                this.author = author;
+                this.recordLabel = recordLabel;
+                this.year = year;
+                this.description = description;
+                this.isrc = isrc;
+                this.price = price;
+                this.genres = genres;
+                this.stock = stock;
+                this.urlImage = urlImage;
+                this.active = active;
     }
     
     public MusicAlbum toEntity() {
@@ -68,7 +88,8 @@ public class MusicAlbumDTO extends ProductDTO {
                 this.price,
                 this.genres,
                 this.stock,
-                this.urlImage
+                this.urlImage,
+                this.active
                 );
     }
 }

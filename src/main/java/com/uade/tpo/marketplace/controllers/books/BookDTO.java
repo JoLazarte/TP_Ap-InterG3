@@ -38,6 +38,8 @@ public class BookDTO extends ProductDTO{
     private int stock;
     //@NotEmpty
     private String urlImage;
+    @NotNull
+    private boolean active;
 
     public BookDTO(Long id, String title, String author, String editorial, String description, String isbn,
                 List<GenreBook> genreBooks, double price, int stock, String urlImage) {
@@ -51,6 +53,22 @@ public class BookDTO extends ProductDTO{
         this.price = price;
         this.stock = stock;
         this.urlImage = urlImage;
+        this.active = true; // Valor por defecto
+    }
+    
+    public BookDTO(Long id, String title, String author, String editorial, String description, String isbn,
+                List<GenreBook> genreBooks, double price, int stock, String urlImage, boolean active) {
+        this.id=id;            
+        this.title = title;
+        this.author = author;
+        this.editorial = editorial;
+        this.description = description;
+        this.isbn = isbn;
+        this.genreBooks = genreBooks;
+        this.price = price;
+        this.stock = stock;
+        this.urlImage = urlImage;
+        this.active = active;
     }
     public Book toEntity() {
         return new Book(
@@ -63,7 +81,8 @@ public class BookDTO extends ProductDTO{
                 this.genreBooks,
                 this.price,
                 this.stock,
-                this.urlImage
+                this.urlImage,
+                this.active
                 );
     }
 }

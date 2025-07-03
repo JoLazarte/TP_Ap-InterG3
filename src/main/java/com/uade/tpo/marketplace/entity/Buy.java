@@ -36,6 +36,9 @@ public class Buy {
   @NotNull
   @Column(nullable = false)
   private LocalDateTime buyDate;
+  
+  @Column(nullable = false)
+  private boolean confirmed = false;
  
   //@NotEmpty
   @OneToMany(mappedBy = "buy", cascade = CascadeType.ALL)
@@ -65,6 +68,7 @@ public class Buy {
         .id(this.id)
         .items(this.items)
         .buyDate(this.buyDate)
+        .confirmed(this.confirmed)
         .user(user)
         .totalPrice(this.getTotalPrice())
         .build();
