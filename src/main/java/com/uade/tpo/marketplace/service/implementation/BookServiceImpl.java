@@ -1,5 +1,6 @@
 package com.uade.tpo.marketplace.service.implementation;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,6 +145,36 @@ public class BookServiceImpl implements BookService {
             bookRepository.updateActiveStatus(bookId, active);
         } catch (Exception error) {
             throw new Exception("[BookServiceImpl.updateActiveStatus] -> " + error.getMessage());
+        }
+    }
+    
+    // Métodos para gestión de descuentos
+    @Transactional
+    public void updateDiscount(Long bookId, BigDecimal discountPercentage, Boolean discountActive) throws Exception {
+        try {
+            if (!bookRepository.existsById(bookId)) {
+                throw new ProductException("El libro con id: '" + bookId + "' no existe.");
+            }
+            
+            Book book = bookRepository.findById(bookId).orElseThrow(() -> new ProductException("Libro no encontrado"));
+            
+            if (discountPercentage != null) {
+                // Validate discount percentage
+                if (discountPercentage.compareTo(BigDecimal.ZERO) < 0 || discountPercentage.compareTo(BigDecimal.valueOf(90)) > 0) {
+                    throw new ProductException("El porcentaje de descuento debe estar entre 0 y 90");
+                }
+                book.setDiscountPercentage(discountPercentage);
+            }
+            
+            if (discountActive != null) {
+                book.setDiscountActive(discountActive);
+            }
+            
+            bookRepository.save(book);
+        } catch (ProductException error) {
+            throw new ProductException(error.getMessage());
+        } catch (Exception error) {
+            throw new Exception("[BookServiceImpl.updateDiscount] -> " + error.getMessage());
         }
     }
 

@@ -1,5 +1,6 @@
 package com.uade.tpo.marketplace.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.uade.tpo.marketplace.controllers.books.BookDTO;
@@ -46,6 +47,8 @@ public class Book extends Product{
         this.stock = stock;
         this.urlImage = urlImage;
         this.active = true; // Valor por defecto
+        this.discountPercentage = BigDecimal.ZERO;
+        this.discountActive = false;
     }
     
     public Book(Long id, String title, String author, String editorial, String description, String isbn,
@@ -61,6 +64,26 @@ public class Book extends Product{
         this.stock = stock;
         this.urlImage = urlImage;
         this.active = active;
+        this.discountPercentage = BigDecimal.ZERO;
+        this.discountActive = false;
+    }
+    
+    public Book(Long id, String title, String author, String editorial, String description, String isbn,
+                List<GenreBook> genreBooks, double price, int stock, String urlImage, boolean active,
+                BigDecimal discountPercentage, boolean discountActive) {
+        this.id=id;            
+        this.title = title;
+        this.author = author;
+        this.editorial = editorial;
+        this.description = description;
+        this.isbn = isbn;
+        this.genreBooks = genreBooks;
+        this.price = price;
+        this.stock = stock;
+        this.urlImage = urlImage;
+        this.active = active;
+        this.discountPercentage = discountPercentage != null ? discountPercentage : BigDecimal.ZERO;
+        this.discountActive = discountActive;
     }
 
     public BookDTO toDTO() {
@@ -75,7 +98,10 @@ public class Book extends Product{
                 this.price,
                 this.stock,
                 this.urlImage,
-                this.active
+                this.active,
+                this.discountPercentage,
+                this.discountActive,
+                this.getFinalPrice()
                 );
     }
     

@@ -9,10 +9,12 @@ import com.uade.tpo.marketplace.entity.ResponseData;
 import com.uade.tpo.marketplace.exceptions.ProductException;
 import com.uade.tpo.marketplace.service.MusicAlbumService;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -188,6 +190,38 @@ public class MusicAlbumController {
         } catch (Exception error) {
             System.out.printf("[MusicAlbumController.updateMusicAlbumActiveStatus] -> %s", error.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo actualizar el estado del álbum musical"));
+        }
+    }
+
+    // Endpoints for discount management
+    @PutMapping("/{musicAlbumId}/discount")
+    public ResponseEntity<ResponseData<?>> updateMusicAlbumDiscount(@PathVariable Long musicAlbumId, @RequestBody Map<String, Object> discountData) {
+        try {
+            BigDecimal discountPercentage = null;
+            Boolean discountActive = null;
+            
+            if (discountData.get("discountPercentage") != null) {
+                if (discountData.get("discountPercentage") instanceof Number) {
+                    discountPercentage = BigDecimal.valueOf(((Number) discountData.get("discountPercentage")).doubleValue());
+                } else if (discountData.get("discountPercentage") instanceof String) {
+                    discountPercentage = new BigDecimal((String) discountData.get("discountPercentage"));
+                }
+                
+                // Validate discount percentage
+                if (discountPercentage.compareTo(BigDecimal.ZERO) < 0 || discountPercentage.compareTo(BigDecimal.valueOf(90)) > 0) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error("El porcentaje de descuento debe estar entre 0 y 90"));
+                }
+            }
+            
+            if (discountData.get("discountActive") != null) {
+                discountActive = (Boolean) discountData.get("discountActive");
+            }
+            
+            musicAlbumService.updateDiscount(musicAlbumId, discountPercentage, discountActive);
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success("Descuento del álbum musical actualizado correctamente"));
+        } catch (Exception error) {
+            System.out.printf("[MusicAlbumController.updateMusicAlbumDiscount] -> %s", error.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo actualizar el descuento del álbum musical"));
         }
     }
 

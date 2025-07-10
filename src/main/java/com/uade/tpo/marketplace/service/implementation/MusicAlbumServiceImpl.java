@@ -1,5 +1,6 @@
 package com.uade.tpo.marketplace.service.implementation;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,6 +141,36 @@ public class MusicAlbumServiceImpl implements MusicAlbumService {
             musicAlbumRepository.updateActiveStatus(musicAlbumId, active);
         } catch (Exception error) {
             throw new Exception("[MusicAlbumServiceImpl.updateActiveStatus] -> " + error.getMessage());
+        }
+    }
+    
+    // Métodos para gestión de descuentos
+    @Transactional
+    public void updateDiscount(Long musicAlbumId, BigDecimal discountPercentage, Boolean discountActive) throws Exception {
+        try {
+            if (!musicAlbumRepository.existsById(musicAlbumId)) {
+                throw new ProductException("El álbum musical con id: '" + musicAlbumId + "' no existe.");
+            }
+            
+            MusicAlbum musicAlbum = musicAlbumRepository.findById(musicAlbumId).orElseThrow(() -> new ProductException("Álbum musical no encontrado"));
+            
+            if (discountPercentage != null) {
+                // Validate discount percentage
+                if (discountPercentage.compareTo(BigDecimal.ZERO) < 0 || discountPercentage.compareTo(BigDecimal.valueOf(90)) > 0) {
+                    throw new ProductException("El porcentaje de descuento debe estar entre 0 y 90");
+                }
+                musicAlbum.setDiscountPercentage(discountPercentage);
+            }
+            
+            if (discountActive != null) {
+                musicAlbum.setDiscountActive(discountActive);
+            }
+            
+            musicAlbumRepository.save(musicAlbum);
+        } catch (ProductException error) {
+            throw new ProductException(error.getMessage());
+        } catch (Exception error) {
+            throw new Exception("[MusicAlbumServiceImpl.updateDiscount] -> " + error.getMessage());
         }
     }
 

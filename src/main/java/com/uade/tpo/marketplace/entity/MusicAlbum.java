@@ -1,5 +1,6 @@
 package com.uade.tpo.marketplace.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.uade.tpo.marketplace.controllers.musicalbums.MusicAlbumDTO;
@@ -35,6 +36,8 @@ public class MusicAlbum extends Product{
                 this.stock = stock;
                 this.urlImage = urlImage;
                 this.active = true; // Valor por defecto
+                this.discountPercentage = BigDecimal.ZERO;
+                this.discountActive = false;
     }
     
     public MusicAlbum(Long id, String title, String author, String recordLabel, int year, String description, String isrc,
@@ -52,6 +55,28 @@ public class MusicAlbum extends Product{
                 this.stock = stock;
                 this.urlImage = urlImage;
                 this.active = active;
+                this.discountPercentage = BigDecimal.ZERO;
+                this.discountActive = false;
+    }
+    
+    public MusicAlbum(Long id, String title, String author, String recordLabel, int year, String description, String isrc,
+    double price, List<Genre> genres, int stock, String urlImage, boolean active,
+    BigDecimal discountPercentage, boolean discountActive
+                  ) {
+                this.id= id;
+                this.title = title;
+                this.author = author;
+                this.recordLabel = recordLabel;
+                this.year = year;
+                this.description = description;
+                this.isrc = isrc;
+                this.price = price;
+                this.genres = genres;
+                this.stock = stock;
+                this.urlImage = urlImage;
+                this.active = active;
+                this.discountPercentage = discountPercentage != null ? discountPercentage : BigDecimal.ZERO;
+                this.discountActive = discountActive;
     }
 
     @Column
@@ -79,7 +104,10 @@ public class MusicAlbum extends Product{
                 this.genres,
                 this.stock,
                 this.urlImage,
-                this.active
+                this.active,
+                this.discountPercentage,
+                this.discountActive,
+                this.getFinalPrice()
                 );
     }
     

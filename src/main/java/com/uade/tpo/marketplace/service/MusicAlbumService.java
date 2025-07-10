@@ -1,5 +1,7 @@
 package com.uade.tpo.marketplace.service;
 
+import java.math.BigDecimal;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +43,10 @@ public interface MusicAlbumService {
     
     @Transactional
     public void updateActiveStatus(Long musicAlbumId, boolean active) throws Exception;
+
+    // Métodos para gestión de descuentos
+    @Transactional
+    public void updateDiscount(Long musicAlbumId, BigDecimal discountPercentage, Boolean discountActive) throws Exception;
 
    // public List<MusicAlbum> getMusicAlbumByTitle(String title);
 }

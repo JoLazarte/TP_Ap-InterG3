@@ -1,5 +1,7 @@
 package com.uade.tpo.marketplace.service;
 
+import java.math.BigDecimal;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +42,10 @@ public interface BookService {
     
     @Transactional
     public void updateActiveStatus(Long bookId, boolean active) throws Exception;
+    
+    // Métodos para gestión de descuentos
+    @Transactional
+    public void updateDiscount(Long bookId, BigDecimal discountPercentage, Boolean discountActive) throws Exception;
 
     //public List<Book> filterBooks(String title);
 }
